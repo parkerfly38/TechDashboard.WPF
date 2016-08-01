@@ -333,6 +333,13 @@ namespace TechDashboard.Data
             CreateDependentTables(GetTechnician(technician.TechnicianDeptNo, technician.TechnicianNo));
         }
 
+        public bool TableExists<T>()
+        {
+            string cmdText = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
+            var cmd = _database.CreateCommand(cmdText, typeof(T).Name);
+            return cmd.ExecuteScalar<string>() != null;
+        }
+
         public void CreateDependentTables(JT_Technician technician)
         {
             //return;
@@ -350,7 +357,6 @@ namespace TechDashboard.Data
             try { _database.DropTable<JT_ServiceEquipmentParts>(); } catch { }
             try { _database.DropTable<JT_DailyTimeEntry>(); } catch { }
             //try { _database.DropTable<App_Expense>(); } catch { } // puke
-            try { _database.DropTable<JT_TransactionImportDetail>(); } catch { }
             try { _database.DropTable<JT_EquipmentAsset>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementHeader>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementDetail>(); } catch { }
@@ -359,6 +365,12 @@ namespace TechDashboard.Data
             try { _database.DropTable<JT_Transaction>(); } catch { }
             try { _database.DropTable<JT_TransactionHistory>(); } catch { }
             try { _database.DropTable<JT_LaborText>(); } catch { }
+
+            if (!TableExists<JT_TransactionImportDetail>())
+            {
+                try { _database.DropTable<JT_TransactionImportDetail>(); } catch { }
+                _database.CreateTable<JT_TransactionImportDetail>();
+            }
 
             // Next, create the tables       
             _database.CreateTable<JT_TechnicianScheduleDetail>();
@@ -373,7 +385,6 @@ namespace TechDashboard.Data
             _database.CreateTable<JT_ServiceEquipmentParts>();
             _database.CreateTable<JT_DailyTimeEntry>();
             //_database.CreateTable<App_Expense>(); // puke!  
-            _database.CreateTable<JT_TransactionImportDetail>();
             _database.CreateTable<JT_EquipmentAsset>();
             _database.CreateTable<JT_ServiceAgreementHeader>();
             _database.CreateTable<JT_ServiceAgreementDetail>();
