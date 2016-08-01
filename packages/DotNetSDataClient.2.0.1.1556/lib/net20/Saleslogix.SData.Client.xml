@@ -1,0 +1,3426 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Saleslogix.SData.Client</name>
+    </assembly>
+    <members>
+        <member name="T:Saleslogix.SData.Client.Framework.AttachedFile">
+            <summary>
+            Represents a file that's been attached to a request or response.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.AttachedFile.#ctor(Saleslogix.SData.Client.Mime.MimePart)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.AttachedFile"/> class.
+            </summary>
+            <param name="part">A multipart MIME part containing the attached file.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.AttachedFile.#ctor(System.String,System.String,System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.AttachedFile"/> class.
+            </summary>
+            <param name="contentType">The MIME content type of an attached file.</param>
+            <param name="fileName">The file name of an attached file.</param>
+            <param name="stream">The <see cref="P:Saleslogix.SData.Client.Framework.AttachedFile.Stream"/> object that points to the content of an attached file.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.AttachedFile.ContentType">
+            <summary>
+            Gets the MIME content type of an attached file.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.AttachedFile.FileName">
+            <summary>
+            Gets the file name of an attached file.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.AttachedFile.Stream">
+            <summary>
+            Gets the <see cref="P:Saleslogix.SData.Client.Framework.AttachedFile.Stream"/> object that points to the content of an attached file.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common">
+            <summary>
+            Provides the common elements for Syndication
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.XmlNs">
+            <summary>
+            Prefix for xml namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Xs">
+            <summary>
+            XS namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Xs.Namespace">
+            <summary>
+            Xml Schema namespace.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Xs.Prefix">
+            <summary>
+            Prefix for XmlSchema namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Xsi">
+            <summary>
+            XSI namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Xsi.Namespace">
+            <summary>
+            Namespace for XSI
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Xsi.Prefix">
+            <summary>
+            Prefix for XSI namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Xsi.Nil">
+            <summary>
+            Nil
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Atom">
+            <summary>
+            ATOM namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Atom.Namespace">
+            <summary>
+            URI for Atom namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Atom.Prefix">
+            <summary>
+            Prefix for Atom namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.SData">
+            <summary>
+            SData namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.SData.Namespace">
+            <summary>
+            URI for SData namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.SData.Prefix">
+            <summary>
+            Prefix for SData namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Sme">
+            <summary>
+            SME namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sme.Namespace">
+            <summary>
+            URI for SME namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sme.Prefix">
+            <summary>
+            Prefix for SME namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Http">
+            <summary>
+            HTTP namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Http.Namespace">
+            <summary>
+            Namespace for SData HTTP elements
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Http.Prefix">
+            <summary>
+            Prefix for SData Http header elements.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Sync">
+            <summary>
+            Sync namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sync.Namespace">
+            <summary>
+            Namespace for SData Sync elements
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sync.Prefix">
+            <summary>
+            Prefix for SData Http header elements.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.Sle">
+            <summary>
+            SLE namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sle.Namespace">
+            <summary>
+            URI for SLE namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.Sle.Prefix">
+            <summary>
+            Prefix for SLE namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Common.OpenSearch">
+            <summary>
+            OpenSearch namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.OpenSearch.Namespace">
+            <summary>
+            URI for OpenSearch namespace
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Common.OpenSearch.Prefix">
+            <summary>
+            Prefix for OpenSearch namespace
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Diagnosis">
+            <summary>
+            Provides details of an error that has occurred.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.Diagnosis.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.Diagnosis"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.Diagnosis.#ctor(Saleslogix.SData.Client.Framework.Severity,System.String,Saleslogix.SData.Client.Framework.DiagnosisCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.Diagnosis"/> class.
+            </summary>
+            <param name="severity">One of the <see cref="P:Saleslogix.SData.Client.Framework.Diagnosis.Severity"/> values.</param>
+            <param name="message">A friendly message for the diagnosis.</param>
+            <param name="code">One of the <see cref="T:Saleslogix.SData.Client.Framework.DiagnosisCode"/> values.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.Severity">
+            <summary>
+            Gets or sets the <see cref="P:Saleslogix.SData.Client.Framework.Diagnosis.Severity"/> of the error.
+            </summary>
+            <value>One of the <see cref="P:Saleslogix.SData.Client.Framework.Diagnosis.Severity"/> values.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.SDataCode">
+            <summary>
+            Gets or sets the SData diagnosis code for the error.
+            </summary>
+            <value>An SData diagnosis code for the error.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.ApplicationCode">
+            <summary>
+            Gets or sets the application specific diagnosis code for the error.
+            </summary>
+            <value>An application specific diagnosis code for the error.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.Message">
+            <summary>
+            Gets or sets a friendly message for the diagnosis.
+            </summary>
+            <value>A user friendly description of the error.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.StackTrace">
+            <summary>
+            Gets or sets the stack trace for the error.
+            </summary>
+            <value>A stack trace of the error.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Diagnosis.PayloadPath">
+            <summary>
+            XPath expression that designates the payload element which is responsible for the error
+            </summary>
+            <value>An XPath expression</value>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.DiagnosisCode">
+            <summary>
+            Specifies the types of diagnosis code.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.BadUrlSyntax">
+            <summary>
+            Invalid URL syntax.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.BadQueryParameter">
+            <summary>
+            Invalid Query Parameter.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.ApplicationNotFound">
+            <summary>
+            Application does not exist.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.ApplicationUnavailable">
+            <summary>
+            Application exists but is not available.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.DatasetNotFound">
+            <summary>
+            Dataset does not exist.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.DatasetUnavailable">
+            <summary>
+            Dataset exists but is not available.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.ContractNotFound">
+            <summary>
+            Contract does not exist.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.ResourceKindNotFound">
+            <summary>
+            Resource kind does not exist.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.BadWhereSyntax">
+            <summary>
+            Invalid syntax for a where condition.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.DiagnosisCode.ApplicationDiagnosis">
+            <summary>
+            Application specific diagnosis, detail is in the applicationCode element.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Digest">
+            <summary>
+            Provides details of a Digest for sync.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.Digest.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.Digest"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.Digest.#ctor(System.String,Saleslogix.SData.Client.Framework.DigestEntry[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.Digest"/> class with the
+            specified attributes.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.DigestEntry">
+            <summary>
+            Provides details of a DigestEntry for sync.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.DigestEntry.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.DigestEntry"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.DigestEntry.#ctor(System.String,System.Int64,System.DateTime,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.DigestEntry"/> class with the
+            specified attributes.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.HttpMethod">
+            <summary>
+            Enum of HTTP methods.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.HttpMethod.Get">
+            <summary>
+            Get request.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.HttpMethod.Post">
+            <summary>
+            Post request.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.HttpMethod.Put">
+            <summary>
+            Put request.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.HttpMethod.Delete">
+            <summary>
+            Delete request.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.MediaType">
+            <summary>
+            Defines the list of supported media types.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Text">
+            <summary>
+            Text
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Html">
+            <summary>
+            HTML
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Atom">
+            <summary>
+            ATOM feed syndication format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.AtomEntry">
+            <summary>
+            ATOM entry syndication format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Rss">
+            <summary>
+            RSS syndication format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Xml">
+            <summary>
+            XML format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.ImagePng">
+            <summary>
+            Image PNG format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.ImageJpeg">
+            <summary>
+            Image JPEG format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.ImageGif">
+            <summary>
+            Image GIF format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.ImageTiff">
+            <summary>
+            Image TIFF format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.ImageBmp">
+            <summary>
+            Image BMP format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Xslt">
+            <summary>
+            XLST format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Css">
+            <summary>
+            XSS format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Json">
+            <summary>
+            JSON format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Bson">
+            <summary>
+            BSON format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Form">
+            <summary>
+            Form format
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaType.Multipart">
+            <summary>
+            Multipart format
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.MediaTypeNames">
+            <summary>
+            Handles the mapping of <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> values to names and visa-versa.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.AtomMediaType">
+            <summary>
+            ATOM feed content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.AtomFeedMediaType">
+            <summary>
+            ATOM feed content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.AtomEntryMediaType">
+            <summary>
+            ATOM entry content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.RssMediaType">
+            <summary>
+            RSS content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.XmlMediaType">
+            <summary>
+            XML content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.LegacyXmlMediaType">
+            <summary>
+            Legacy XML content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.HtmlMediaType">
+            <summary>
+            HTML content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.JsonMediaType">
+            <summary>
+            Javascript Object Notation (JSON) content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.BsonMediaType">
+            <summary>
+            Binary Javascript Object Notation (BSON) content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.FormMediaType">
+            <summary>
+            Form content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.TextMediaType">
+            <summary>
+            Text content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ImagePngMediaType">
+            <summary>
+            PNG Image content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ImageJpegMediaType">
+            <summary>
+            JPEG Image content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ImageGifMediaType">
+            <summary>
+            GIF Image content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ImageTiffMediaType">
+            <summary>
+            TIFF Image content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ImageBmpMediaType">
+            <summary>
+            BMP Image content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.XsltMediaType">
+            <summary>
+            XSLT content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.CssMediaType">
+            <summary>
+            CSS content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortJsonMediaType">
+            <summary>
+            Short Javascript Object Notation (JSON) content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortBsonMediaType">
+            <summary>
+            Short Binary Javascript Object Notation (BSON) content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortAtomMediaType">
+            <summary>
+            Short ATOM feed content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortAtomEntryMediaType">
+            <summary>
+            Short ATOM entry content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortRssMediaType">
+            <summary>
+            Short RSS content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortXmlMediaType">
+            <summary>
+            XML content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortHtmlMediaType">
+            <summary>
+            HTML content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortTextMediaType">
+            <summary>
+            Text content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortFormMediaType">
+            <summary>
+            Form content type
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortImagePngMediaType">
+            <summary>
+            Image PNG content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortImageJpegMediaType">
+            <summary>
+            Image JPEG content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortImageGifMediaType">
+            <summary>
+            Image GIF content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortImageTiffMediaType">
+            <summary>
+            Image TIFF content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortImageBmpMediaType">
+            <summary>
+            Image BMP content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortXsltMediaType">
+            <summary>
+            XSLT content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.ShortCssMediaType">
+            <summary>
+            CSS content type.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.MediaTypeNames.DefaultMediaType">
+            <summary>
+            Returns the default <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>.
+            </summary>
+            <value>The default <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>, which is <b>Atom</b>.</value>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.GetMediaType(Saleslogix.SData.Client.Framework.MediaType)">
+            <summary>
+            Returns the name of the content type for the specified <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>.
+            </summary>
+            <param name="type">One of the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> values.</param>
+            <returns>A <see cref="T:System.String"/> containing the name of the specified <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.GetMediaType(System.String)">
+            <summary>
+            Returns the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified name.
+            </summary>
+            <param name="name">The name of the content type.</param>
+            <returns>The <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> that matches the specified name.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.TryGetMediaType(System.String,Saleslogix.SData.Client.Framework.MediaType@)">
+            <summary>
+            Returns the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified name.
+            </summary>
+            <param name="name">The name of the content type.</param>
+            <param name="mediaType">On return contains the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified name.</param>
+            <returns><b>true</b> if the content type was found, otherwise <b>false</b>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.GetShortMediaType(Saleslogix.SData.Client.Framework.MediaType)">
+            <summary>
+            Returns the short name of the content type for the specified <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>.
+            </summary>
+            <param name="type">One of the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> values.</param>
+            <returns>A <see cref="T:System.String"/> containing the short name of the specified <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.GetShortMediaType(System.String)">
+            <summary>
+            Returns the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified short name.
+            </summary>
+            <param name="name">The short name of the content type.</param>
+            <returns>The <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> that matches the specified name.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.MediaTypeNames.TryGetShortMediaType(System.String,Saleslogix.SData.Client.Framework.MediaType@)">
+            <summary>
+            Returns the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified short name.
+            </summary>
+            <param name="name">The short name of the content type.</param>
+            <param name="mediaType">On return contains the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> for the specified name.</param>
+            <returns><b>true</b> if the content type was found, otherwise <b>false</b>.</returns>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataException">
+            <summary>
+            The exception that is thrown when an error occurs on an SData server.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataException.#ctor(System.Net.WebException)">
+            <summary>
+            Initializes a new instance.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataException.#ctor(Saleslogix.SData.Client.Framework.Diagnoses,System.Net.HttpStatusCode)">
+            <summary>
+            Initializes a new instance.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataException.Diagnoses">
+            <summary>
+            Gets the collection of diagnoses responsible for the exception.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataException.StatusCode">
+            <summary>
+            Gets the HTTP status code associated with the exception.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataException.Message">
+            <summary>
+            Gets a message that describes the exception.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataRequest">
+            <summary>
+            The request class which is responsible for sending and
+            receiving data over HTTP with the server.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataRequest.#ctor(System.String,Saleslogix.SData.Client.Framework.HttpMethod,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataRequest"/> class.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Uri">
+            <summary>
+            Gets or sets the target uri used by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.UserName">
+            <summary>
+            Gets or sets the user name used by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Password">
+            <summary>
+            Gets or sets the password used by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Method">
+            <summary>
+            Gets or sets the method for the request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Content">
+            <summary>
+            Gets or sets the input resource for the request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.ContentType">
+            <summary>
+            Gets or sets the input content type for the request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.ETag">
+            <summary>
+            Gets or sets the ETag value for the request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Form">
+            <summary>
+            Gets the form data associated with the request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Files">
+            <summary>
+            Gets the files that will be attached to the request content.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.UserAgent">
+            <summary>
+            Gets or sets the user agent passed during requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Timeout">
+            <summary>
+            Gets or sets the timeout in milliseconds used during requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.TimeoutRetryAttempts">
+            <summary>
+            Gets or sets the number of timeout retry attempts that should be made before giving up.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Proxy">
+            <summary>
+            Gets or sets the proxy used by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Accept">
+            <summary>
+            Gets or sets the media types accepted by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.AcceptLanguage">
+            <summary>
+            Gets or sets the language accepted by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.UseHttpMethodOverride">
+            <summary>
+            Gets or sets whether HTTP method override should be used by requests.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Cookies">
+            <summary>
+            Gets or sets the cookies associated with this request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataRequest.Credentials">
+            <summary>
+            Gets of sets the credentials associated with this request.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataRequest.GetResponse">
+            <summary>
+            Execute the request and return a response object.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataResponse">
+            <summary>
+            The response class which encapsulates interesting information returned
+            from a request.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.StatusCode">
+            <summary>
+            The response status code.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.ContentType">
+            <summary>
+            The response content type.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.ETag">
+            <summary>
+            The response ETag.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.Location">
+            <summary>
+            The response location.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.Expires">
+            <summary>
+            The response expiry date.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.RetryAfter">
+            <summary>
+            The response location.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.Content">
+            <summary>
+            The response content.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.Form">
+            <summary>
+            Gets the form data attached to the response.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataResponse.Files">
+            <summary>
+            Gets the files attached to the response.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataUri">
+            <summary>
+            Helper class for building an SData compatible <see cref="T:System.Uri"/>.
+            </summary>
+            <remarks>
+            The format of an SData <see cref="T:System.Uri"/> is as follows:
+            http(s)://&gt;host&lt;:&gt;port&lt;/&gt;server&lt;/&gt;product&lt;/&gt;contract&lt;/&gt;company-dataset&lt;/&gt;collection&lt;(resource identifier)&gt;value&lt;
+            </remarks>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames">
+            <summary>
+            Specifies the names of the SData defined query arguments
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.OrderBy">
+            <summary>
+            Specifies the name of the 'orderBy' query argument.
+            </summary>
+            <value>The name of the 'orderBy' query argument</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Where">
+            <summary>
+            Specifies the name of the 'where' query argument.
+            </summary>
+            <value>The name of the 'where' query argument</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Count">
+            <summary>
+            Specifies the name of the 'count' query argument.
+            </summary>
+            <value>The name of the 'count' query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.StartIndex">
+            <summary>
+            Specifies the name of the 'startIndex' query argument.
+            </summary>
+            <value>The name of the 'startIndex' query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Language">
+            <summary>
+            Specifies the name of the 'language' query argument.
+            </summary>
+            <value>The name of the 'language' query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Format">
+            <summary>
+            Specifies the name of the format type query argument.
+            </summary>
+            <value>The name of the format type query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Precedence">
+            <summary>
+            Specifies the name of the precedence query argument.
+            </summary>
+            <value>The name of the precedence query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Include">
+            <summary>
+            Specifies the name of the include query argument.
+            </summary>
+            <value>The name of the include query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.IncludeSchema">
+            <summary>
+            Specifies the name of the includeSchema query argument.
+            </summary>
+            <value>The name of the includeSchema query argument.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.TrackingId">
+            <summary>
+            Specifies the name of the TrackingID argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Search">
+            <summary>
+            Specifies the name of the search argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.ReturnDelta">
+            <summary>
+            Specifies the name of the return delta argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Select">
+            <summary>
+            Specifies the name of the select argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.Version">
+            <summary>
+            Specifies the name of the version argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.RunName">
+            <summary>
+            Specifies the name of the runName argument
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SDataUri.QueryArgNames.RunStamp">
+            <summary>
+            Specifies the name of the runStamp argument
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SDataUri.PropertySort">
+            <summary>
+            Order By details
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.PropertySort.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri.PropertySort"/> class.
+            </summary>
+            <param name="property">The name of the property.</param>
+            <param name="descending">The direction.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.PropertySort.Property">
+            <summary>
+            Returns the name of the property.
+            </summary>
+            <value>The name of the property.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.PropertySort.Descending">
+            <summary>
+            Returns a value indicating if the order is descending.
+            </summary>
+            <value><b>true</b> for a descending sort, otherwise <b>false</b> for ascending.</value>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class with
+            the specified <see cref="T:System.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="T:System.Uri"/> to assign.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class with
+            the specified <see cref="T:System.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="T:System.Uri"/> to assign.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor(Saleslogix.SData.Client.Framework.SDataUri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class with
+            the specified <see cref="T:System.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="T:System.Uri"/> to assign.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.#ctor(Saleslogix.SData.Client.Framework.UriFormatter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SDataUri"/> class with
+            the specified <see cref="T:System.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="T:System.Uri"/> to assign.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.HasSelector">
+            <summary>
+            Returns a value indicating if there is a selector associated with the last segment.
+            </summary>
+            <value><b>true</b> if there is a selector associated with the last segment; otherwise <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.OrderBy">
+            <summary>
+            Gets or sets the expression to use when sorting,
+            </summary>
+            <value>The expression to use when sorting.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.OrderByParsed">
+            <summary>
+            Returns the sort details.
+            </summary>
+            <value>The details of the sort.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Where">
+            <summary>
+            Gets or sets the expression to use when filtering a collection of resources.
+            </summary>
+            <value>The expression to use when filtering a collection of resources.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Count">
+            <summary>
+            Gets or sets the number of resources to return.
+            </summary>
+            <value>The number of resources to return. <b>0</b> to return all resources.  The default is value <b>0</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.StartIndex">
+            <summary>
+            Gets or sets the starting index to return resources from.
+            </summary>
+            <value>The starting index to return resources from. <b>0</b> specifies the first item.  The default value is <b>0</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Language">
+            <summary>
+            Gets or sets the language to use for resources.
+            </summary>
+            <value>The language to use for resources.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Format">
+            <summary>
+            Gets or sets the format type to return.
+            </summary>
+            <value>One of the <see cref="T:Saleslogix.SData.Client.Framework.MediaType"/> values.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Precedence">
+            <summary>
+            Gets or sets the maximum precedence of the fields to return in the result.
+            </summary>
+            <value>0 to return no entity information (only name and id).
+            Higher values will return entity information for the properties
+            with an equal or lower precedence value.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Include">
+            <summary>
+            Specifies which related objects should be included in the payload along
+            with the main resource being requested.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.IncludeSchema">
+            <summary>
+            Gets or sets the value indicating whether or not the schema should be returned.
+            </summary>
+            <value><b>true</b> if the schema should be returned, otherwise <b>false</b>.  The default is <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.TrackingId">
+            <summary>
+            The ID used to track asynchronous operations, and to ensure that
+            duplicate operations are not processed.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Search">
+            <summary>
+            Specifies a full-text search criteria.
+            </summary>
+            <remarks>
+            The syntax for the search string may vary depending on the search
+            engine used by the provider. SData does not attempt to introduce
+            a standard syntax for full text searches because the search text
+            will usually be entered interactively through a search box.
+            </remarks>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Select">
+            <summary>
+            Specifies the properties to return .
+            </summary>
+            <remarks>
+            The select parameter gives more control on the depth and breadth of information returned. It allows the consumer to specify the list of properties that he wants in the response, very much like a SQL select clause.
+            </remarks>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.ReturnDelta">
+            <summary>
+            Gets or sets the value indicating whether the server should only include properties that have been modified in its response.
+            </summary>
+            <value><b>true</b> if the server should only include properties that have been modified in its response, otherwise <b>false</b>.  The default is <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.Version">
+            <summary>
+            Gets or sets a specific version of the resource.
+            </summary>
+            <value>The version of the resources.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.RunName">
+            <summary>
+            A name that the synchronization engine assigned to the run.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.SDataUri.RunStamp">
+            <summary>
+            The timestamp at which the synchronization run was started.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.BuildLocalPath(System.String[])">
+            <summary>
+            Builds a local path from the specified segments.
+            </summary>
+            <param name="segments">Array of path segments.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SDataUri.BuildLocalPath(System.Collections.Generic.IEnumerable{Saleslogix.SData.Client.Framework.UriPathSegment})">
+            <summary>
+            Builds a local path from the specified segments.
+            </summary>
+            <param name="segments">Array of path segments.</param>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Severity">
+            <summary>
+            Defines the severity of an error.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Severity.Info">
+            <summary>
+            Informational message, does not require any special attention.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Severity.Warning">
+            <summary>
+            Warning message: does not prevent operation from succeeding but may require attention.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Severity.Transient">
+            <summary>
+            Transient error, operation failed but may succeed later in the same condition.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Severity.Error">
+            <summary>
+            Error, operation failed, request should be modified before resubmitting.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.Severity.Fatal">
+            <summary>
+            Severe error, operation should not be reattempted (and other operations are likely to fail too).
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SyncMode">
+            <summary>
+            Defines the sync mode.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SyncMode.CatchUp">
+            <summary>
+            An alternative version of the resource.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.SyncMode.Immediate">
+            <summary>
+            A resource related to this resource.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.SyncState">
+            <summary>
+            Provides details of a SyncState for sync.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SyncState.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SyncState"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.SyncState.#ctor(System.String,System.Int64,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.SyncState"/> class with the
+            specified attributes.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.Tracking">
+            <summary>
+            Represents tracking information used to track the progress of an
+            asynchronous operation.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.Phase">
+            <summary>
+            The current phase of the operation.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.PhaseDetail">
+            <summary>
+            More detailed information about the current phase of the operation.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.Progress">
+            <summary>
+            Percentage of the operation which is completed.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.ElapsedSeconds">
+            <summary>
+            Time elapsed since operation started, in seconds.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.RemainingSeconds">
+            <summary>
+            Expected remaining time, in seconds
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.Tracking.PollingMillis">
+            <summary>
+            Delay (in milliseconds) that the consumer should use
+            before polling the service again.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.UriFormatter">
+            <summary>
+            Helper class for building a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.UriName">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the name of the uri property during serialization.
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.SchemeSuffix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the suffix for the scheme part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> used as the suffix for the scheme part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.PortPrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the prefix for the port part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> used as the prefix for the port part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.QueryPrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the prefix for the query part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> used as the prefix for the query part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.QueryArgPrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the argument separator for the query part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> used as the argument separator for the query part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.QueryArgValuePrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used as the query argument and value separator.
+            </summary>
+            <value>A <see cref="T:System.String"/> used as the query argument and value separator.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.PathSegmentPrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> to use for separating the path parts of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> to use for separating the path parts of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.FragmentPrefix">
+            <summary>
+            Returns the <see cref="T:System.String"/> used to prefix the fragment part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.String"/> used to prefix the fragment part of a <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.Http">
+            <summary>
+            Returns the Http scheme.
+            </summary>
+            <value>A <see cref="T:System.String"/> containing the Http scheme.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.Https">
+            <summary>
+            Returns the Https scheme.
+            </summary>
+            <value>A <see cref="T:System.String"/> containing the Https scheme.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.UnspecifiedPort">
+            <summary>
+            Defines that a port has not been specified.
+            </summary>
+            <value>A value defining that a port has not been specified.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriFormatter.LocalHost">
+            <summary>
+            Gets the identifier/IPAddress to use for the Local Host.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriFormatter"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriFormatter"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriFormatter"/> class with
+            the specified <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> to assign.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriFormatter"/> class with
+            the specified <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> to assign.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.#ctor(Saleslogix.SData.Client.Framework.UriFormatter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriFormatter"/> class with
+            the specified <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="uri">The <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> to assign.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri">
+            <summary>
+            Gets or sets the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.AbsoluteUri">
+            <summary>
+            Gets the absolute URI for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The absolute URI for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Scheme">
+            <summary>
+            Gets or sets the scheme for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The scheme for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Port">
+            <summary>
+            Gets or sets the port for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The port for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> if one exists, otherwise <b>-1</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Host">
+            <summary>
+            Gets or sets the host for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The host for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Fragment">
+            <summary>
+            Gets or sets the fragment for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The fragment for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Path">
+            <summary>
+            Gets or sets the path of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The path for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.DirectPath">
+            <summary>
+            Returns the path of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> with all selectors removed.
+            </summary>
+            <value>The path for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> with all selectors removed</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Query">
+            <summary>
+            Gets or sets the query for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>
+            </summary>
+            <value>The query for the query.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.QueryArgs">
+            <summary>
+            Returns the query arguments for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>A <see cref="T:System.Collections.Generic.IDictionary`2"/> containing the query arguments for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.PathQuery">
+            <summary>
+            Gets or sets the path and query of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <value>The path and query for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.PathSegments">
+            <summary>
+            Returns the components that make up the path.
+            </summary>
+            <value>Array of components that make up the path.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.LastPathSegment">
+            <summary>
+            Returns the last path segment.
+            </summary>
+            <value>The last path segment.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.UseSsl">
+            <summary>
+            Gets or sets a flag indicating if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> uses SSL.
+            </summary>
+            <value><b>true</b> if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> uses SSL, otherwise <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.IsEmpty">
+            <summary>
+            Returns a flag indicating if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> is empty.
+            </summary>
+            <value><b>true</b> if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> is empty, otherwise <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.Item(System.String)">
+            <summary>
+            Gets or sets a query argument.
+            </summary>
+            <param name="name">The name of the argument.</param>
+            <param name="value">The value of the argument.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.RequiresRebuildPath">
+            <summary>
+            Gets or sets a value indicating if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Path"/> needs to be rebuilt.
+            </summary>
+            <value><b>true</b> if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Path"/> needs to be rebuilt, otherwise <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriFormatter.RequiresRebuildQuery">
+            <summary>
+            Gets or sets a value indicating if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Query"/> needs to be rebuilt.
+            </summary>
+            <value><b>true</b> if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Query"/> needs to be rebuilt, otherwise <b>false</b>.</value>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.Empty">
+            <summary>
+            Resets the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> back to an empty <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.AppendPath(System.String[])">
+            <summary>
+            Adds the specified path segments to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="segments">The path segments to add to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.AppendPath(Saleslogix.SData.Client.Framework.UriPathSegment)">
+            <summary>
+            Adds the specified paths to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="segment">The path segment to add to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.AppendPath(System.Collections.Generic.IEnumerable{Saleslogix.SData.Client.Framework.UriPathSegment})">
+            <summary>
+            Adds the specified paths to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="segments">The path segments to add to the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.SetPath(System.String[])">
+            <summary>
+            Sets the path for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="segments">The path segments for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.SetPath(System.Collections.Generic.IEnumerable{Saleslogix.SData.Client.Framework.UriPathSegment})">
+            <summary>
+            Sets the path for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+            <param name="segments">The path segments for the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.TrimStart">
+            <summary>
+            Removes first path segment of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.TrimEnd">
+            <summary>
+            Removes last path segment of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.TrimRange(System.Int32,System.Int32)">
+             <summary>
+             Removes a range of path segments from the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+             </summary>
+            <param name="pathSegmentIndex">The zero-based starting index of the range of path segments to remove</param>
+            <param name="pathSegmentCount">The number of path segments to remove from the end of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representing the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/>.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.GetHashCode">
+            <summary>
+            Returns the hashcode for the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.
+            </summary>
+            <returns>The hashcode for the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.Equals(System.Object)">
+            <summary>
+            Compares the specified <see cref="T:System.Object"/> with this <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><b>true</b> if <paramref name="obj"/> match this <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>, otherwise <b>false</b>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckRebuildUri">
+            <summary>
+            Checks if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs rebuilding.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnBuildUri">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs to be rebuilt.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckParseUri">
+            <summary>
+            Checks if the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs parsing.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnParseUri">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs to be parsed.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.GetPathSegment(System.Int32)">
+            <summary>
+            Returns the segment at the specified index.
+            </summary>
+            <param name="index">The index of the segment.</param>
+            <returns>The segment at the specified index.</returns>
+            <remarks>If the <paramref name="index"/> is past the end of the current array the length is increased.</remarks>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckRebuildPath">
+            <summary>
+            Checks if the path part of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs rebuilding.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnBuildPath">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Path"/> needs to be rebuilt.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckParsePath">
+            <summary>
+            Checks if the path part of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs parsing.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnParsePath">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Path"/> needs to be parsed.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckRebuildQuery">
+            <summary>
+            Checks if the query part of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs rebuilding.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnBuildQuery">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Query"/> needs to be rebuilt.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.CheckParseQuery">
+            <summary>
+            Checks if the query part of the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Uri"/> needs parsing.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriFormatter.OnParseQuery">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriFormatter.Query"/> needs to be parsed.
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Framework.UriPathSegment">
+            <summary>
+            Defines a path segment within a <see cref="T:System.Uri"/>
+            </summary>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriPathSegment.SelectorPrefix">
+            <summary>
+            Returns the prefix to use for a selector.
+            </summary>
+            <value>The prefix to use for a selector.</value>
+        </member>
+        <member name="F:Saleslogix.SData.Client.Framework.UriPathSegment.SelectorSuffix">
+            <summary>
+            Returns the suffix to use for a selector.
+            </summary>
+            <value>The suffix to use for a selector.</value>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> class.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> class with
+            the specified text.
+            </summary>
+            <param name="segment">The text and selector for the segment.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> class with
+            the specified text and selector.
+            </summary>
+            <param name="text">The text for the segment.</param>
+            <param name="selector">The selector for the segment.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.#ctor(Saleslogix.SData.Client.Framework.UriPathSegment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> class with
+            the details of the specified segment.
+            </summary>
+            <param name="segment">The segment to copy the details from.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriPathSegment.Text">
+            <summary>
+            Gets or sets the text for the segment.
+            </summary>
+            <value>The text for the segment.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriPathSegment.Selector">
+            <summary>
+            Gets or sets the selector for the segment.
+            </summary>
+            <value>The selector for the segment.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriPathSegment.HasSelector">
+            <summary>
+            Returns a value indicating if this segment has a selector.
+            </summary>
+            <value><b>true</b> if this segment has a selector, otherwise <b>false</b>.</value>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Framework.UriPathSegment.Segment">
+            <summary>
+            Gets or sets the text and selector for the segment.
+            </summary>
+            <value>The text and selector for the segment.</value>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> representation of the segment.
+            </summary>
+            <returns>A <see cref="T:System.String"/> representation of the segment.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.GetHashCode">
+            <summary>
+            Returns the hashcode for the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.
+            </summary>
+            <returns>The hashcode for the <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.Equals(System.Object)">
+            <summary>
+            Compares the specified <see cref="T:System.Object"/> with this <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare.</param>
+            <returns><b>true</b> if <paramref name="obj"/> match this <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/>, otherwise <b>false</b>.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.FromStrings(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Builds an enumerable of <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> objects from an enumerable of <see cref="T:System.String"/>
+            <see cref="T:System.Array"/>.
+            </summary>
+            <param name="segments"><see cref="T:System.Array"/> of strings.</param>
+            <returns><see cref="T:System.Array"/> of <see cref="T:Saleslogix.SData.Client.Framework.UriPathSegment"/> objects.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.GetPathSegments(System.String)">
+            <summary>
+            Returns the segments that make up the specified path.
+            </summary>
+            <param name="path">The path to return the segments for.</param>
+            <returns>Array of segments that make up the specified path.</returns>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.AppendPath(System.String,System.String)">
+            <summary>
+            Appends a segment to a path.
+            </summary>
+            <param name="path">The path to append the segment to.</param>
+            <param name="segment">The segment to append to the path.</param>
+            <returns>A <see cref="T:System.String"/> containing the segment appended to the path.</returns>
+            <remarks>If the <paramref name="segment"/> starts with a forward slash it is assumed that the segment specifies an absolute path.</remarks>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.AppendPath(System.Text.StringBuilder,System.String)">
+            <summary>
+            Appends a segment to a path.
+            </summary>
+            <param name="path">The path to append the segment to.</param>
+            <param name="segment">The segment to append to the path.</param>
+            <remarks>If the <paramref name="segment"/> starts with a forward slash it is assumed that the segment specifies an absolute path.</remarks>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.OnRebuild">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Segment"/> needs rebuilding using the <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Text"/>
+            and <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Selector"/> values.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Framework.UriPathSegment.OnParse">
+            <summary>
+            Called when the <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Segment"/> needs parsing to extract the
+            <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Text"/> and <see cref="P:Saleslogix.SData.Client.Framework.UriPathSegment.Selector"/> values.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaItem.Label">
+            <summary>
+            A friendly name for the element (localized).
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaItem.Unsupported">
+            <summary>
+            Is the element part of a global contract that it is not supported by this specific provider?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaItem.Compliance">
+            <summary>
+            Applies to elements that are part of a global contract.
+            Defines the compliance requirement for providers that implement the contract.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaItem.Tags">
+            <summary>
+            List of tags that apply to the definition.
+            SData does not impose any predefined list of tags.
+            Instead, each contract is free to define its own list of tags.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaNamedQueryType.InvocationMode">
+            <summary>
+            The supported invocation modes.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.IsMandatory">
+            <summary>
+            Is the property value mandatory when creating a new resource?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.IsReadOnly">
+            <summary>
+            Is the property read-only?
+            For example, an ID set by the provider or a calculated property.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.CanSort">
+            <summary>
+            Can the feed be sorted by this property?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.CanFilter">
+            <summary>
+            Can the feed be filtered by the property?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.CanGroup">
+            <summary>
+            Can feed entries be grouped by values of this property?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaProperty.CopiedFrom">
+            <summary>
+            Indicates that the property is dependent upon a related resource and gives
+            the XPath expression for the corresponding property in the related resource.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.Relationship">
+            <summary>
+            Type of relationship.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.IsCollection">
+            <summary>
+            Does the property refer to a collection of resources or a single resource?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanGet">
+            <summary>
+            Does the relationship property support GET (read and query) operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanPost">
+            <summary>
+            Does the relationship property support POST operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanPut">
+            <summary>
+            Does the relationship property support PUT operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanDelete">
+            <summary>
+            Does the relationship property support DELETE operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanPagePrevious">
+            <summary>
+            Does the relationship property support paging backwards?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanPageNext">
+            <summary>
+            Does the relationship property support paging forwards?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaRelationshipProperty.CanPageIndex">
+            <summary>
+            Does the relationship property support seeking?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.PluralName">
+            <summary>
+            Name of the resource kind in plural form. For example, accounts.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanSearch">
+            <summary>
+            Does the resource kind support full-text search through the search query parameter?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.HasUuid">
+            <summary>
+            Does the resource kind use UUIDs to identify resources?
+            When this attribute is set, feed payloads MUST carry sdata:uuid attributes.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.SupportsETag">
+            <summary>
+            Does the resource kind support the ETag mechanism to control concurrent updates?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.BatchingMode">
+            <summary>
+            Does the resource kind support batching? If so, which invocation modes does it support?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.IsSyncSource">
+            <summary>
+            Can the resource kind be used as a source in a synchronization operation?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.IsSyncTarget">
+            <summary>
+            Can the resource kind be used as a target in a synchronization operation?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.SyncConflictPriority">
+            <summary>
+            Priority to resolve conflicts in synchronization.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.SyncOrder">
+            <summary>
+            Order in which the resource kind should be processed in a synchronization pass.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanGet">
+            <summary>
+            Does the resource kind support GET (read and query) operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanPost">
+            <summary>
+            Does the resource kind support POST operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanPut">
+            <summary>
+            Does the resource kind support PUT operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanDelete">
+            <summary>
+            Does the resource kind support DELETE operations?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanPagePrevious">
+            <summary>
+            Does the resource kind support paging backwards?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanPageNext">
+            <summary>
+            Does the resource kind support paging forwards?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.CanPageIndex">
+            <summary>
+            Does the resource kind support seeking?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaResourceType.ProtocolFilters">
+            <summary>
+            List of protocol filter variables supported in where parameters and resource selectors.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaServiceOperationType.InvocationMode">
+            <summary>
+            The supported invocation modes.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaTopLevelType.Path">
+            <summary>
+            Relative URL to query resources or invoke the operation.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaTopLevelType.HasTemplate">
+            <summary>
+            Does the resource kind, service operation or named query provide a $template URL?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.IsLocalized">
+            <summary>
+            Does the property contain localized text?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.IsUniqueKey">
+            <summary>
+            Is the property a key that identifies a unique resource.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.Precedence">
+            <summary>
+            Controls the visibility of properties on small screens.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.GroupName">
+            <summary>
+            A group (category) name to group related properties.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.MaxLength">
+            <summary>
+            Maximum length of a string property value.
+            This attribute is a hint for the user interface. A service consumer may pass a string which is longer than maxLength. In this case, the value will be truncated by the provider.
+            A more sophisticated consumer may use this value to limit the size of its edit field and/or adjust its storage requirements so that they match what the provider uses.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.AverageLength">
+            <summary>
+            Average length (number of characters) of a string property value.
+            This attribute is a hint for the user interface. A service consumer can use it to set the visible size of edit fields in a form.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.TotalDigits">
+            <summary>
+            Maximum overall number of digits for a decimal property value.
+            This attribute is a hint for the user interface. A service consumer may ignore it and pass a decimal value with more digits. In this case the provider will round or truncate the value.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.FractionDigits">
+            <summary>
+            Maximum number of digits to the right of the decimal point for a decimal property value.
+            This attribute is a hint for the user interface. A service consumer may ignore it and pass a decimal value with more decimal digits. In this case the provider will round or truncate the value.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.IsGlobalId">
+            <summary>
+            Is the property a global identifier for the resource?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.IsIdentifier">
+            <summary>
+            Is the property an identifier for the resource?
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Metadata.SDataSchemaValueProperty.IsDescriptor">
+            <summary>
+            Is the property a descriptor for the resource?
+            </summary>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Mime.MimeHelper">
+            <summary>
+            Helper class for inferring file MIME types.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeHelper.FindMimeType(System.String)">
+            <summary>
+            Find the MIME type of a local file using its file extension and the first few kilobytes of its content.
+            </summary>
+            <param name="filePath">The local file path.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeHelper.FindMimeType(System.Byte[])">
+            <summary>
+            Find the MIME type of a sample of raw file data.
+            </summary>
+            <param name="data">The raw file data.</param>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Mime.MimeMessage">
+            <summary>
+             Represents a MIME protocol message.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeMessage.Parse(System.IO.Stream,System.String)">
+            <summary>
+            Parses a stream into a <see cref="T:Saleslogix.SData.Client.Mime.MimeMessage"/>, splitting it into parts based on the specified boundary.
+            </summary>
+            <param name="stream">The source stream to parse from.</param>
+            <param name="boundary">The unique string used to designate boundaries between parts.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeMessage.#ctor(Saleslogix.SData.Client.Mime.MimePart[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Mime.MimeMessage"/> class using the supplied parts.
+            </summary>
+            <param name="parts">A collection of initial parts.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeMessage.#ctor(System.Collections.Generic.IEnumerable{Saleslogix.SData.Client.Mime.MimePart})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Mime.MimeMessage"/> class using the supplied parts.
+            </summary>
+            <param name="parts">A collection of initial parts.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimeMessage.Boundary">
+            <summary>
+            Gets or sets the unique string used to designate boundaries between parts.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimeMessage.WriteTo(System.IO.Stream)">
+            <summary>
+            Writes the multipart MIME message to the specified stream.
+            </summary>
+            <param name="stream">The destination stream to write to.</param>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Mime.MimePart">
+            <summary>
+            Represents a MIME protocol message part.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimePart.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Mime.MimePart"/> class using the supplied content.
+            </summary>
+            <param name="content">The content of the MIME part.</param>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimePart.#ctor(System.IO.Stream,System.Net.WebHeaderCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Saleslogix.SData.Client.Mime.MimePart"/> class using the supplied content and headers.
+            </summary>
+            <param name="content">The content of the MIME part.</param>
+            <param name="headers">The headers of the MIME part.</param>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.Headers">
+            <summary>
+            Gets the headers of the MIME part.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.ContentType">
+            <summary>
+            Gets the content type of the MIME part.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.ContentLength">
+            <summary>
+            Gets the content length of the MIME part.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.ContentTransferEncoding">
+            <summary>
+            Gets the content transfer encoding of the MIME part.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.ContentDisposition">
+            <summary>
+            Gets the content disposition of the MIME part.
+            </summary>
+        </member>
+        <member name="P:Saleslogix.SData.Client.Mime.MimePart.Content">
+            <summary>
+            Gets the content stream of the MIME part.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Mime.MimePart.WriteTo(System.IO.StreamWriter,System.String)">
+            <summary>
+            Writes the MIME part to the specified stream writer.
+            </summary>
+            <param name="writer">The destination writer to write to.</param>
+            <param name="boundary">The unique string used to designated the beginning of the part.</param>
+        </member>
+        <member name="T:Saleslogix.SData.Client.Utilities.Guard">
+            <summary>
+            Provides common validation methods shared across the framework entities. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Utilities.Guard.ArgumentNotNull(System.Object,System.String)">
+            <summary>
+            Validates that the supplied <paramref name="value"/> is not a null reference.
+            </summary>
+            <param name="value">The value of the method argument to validate.</param>
+            <param name="name">The name of the method argument.</param>
+            <remarks>
+                If the <paramref name="value"/> is a <b>null</b> reference, an <see cref="T:System.ArgumentNullException"/> is raised using the supplied <paramref name="name"/>.
+            </remarks>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Utilities.Guard.ArgumentNotNullOrEmptyString(System.String,System.String)">
+            <summary>
+            Validates that the supplied <paramref name="value"/> is not a null reference or an empty string.
+            </summary>
+            <param name="value">The value of the method argument to validate.</param>
+            <param name="name">The name of the method argument.</param>
+            <remarks>
+                If the <paramref name="value"/> is an empty string, an <see cref="T:System.ArgumentException"/> is raised using the supplied <paramref name="name"/>.
+            </remarks>
+        </member>
+        <member name="M:Saleslogix.SData.Client.Utilities.Guard.ArgumentIsType``1(System.Object,System.String)">
+            <summary>
+            Validates that the supplied <paramref name="value"/> is an instance of <typeparamref name="T"/>.
+            </summary>
+            <param name="value">The value of the method argument to validate.</param>
+            <param name="name">The name of the method argument.</param>
+            <remarks>
+                If the <paramref name="value"/> is not an instance of <typeparamref name="T"/>, an <see cref="T:System.ArgumentException"/> is raised using the supplied <paramref name="name"/>.
+            </remarks>
+        </member>
+        <member name="T:System.Linq.Enumerable">
+            <summary>
+            Provides a set of static (Shared in Visual Basic) methods for 
+            querying objects that implement <see cref="T:System.Collections.Generic.IEnumerable`1" />.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.AsEnumerable``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the input typed as <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Empty``1">
+            <summary>
+            Returns an empty <see cref="T:System.Collections.Generic.IEnumerable`1"/> that has the 
+            specified type argument.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Cast``1(System.Collections.IEnumerable)">
+            <summary>
+            Converts the elements of an <see cref="T:System.Collections.IEnumerable"/> to the 
+            specified type.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.OfType``1(System.Collections.IEnumerable)">
+            <summary>
+            Filters the elements of an <see cref="T:System.Collections.IEnumerable"/> based on a specified type.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Range(System.Int32,System.Int32)">
+            <summary>
+            Generates a sequence of integral numbers within a specified range.
+            </summary>
+            <param name="start">The value of the first integer in the sequence.</param>
+            <param name="count">The number of sequential integers to generate.</param>
+        </member>
+        <member name="M:System.Linq.Enumerable.Repeat``1(``0,System.Int32)">
+            <summary>
+            Generates a sequence that contains one repeated value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Where``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Filters a sequence of values based on a predicate.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Where``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            Filters a sequence of values based on a predicate. 
+            Each element's index is used in the logic of the predicate function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Projects each element of a sequence into a new form.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,``1})">
+            <summary>
+            Projects each element of a sequence into a new form by 
+            incorporating the element's index.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SelectMany``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``1}})">
+            <summary>
+            Projects each element of a sequence to an <see cref="T:System.Collections.Generic.IEnumerable`1" /> 
+            and flattens the resulting sequences into one sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SelectMany``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Collections.Generic.IEnumerable{``1}})">
+            <summary>
+            Projects each element of a sequence to an <see cref="T:System.Collections.Generic.IEnumerable`1" />, 
+            and flattens the resulting sequences into one sequence. The 
+            index of each source element is used in the projected form of 
+            that element.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SelectMany``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``1}},System.Func{``0,``1,``2})">
+            <summary>
+            Projects each element of a sequence to an <see cref="T:System.Collections.Generic.IEnumerable`1" />, 
+            flattens the resulting sequences into one sequence, and invokes 
+            a result selector function on each element therein.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SelectMany``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Collections.Generic.IEnumerable{``1}},System.Func{``0,``1,``2})">
+            <summary>
+            Projects each element of a sequence to an <see cref="T:System.Collections.Generic.IEnumerable`1" />, 
+            flattens the resulting sequences into one sequence, and invokes 
+            a result selector function on each element therein. The index of 
+            each source element is used in the intermediate projected form 
+            of that element.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.TakeWhile``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns elements from a sequence as long as a specified condition is true.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.TakeWhile``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            Returns elements from a sequence as long as a specified condition is true.
+            The element's index is used in the logic of the predicate function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Take``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Returns a specified number of contiguous elements from the start 
+            of a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.FirstImpl``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
+            <summary>
+            Base implementation of First operator.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.First``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the first element of a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.First``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the first element in a sequence that satisfies a specified condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the first element of a sequence, or a default value if 
+            the sequence contains no elements.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the first element of the sequence that satisfies a 
+            condition or a default value if no such element is found.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LastImpl``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
+            <summary>
+            Base implementation of Last operator.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Last``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the last element of a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Last``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the last element of a sequence that satisfies a 
+            specified condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LastOrDefault``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the last element of a sequence, or a default value if 
+            the sequence contains no elements.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LastOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the last element of a sequence that satisfies a 
+            condition or a default value if no such element is found.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SingleImpl``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
+            <summary>
+            Base implementation of Single operator.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the only element of a sequence, and throws an exception 
+            if there is not exactly one element in the sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Single``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the only element of a sequence that satisfies a 
+            specified condition, and throws an exception if more than one 
+            such element exists.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SingleOrDefault``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the only element of a sequence, or a default value if 
+            the sequence is empty; this method throws an exception if there 
+            is more than one element in the sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SingleOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns the only element of a sequence that satisfies a 
+            specified condition or a default value if no such element 
+            exists; this method throws an exception if more than one element 
+            satisfies the condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ElementAt``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Returns the element at a specified index in a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ElementAtOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Returns the element at a specified index in a sequence or a 
+            default value if the index is out of range.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Reverse``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Inverts the order of the elements in a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SkipWhile``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Bypasses elements in a sequence as long as a specified condition 
+            is true and then returns the remaining elements.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SkipWhile``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+            Bypasses elements in a sequence as long as a specified condition 
+            is true and then returns the remaining elements. The element's 
+            index is used in the logic of the predicate function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Skip``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Bypasses a specified number of elements in a sequence and then 
+            returns the remaining elements.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the number of elements in a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns a number that represents how many elements in the 
+            specified sequence satisfy a condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LongCount``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns an <see cref="T:System.Int64"/> that represents the total number 
+            of elements in a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LongCount``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Returns an <see cref="T:System.Int64"/> that represents how many elements 
+            in a sequence satisfy a condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Concatenates two sequences.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.List`1"/> from an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToArray``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates an array from an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns distinct elements from a sequence by using the default 
+            equality comparer to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Returns distinct elements from a sequence by using a specified 
+            <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToLookup``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Creates a <see cref="T:System.Linq.Lookup`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToLookup``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Creates a <see cref="T:System.Linq.Lookup`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function and a key comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToLookup``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            Creates a <see cref="T:System.Linq.Lookup`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to specified key 
+            and element selector functions.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToLookup``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Creates a <see cref="T:System.Linq.Lookup`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function, a comparer and an element selector function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and compares the keys by using a specified 
+            comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and projects the elements for each group by 
+            using a specified function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and creates a result value from each group and 
+            its key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``1,System.Collections.Generic.IEnumerable{``0},``2})">
+            <summary>
+            Groups the elements of a sequence according to a key selector 
+            function. The keys are compared by using a comparer and each 
+            group's elements are projected by using a specified function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``1,System.Collections.Generic.IEnumerable{``0},``2},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and creates a result value from each group and 
+            its key. The elements of each group are projected by using a 
+            specified function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``4(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Func{``1,System.Collections.Generic.IEnumerable{``2},``3})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and creates a result value from each group and 
+            its key. The keys are compared by using a specified comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupBy``4(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Func{``1,System.Collections.Generic.IEnumerable{``2},``3},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Groups the elements of a sequence according to a specified key 
+            selector function and creates a result value from each group and 
+            its key. Key values are compared by using a specified comparer, 
+            and the elements of each group are projected by using a 
+            specified function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Aggregate``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,``0})">
+            <summary>
+            Applies an accumulator function over a sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Aggregate``2(System.Collections.Generic.IEnumerable{``0},``1,System.Func{``1,``0,``1})">
+            <summary>
+            Applies an accumulator function over a sequence. The specified 
+            seed value is used as the initial accumulator value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Aggregate``3(System.Collections.Generic.IEnumerable{``0},``1,System.Func{``1,``0,``1},System.Func{``1,``2})">
+            <summary>
+            Applies an accumulator function over a sequence. The specified 
+            seed value is used as the initial accumulator value, and the 
+            specified function is used to select the result value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Union``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Produces the set union of two sequences by using the default 
+            equality comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Union``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Produces the set union of two sequences by using a specified 
+            <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.DefaultIfEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the elements of the specified sequence or the type 
+            parameter's default value in a singleton collection if the 
+            sequence is empty.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.DefaultIfEmpty``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Returns the elements of the specified sequence or the specified 
+            value in a singleton collection if the sequence is empty.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.All``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Determines whether all elements of a sequence satisfy a condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Determines whether a sequence contains any elements.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Determines whether any element of a sequence satisfies a 
+            condition.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Contains``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Determines whether a sequence contains a specified element by 
+            using the default equality comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Contains``1(System.Collections.Generic.IEnumerable{``0},``0,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Determines whether a sequence contains a specified element by 
+            using a specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Determines whether two sequences are equal by comparing the 
+            elements by using the default equality comparer for their type.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Determines whether two sequences are equal by comparing their 
+            elements by using a specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.MinMaxImpl``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,System.Boolean})">
+            <summary>
+            Base implementation for Min/Max operator.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.MinMaxImpl``1(System.Collections.Generic.IEnumerable{System.Nullable{``0}},System.Nullable{``0},System.Func{System.Nullable{``0},System.Nullable{``0},System.Boolean})">
+            <summary>
+            Base implementation for Min/Max operator for nullable types.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the minimum value in a generic sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Invokes a transform function on each element of a generic 
+            sequence and returns the minimum resulting value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the maximum value in a generic sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Invokes a transform function on each element of a generic 
+            sequence and returns the maximum resulting value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Renumerable``1(System.Collections.Generic.IEnumerator{``0})">
+            <summary>
+            Makes an enumerator seen as enumerable once more.
+            </summary>
+            <remarks>
+            The supplied enumerator must have been started. The first element
+            returned is the element the enumerator was on when passed in.
+            DO NOT use this method if the caller must be a generator. It is
+            mostly safe among aggregate operations.
+            </remarks>
+        </member>
+        <member name="M:System.Linq.Enumerable.OrderBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Sorts the elements of a sequence in ascending order according to a key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.OrderBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            Sorts the elements of a sequence in ascending order by using a 
+            specified comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.OrderByDescending``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Sorts the elements of a sequence in descending order according to a key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.OrderByDescending``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+             Sorts the elements of a sequence in descending order by using a 
+            specified comparer. 
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ThenBy``2(System.Linq.IOrderedEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in 
+            ascending order according to a key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ThenBy``2(System.Linq.IOrderedEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in 
+            ascending order by using a specified comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ThenByDescending``2(System.Linq.IOrderedEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in 
+            descending order, according to a key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ThenByDescending``2(System.Linq.IOrderedEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            Performs a subsequent ordering of the elements in a sequence in 
+            descending order by using a specified comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.IntersectExceptImpl``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0},System.Boolean)">
+            <summary>
+            Base implementation for Intersect and Except operators.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Intersect``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Produces the set intersection of two sequences by using the 
+            default equality comparer to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Intersect``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Produces the set intersection of two sequences by using the 
+            specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Except``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Produces the set difference of two sequences by using the 
+            default equality comparer to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Except``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Produces the set difference of two sequences by using the 
+            specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> to compare values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.Dictionary`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.Dictionary`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function and key comparer.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.Dictionary`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to specified key 
+            selector and element selector functions.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ToDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.Dictionary`2" /> from an 
+            <see cref="T:System.Collections.Generic.IEnumerable`1" /> according to a specified key 
+            selector function, a comparer, and an element selector function.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Join``4(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,``1,``3})">
+            <summary>
+            Correlates the elements of two sequences based on matching keys. 
+            The default equality comparer is used to compare keys.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Join``4(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,``1,``3},System.Collections.Generic.IEqualityComparer{``2})">
+            <summary>
+            Correlates the elements of two sequences based on matching keys. 
+            The default equality comparer is used to compare keys. A 
+            specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> is used to compare keys.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupJoin``4(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,System.Collections.Generic.IEnumerable{``1},``3})">
+            <summary>
+            Correlates the elements of two sequences based on equality of 
+            keys and groups the results. The default equality comparer is 
+            used to compare keys.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.GroupJoin``4(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,System.Collections.Generic.IEnumerable{``1},``3},System.Collections.Generic.IEqualityComparer{``2})">
+            <summary>
+            Correlates the elements of two sequences based on equality of 
+            keys and groups the results. The default equality comparer is 
+            used to compare keys. A specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> 
+            is used to compare keys.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Int32" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Int32" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Nullable{System.Int32}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Int32" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Nullable{System.Int32}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Int32" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min(System.Collections.Generic.IEnumerable{System.Nullable{System.Int32}})">
+            <summary>
+            Returns the minimum value in a sequence of nullable 
+            <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the minimum nullable <see cref="T:System.Int32" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max(System.Collections.Generic.IEnumerable{System.Nullable{System.Int32}})">
+            <summary>
+            Returns the maximum value in a sequence of nullable 
+            <see cref="T:System.Int32" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the maximum nullable <see cref="T:System.Int32" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int64})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Int64" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Int64})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int64})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Int64" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Nullable{System.Int64}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Int64" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Nullable{System.Int64}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Int64" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min(System.Collections.Generic.IEnumerable{System.Nullable{System.Int64}})">
+            <summary>
+            Returns the minimum value in a sequence of nullable 
+            <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the minimum nullable <see cref="T:System.Int64" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max(System.Collections.Generic.IEnumerable{System.Nullable{System.Int64}})">
+            <summary>
+            Returns the maximum value in a sequence of nullable 
+            <see cref="T:System.Int64" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the maximum nullable <see cref="T:System.Int64" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Single})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Single})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Single" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Single})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Single})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Single" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Nullable{System.Single}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Single" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Nullable{System.Single}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Single" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min(System.Collections.Generic.IEnumerable{System.Nullable{System.Single}})">
+            <summary>
+            Returns the minimum value in a sequence of nullable 
+            <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the minimum nullable <see cref="T:System.Single" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max(System.Collections.Generic.IEnumerable{System.Nullable{System.Single}})">
+            <summary>
+            Returns the maximum value in a sequence of nullable 
+            <see cref="T:System.Single" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the maximum nullable <see cref="T:System.Single" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Double" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Double})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Double" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Nullable{System.Double}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Double" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Nullable{System.Double}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Double" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min(System.Collections.Generic.IEnumerable{System.Nullable{System.Double}})">
+            <summary>
+            Returns the minimum value in a sequence of nullable 
+            <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the minimum nullable <see cref="T:System.Double" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max(System.Collections.Generic.IEnumerable{System.Nullable{System.Double}})">
+            <summary>
+            Returns the maximum value in a sequence of nullable 
+            <see cref="T:System.Double" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the maximum nullable <see cref="T:System.Double" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Decimal})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Decimal})">
+            <summary>
+            Computes the sum of a sequence of nullable <see cref="T:System.Decimal" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Decimal})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Decimal})">
+            <summary>
+            Computes the average of a sequence of nullable <see cref="T:System.Decimal" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum(System.Collections.Generic.IEnumerable{System.Nullable{System.Decimal}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            Computes the sum of a sequence of <see cref="T:System.Decimal" /> 
+            values that are obtained by invoking a transform function on 
+            each element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable{System.Nullable{System.Decimal}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Average``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            Computes the average of a sequence of <see cref="T:System.Decimal" /> values 
+            that are obtained by invoking a transform function on each 
+            element of the input sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min(System.Collections.Generic.IEnumerable{System.Nullable{System.Decimal}})">
+            <summary>
+            Returns the minimum value in a sequence of nullable 
+            <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the minimum nullable <see cref="T:System.Decimal" /> value.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max(System.Collections.Generic.IEnumerable{System.Nullable{System.Decimal}})">
+            <summary>
+            Returns the maximum value in a sequence of nullable 
+            <see cref="T:System.Decimal" /> values.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            Invokes a transform function on each element of a sequence and 
+            returns the maximum nullable <see cref="T:System.Decimal" /> value.
+            </summary>
+        </member>
+        <member name="T:System.Linq.IGrouping`2">
+            <summary>
+            Represents a collection of objects that have a common key.
+            </summary>
+        </member>
+        <member name="P:System.Linq.IGrouping`2.Key">
+            <summary>
+            Gets the key of the <see cref="T:System.Linq.IGrouping`2" />.
+            </summary>
+        </member>
+        <member name="T:System.Linq.ILookup`2">
+            <summary>
+            Defines an indexer, size property, and Boolean search method for 
+            data structures that map keys to <see cref="T:System.Collections.Generic.IEnumerable`1"/> 
+            sequences of values.
+            </summary>
+        </member>
+        <member name="T:System.Linq.IOrderedEnumerable`1">
+            <summary>
+            Represents a sorted sequence.
+            </summary>
+        </member>
+        <member name="M:System.Linq.IOrderedEnumerable`1.CreateOrderedEnumerable``1(System.Func{`0,``0},System.Collections.Generic.IComparer{``0},System.Boolean)">
+            <summary>
+            Performs a subsequent ordering on the elements of an 
+            <see cref="T:System.Linq.IOrderedEnumerable`1"/> according to a key.
+            </summary>
+        </member>
+        <member name="T:System.Linq.Lookup`2">
+            <summary>
+            Represents a collection of keys each mapped to one or more values.
+            </summary>
+        </member>
+        <member name="P:System.Linq.Lookup`2.Count">
+            <summary>
+            Gets the number of key/value collection pairs in the <see cref="T:System.Linq.Lookup`2" />.
+            </summary>
+        </member>
+        <member name="P:System.Linq.Lookup`2.Item(`0)">
+            <summary>
+            Gets the collection of values indexed by the specified key.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Lookup`2.Contains(`0)">
+            <summary>
+            Determines whether a specified key is in the <see cref="T:System.Linq.Lookup`2" />.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Lookup`2.ApplyResultSelector``1(System.Func{`0,System.Collections.Generic.IEnumerable{`1},``0})">
+            <summary>
+            Applies a transform function to each key and its associated 
+            values and returns the results.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Lookup`2.GetEnumerator">
+            <summary>
+            Returns a generic enumerator that iterates through the <see cref="T:System.Linq.Lookup`2" />.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.ExtensionAttribute">
+            <remarks>
+            This attribute allows us to define extension methods without 
+            requiring .NET Framework 3.5. For more information, see the section,
+            <a href="http://msdn.microsoft.com/en-us/magazine/cc163317.aspx#S7">Extension Methods in .NET Framework 2.0 Apps</a>,
+            of <a href="http://msdn.microsoft.com/en-us/magazine/cc163317.aspx">Basic Instincts: Extension Methods</a>
+            column in <a href="http://msdn.microsoft.com/msdnmag/">MSDN Magazine</a>, 
+            issue <a href="http://msdn.microsoft.com/en-us/magazine/cc135410.aspx">Nov 2007</a>.
+            </remarks>
+        </member>
+        <member name="T:LinqBridge.DelegatingComparer`1">
+            <remarks>
+            This type is not intended to be used directly from user code.
+            It may be removed or changed in a future version without notice.
+            </remarks>
+        </member>
+        <member name="T:LinqBridge.Key`1">
+            <remarks>
+            This type is not intended to be used directly from user code.
+            It may be removed or changed in a future version without notice.
+            </remarks>
+        </member>
+        <member name="T:LinqBridge.KeyComparer`1">
+            <remarks>
+            This type is not intended to be used directly from user code.
+            It may be removed or changed in a future version without notice.
+            </remarks>
+        </member>
+        <member name="T:SimpleJson.JsonArray">
+            <summary>
+            Represents the json array.
+            </summary>
+        </member>
+        <member name="M:SimpleJson.JsonArray.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SimpleJson.JsonArray"/> class. 
+            </summary>
+        </member>
+        <member name="M:SimpleJson.JsonArray.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SimpleJson.JsonArray"/> class. 
+            </summary>
+            <param name="capacity">The capacity of the json array.</param>
+        </member>
+        <member name="M:SimpleJson.JsonArray.ToString">
+            <summary>
+            The json representation of the array.
+            </summary>
+            <returns>The json representation of the array.</returns>
+        </member>
+        <member name="T:SimpleJson.JsonObject">
+            <summary>
+            Represents the json object.
+            </summary>
+        </member>
+        <member name="F:SimpleJson.JsonObject._members">
+            <summary>
+            The internal member dictionary.
+            </summary>
+        </member>
+        <member name="M:SimpleJson.JsonObject.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:SimpleJson.JsonObject"/>.
+            </summary>
+        </member>
+        <member name="M:SimpleJson.JsonObject.#ctor(System.Collections.Generic.IEqualityComparer{System.String})">
+            <summary>
+            Initializes a new instance of <see cref="T:SimpleJson.JsonObject"/>.
+            </summary>
+            <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> implementation to use when comparing keys, or null to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> for the type of the key.</param>
+        </member>
+        <member name="P:SimpleJson.JsonObject.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> at the specified index.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Add(System.String,System.Object)">
+            <summary>
+            Adds the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:SimpleJson.JsonObject.ContainsKey(System.String)">
+            <summary>
+            Determines whether the specified key contains key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>
+                <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:SimpleJson.JsonObject.Keys">
+            <summary>
+            Gets the keys.
+            </summary>
+            <value>The keys.</value>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Remove(System.String)">
+            <summary>
+            Removes the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SimpleJson.JsonObject.TryGetValue(System.String,System.Object@)">
+            <summary>
+            Tries the get value.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="P:SimpleJson.JsonObject.Values">
+            <summary>
+            Gets the values.
+            </summary>
+            <value>The values.</value>
+        </member>
+        <member name="P:SimpleJson.JsonObject.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Add(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Contains(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Determines whether [contains] [the specified item].
+            </summary>
+            <param name="item">The item.</param>
+            <returns>
+            	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:SimpleJson.JsonObject.CopyTo(System.Collections.Generic.KeyValuePair{System.String,System.Object}[],System.Int32)">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="array">The array.</param>
+            <param name="arrayIndex">Index of the array.</param>
+        </member>
+        <member name="P:SimpleJson.JsonObject.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>The count.</value>
+        </member>
+        <member name="P:SimpleJson.JsonObject.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:SimpleJson.JsonObject.Remove(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Removes the specified item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SimpleJson.JsonObject.GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SimpleJson.JsonObject.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:SimpleJson.JsonObject.ToString">
+            <summary>
+            Returns a json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="T:SimpleJson.SimpleJson">
+            <summary>
+            This class encodes and decodes JSON strings.
+            Spec. details, see http://www.json.org/
+            
+            JSON uses Arrays and Objects. These correspond here to the datatypes JsonArray(IList&lt;object>) and JsonObject(IDictionary&lt;string,object>).
+            All numbers are parsed to doubles.
+            </summary>
+        </member>
+        <member name="M:SimpleJson.SimpleJson.DeserializeObject(System.String)">
+            <summary>
+            Parses the string json into a value
+            </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An IList&lt;object>, a IDictionary&lt;string,object>, a double, a string, null, true, or false</returns>
+        </member>
+        <member name="M:SimpleJson.SimpleJson.TryDeserializeObject(System.String,System.Object@)">
+            <summary>
+            Try parsing the json string into a value.
+            </summary>
+            <param name="json">
+            A JSON string.
+            </param>
+            <param name="obj">
+            The object.
+            </param>
+            <returns>
+            Returns true if successfull otherwise false.
+            </returns>
+        </member>
+        <member name="M:SimpleJson.SimpleJson.SerializeObject(System.Object,SimpleJson.IJsonSerializerStrategy)">
+            <summary>
+            Converts a IDictionary&lt;string,object> / IList&lt;object> object into a JSON string
+            </summary>
+            <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
+            <param name="jsonSerializerStrategy">Serializer strategy to use</param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        </member>
+        <member name="M:SimpleJson.SimpleJson.IsNumeric(System.Object)">
+            <summary>
+            Determines if a given object is numeric in any way
+            (can be integer, double, null, etc).
+            </summary>
+        </member>
+    </members>
+</doc>

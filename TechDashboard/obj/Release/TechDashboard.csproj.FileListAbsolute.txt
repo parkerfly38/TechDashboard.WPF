@@ -1,0 +1,16 @@
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TechDashboard.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TechDashboard.pdb
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\Newtonsoft.Json.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\RestSharp.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\Rkl.Erp.Sage.Sage100.TableObjects.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\Rkl.Erp.Sage.SData.Client.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\System.Data.SQLite.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TdWs.RestClient.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TdWs.SDataClient.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\Newtonsoft.Json.xml
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\RestSharp.xml
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\System.Data.SQLite.xml
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TdWs.SDataClient.pdb
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.dll
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.pdb
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.csprojResolveAssemblyReference.cache

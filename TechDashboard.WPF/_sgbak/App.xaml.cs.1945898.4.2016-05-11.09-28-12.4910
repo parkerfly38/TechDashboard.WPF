@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using TechDashboard.Data;
+
+namespace TechDashboard.WPF
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        protected static TechDashboardDatabase _database;
+
+        public static TechDashboardDatabase Database
+        {
+            get
+            {
+                if (_database == null)
+                {
+                    _database = new TechDashboardDatabase();
+                }
+                return _database;
+            }
+        }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (!Database.HasValidSetup())
+            {
+                var result = MessageBox.Show("Settings for this application are not working.  Check your Internet connection, or verify your configuration in SETTINGS.", "Verify Settings", MessageBoxButton.OK);
+                SettingsPage settingsPage = new SettingsPage();
+                //this.MainWindow = settingsPage;
+                settingsPage.Show();
+            }
+            else {
+                Database.CreateGlobalTables();
+            }
+        }
+    }
+    
+}

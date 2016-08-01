@@ -1,0 +1,16 @@
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\TechDashboard.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\TechDashboard.pdb
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\RestSharp.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\Rkl.Erp.Sage.Sage100.TableObjects.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\Rkl.Erp.Sage.SData.Client.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\System.Data.SQLite.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\TdWs.RestClient.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\TdWs.SDataClient.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\Newtonsoft.Json.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\RestSharp.xml
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\System.Data.SQLite.xml
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\TdWs.SDataClient.pdb
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Debug\TechDashboard.dll
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Debug\TechDashboard.pdb
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\Newtonsoft.Json.xml
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Debug\TechDashboard.csprojResolveAssemblyReference.cache

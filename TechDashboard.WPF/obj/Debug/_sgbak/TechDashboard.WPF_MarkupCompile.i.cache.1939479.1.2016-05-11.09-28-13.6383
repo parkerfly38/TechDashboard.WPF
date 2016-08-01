@@ -1,0 +1,20 @@
+﻿TechDashboard.WPF
+
+
+winexe
+C#
+.cs
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\obj\Debug\
+TechDashboard.WPF
+none
+false
+DEBUG;TRACE
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\App.xaml
+23-736351009
+2458321573
+311238653722
+782021278570
+ClockInPage.xaml;ClockOutPage.xaml;CustomerDetailsPage.xaml;CustomerMapPage.xaml;ExpenseListPage.xaml;ExpensesEditPage.xaml;HistoryPage.xaml;HistoryPageDetail.xaml;MainWindow.xaml;MiscellaneousTimePage.xaml;NotesPage.xaml;PartsAddPage.xaml;PartsEditPage.xaml;PartsListPage.xaml;Progress.xaml;ScheduleDetailPage.xaml;SchedulePage.xaml;SettingsPage.xaml;SmsContentPage.xaml;SyncPage.xaml;TechnicianListPage.xaml;TechnicianPage.xaml;TicketDetailsPage.xaml;
+
+True
+
