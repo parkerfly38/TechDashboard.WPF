@@ -31,6 +31,7 @@ namespace TechDashboard.WPF
         public CustomerDetailsPage(App_Customer customer, App_ScheduledAppointment scheduledAppointment)
         {
             _vm = new CustomerDetailsPageViewModel(customer);
+            _scheduledAppointment = scheduledAppointment;
             InitializeComponent();
             SetPageDisplay();
         }
@@ -55,6 +56,22 @@ namespace TechDashboard.WPF
             _labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
             _labelTitle.VerticalAlignment = VerticalAlignment.Center;
 
+            Button btnBack = new Button();
+
+            StackPanel spBackButton = new StackPanel();
+            Image imBackButton = new Image();
+            imBackButton.Source = new BitmapImage(new Uri("Resources/arrow-111-64.png", UriKind.Relative));
+            imBackButton.Height = 32;
+            imBackButton.Width = 32;
+            spBackButton.Children.Add(imBackButton);
+            btnBack.Content = spBackButton;
+            btnBack.HorizontalAlignment = HorizontalAlignment.Left;
+            btnBack.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3498DB"));
+            btnBack.BorderBrush = null;
+            btnBack.Width = 32;
+
+            btnBack.Click += BtnBack_Click;
+
             Grid titleLayout = new Grid()
             {
                 Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498DB")),
@@ -62,10 +79,14 @@ namespace TechDashboard.WPF
                 Height = 80
             };
             titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             titleLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             titleLayout.Children.Add(_labelTitle);
             Grid.SetColumn(_labelTitle, 0);
             Grid.SetRow(_labelTitle, 0);
+            titleLayout.Children.Add(btnBack);
+            Grid.SetColumn(btnBack, 0);
+            Grid.SetRow(btnBack, 1);
 
             // create a stack layout to hold all the customer data
             StackPanel stackLayoutCustomerData = new StackPanel();
@@ -303,6 +324,12 @@ namespace TechDashboard.WPF
                     //listViewCustomerContacts
                 }
             });
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new TicketDetailsPage(_scheduledAppointment);
         }
 
         private void ButtonShowMap_Clicked(object sender, RoutedEventArgs e)

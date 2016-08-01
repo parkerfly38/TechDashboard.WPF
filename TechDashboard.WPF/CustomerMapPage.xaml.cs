@@ -73,28 +73,6 @@ namespace TechDashboard.WPF
                     Location = location
                 });
             mapCustomer.Center = location;
-            // puke
-            // Create the map
-            /*_map = new Map()
-            {
-                Center = Location
-            };
-
-            // Add the customer location pin 
-            _map.Pins.Add(_vm.CustomerLocationPin);
-            _vm.CustomerLocationPin.Clicked += CustomerLocationPin_Clicked;
-            // center on the new pin
-            _map.MoveToRegion(MapSpan.FromCenterAndRadius(_vm.CustomerLocationPin.Position, Distance.FromMiles(0.5)));
-
-            // add to screen contents for drawing
-            Content = new StackLayout
-            {
-                Spacing = 0,
-                Children =
-                {
-                    _map
-                }
-            };*/
             
         }
 
