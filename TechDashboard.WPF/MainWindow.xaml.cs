@@ -40,7 +40,8 @@ namespace TechDashboard.WPF
                 {
                     JT_Technician technician = App.Database.GetTechnician(appSettings.LoggedInTechnicianDeptNo, appSettings.LoggedInTechnicianNo);
                     App.Database.SaveTechnicianAsCurrent(technician);
-                    App.Database.CreateDependentTables(technician);
+                    if(App.Database.HasDataConnection())
+                        App.Database.CreateDependentTables(technician);
                     contentArea.Content = new SchedulePage();
                 } else
                 {

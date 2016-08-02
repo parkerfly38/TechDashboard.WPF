@@ -54,7 +54,8 @@ namespace TechDashboard.ViewModels
         public void SignIn(JT_Technician technician)
         {
             App.Database.SaveTechnicianAsCurrent(technician);
-            App.Database.CreateDependentTables(technician);
+            if (App.Database.HasDataConnection())
+                App.Database.CreateDependentTables(technician);
 
             App_Settings appSettings = App.Database.GetApplicatioinSettings();
             appSettings.LoggedInTechnicianNo = technician.TechnicianNo;
@@ -67,7 +68,8 @@ namespace TechDashboard.ViewModels
         public void SignIn(App_Technician technician)
         {
             App.Database.SaveTechnicianAsCurrent(technician);
-            App.Database.CreateDependentTables(technician);
+            if (App.Database.HasDataConnection())
+                App.Database.CreateDependentTables(technician);
 
             App_Settings appSettings = App.Database.GetApplicatioinSettings();
             appSettings.LoggedInTechnicianNo = technician.TechnicianNo;

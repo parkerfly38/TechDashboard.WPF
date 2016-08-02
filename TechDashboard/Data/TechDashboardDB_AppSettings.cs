@@ -14,6 +14,24 @@ namespace TechDashboard.Data
 {
     public partial class TechDashboardDatabase
     {
+        public bool HasDataConnection()
+        {
+            try
+            {
+                using (var client = new System.Net.WebClient())
+                {
+                    using (var stream = client.OpenRead("http://www.google.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> HasValidSetup()
         {
             bool hasValidSetup = false;
@@ -23,34 +41,41 @@ namespace TechDashboard.Data
             {
                 appSettings = GetApplicatioinSettings();
             }
-            
-            try
-            {
-                switch (_dataConnectionType)
-                {
-                    case ConnectionType.Rest:
-                        hasValidSetup =
-                            await IsValidRestServiceConnection(appSettings.IsUsingHttps, appSettings.RestServiceUrl);
-                        break;
-                    case ConnectionType.SData:
-                        hasValidSetup =
-                            IsValidSDataConnection(
-                                appSettings.IsUsingHttps,
-                                appSettings.SDataUrl,
-                                appSettings.SDataUserId,
-                                appSettings.SDataPassword
-                            );
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                hasValidSetup = false;
 
-                System.Diagnostics.Debug.WriteLine("Exception caught in HasValidSetup() method.");
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+            if (HasDataConnection())
+            {
+                try
+                {
+                    switch (_dataConnectionType)
+                    {
+                        case ConnectionType.Rest:
+                            hasValidSetup =
+                                await IsValidRestServiceConnection(appSettings.IsUsingHttps, appSettings.RestServiceUrl);
+                            break;
+                        case ConnectionType.SData:
+                            hasValidSetup =
+                                IsValidSDataConnection(
+                                    appSettings.IsUsingHttps,
+                                    appSettings.SDataUrl,
+                                    appSettings.SDataUserId,
+                                    appSettings.SDataPassword
+                                );
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    hasValidSetup = false;
+
+                    System.Diagnostics.Debug.WriteLine("Exception caught in HasValidSetup() method.");
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+            } else
+            {
+                // it'll either have old data or it won't.
+                hasValidSetup = true;
             }
 
             // validate device

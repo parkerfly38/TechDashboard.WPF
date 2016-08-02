@@ -39,15 +39,15 @@ namespace TechDashboard.WPF
             bool hasValidSetup = await Database.HasValidSetup();
             if (!hasValidSetup)
             {
-                //SettingsPage settingsPage = new SettingsPage();
-                //this.MainWindow = settingsPage;
-                //settingsPage.Show();
-                //settingsPage.Focus();
-                //StartupUri.H
-                this.StartupUri = new Uri("/SettingsPage.xaml",UriKind.Relative);
+                // now we also need to verify that it's not just missing a data connection
+                // in which case we'll avoid this startup ui, because we're not going to need/want to destroy our global tables
+                if (Database.HasDataConnection())
+                {
+                    this.StartupUri = new Uri("/SettingsPage.xaml", UriKind.Relative);
+                }
             }
             else {
-                if (Database.GetApplicatioinSettings().LoggedInTechnicianNo.Length <= 0)
+                if (Database.GetApplicatioinSettings().LoggedInTechnicianNo.Length <= 0 && Database.HasDataConnection())
                     Database.CreateGlobalTables();
             }
             AppDomain currentDomain = AppDomain.CurrentDomain;

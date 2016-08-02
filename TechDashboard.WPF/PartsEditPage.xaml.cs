@@ -204,6 +204,7 @@ namespace TechDashboard.WPF
 
             _entryUnitOfMeasure = new TextBox();
             _entryUnitOfMeasure.SetBinding(ContentProperty, "UnitOfMeasure");
+            _entryUnitOfMeasure.Text = _vm.PartToEdit.UnitOfMeasure;
             _entryUnitOfMeasure.Foreground = asbestos;
             _entryUnitOfMeasure.Style = (Style)this.Resources["styleUOM"];
 

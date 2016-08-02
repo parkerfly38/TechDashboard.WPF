@@ -286,7 +286,6 @@ namespace TechDashboard.Data
         /// <summary>
         /// Creates the CI_Item, JT_Technician, and JT_TechnicianStatus tables
         /// in the local database.  Then, all data for these tables is retreived 
-        /// through the SData connection. PUKE - update
         /// </summary>
         public void CreateGlobalTables()
         {
@@ -341,10 +340,7 @@ namespace TechDashboard.Data
         }
 
         public void CreateDependentTables(JT_Technician technician)
-        {
-            //return;
-
-            // Testing... first, drop the tables if they exist so all is clean
+        {            
             try { _database.DropTable<JT_TechnicianScheduleDetail>(); } catch { }
             try { _database.DropTable<SO_SalesOrderHeader>(); } catch { }
             try { _database.DropTable<SO_ShipToAddress>(); } catch { }
@@ -356,7 +352,6 @@ namespace TechDashboard.Data
             try { _database.DropTable<AR_CustomerContact>(); } catch { }
             try { _database.DropTable<JT_ServiceEquipmentParts>(); } catch { }
             try { _database.DropTable<JT_DailyTimeEntry>(); } catch { }
-            //try { _database.DropTable<App_Expense>(); } catch { } // puke
             try { _database.DropTable<JT_EquipmentAsset>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementHeader>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementDetail>(); } catch { }
@@ -384,7 +379,6 @@ namespace TechDashboard.Data
             _database.CreateTable<AR_CustomerContact>();
             _database.CreateTable<JT_ServiceEquipmentParts>();
             _database.CreateTable<JT_DailyTimeEntry>();
-            //_database.CreateTable<App_Expense>(); // puke!  
             _database.CreateTable<JT_EquipmentAsset>();
             _database.CreateTable<JT_ServiceAgreementHeader>();
             _database.CreateTable<JT_ServiceAgreementDetail>();
