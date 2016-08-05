@@ -90,6 +90,50 @@ namespace TechDashboard.Data
             return returnData;
         }
 
+        public List<T> GetDataPostSync<T>(string filterType, string filterText)
+        {
+            // Set up our return data object -- a list of typed objects.
+            List<T> returnData = new List<T>();
+
+            // set up the proper URL
+            string url = GetRestServiceUrl();
+            if (!url.EndsWith(@"/"))
+            {
+                url += @"/";
+            }
+            if ((filterType != null) &&
+                (filterType.Length > 0) &&
+                (filterText != null) &&
+                (filterText.Length > 0))
+            {
+                url += @"q/" + typeof(T).Name + @"/" + filterType;// + @"?v=" + Uri.EscapeDataString(filterText);
+            }
+            else
+            {
+                url += @"all/" + typeof(T).Name;
+            }
+
+            // Create a HTTP client to call the REST service
+            RestSharp.RestClient client = new RestSharp.RestClient(url);
+
+            var request = new RestSharp.RestRequest(Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(filterText);
+            var response = client.Execute(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                //throw new Exception("Bad request");
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(new Exception(response.Content));
+            }
+
+            string JsonResult = response.Content;
+            returnData = JsonConvert.DeserializeObject<List<T>>(JsonResult);
+
+            return returnData;
+        }
+
         public bool UpdateTechnicianRecordSync(JT_Technician technician)
         {
             bool returnData = false;

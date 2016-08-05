@@ -61,6 +61,7 @@ namespace TechDashboard.Data
             importDetail.WTStep = scheduledAppointment.WorkTicketStep;
             importDetail.StatusCode = serviceTicketStatusCode.MiscellaneousCode;
             //importDetail.statusDate PUKE>>> not in table spec!
+            importDetail.TransactionDate = startDateTime.ToShortDateString(); 
             importDetail.StatusTime = startDateTime.ToSage100TimeString();
             //importDetail.StatusComment = ""; // not used at this time but might be in the future
             rows = _database.Insert(importDetail);
@@ -207,6 +208,7 @@ namespace TechDashboard.Data
                 importDetail.ActivityCode = activityCode;
                 importDetail.DeptWorkedIn = deptWorked;
                 importDetail.EarningsCode = earningsCode.EarningsCode;
+                importDetail.TransactionDate = stopDateTime.ToShortDateString();
                 importDetail.StartTime = startDateTime.ToSage100TimeString();
                 importDetail.EndTime = stopDateTime.ToSage100TimeString();
                 importDetail.HoursWorked = hoursBilled; // (stopDateTime - startDateTime).TotalHours;

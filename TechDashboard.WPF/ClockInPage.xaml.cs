@@ -71,7 +71,7 @@ namespace TechDashboard.WPF
                 Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7F8C8D"))
             };
             _pickerArriveTime = new DateTimePicker {
-                Format = DateTimeFormat.LongTime,
+                Format = DateTimeFormat.FullDateTime,
                 DefaultValue = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 AutoCloseCalendar = false,
@@ -80,7 +80,7 @@ namespace TechDashboard.WPF
             if (App.Database.GetApplicatioinSettings().TwentyFourHourTime)
             {
                 _pickerArriveTime.Format = DateTimeFormat.Custom;
-                _pickerArriveTime.FormatString = "HH:mm";
+                _pickerArriveTime.FormatString = "d/mm/yyyy HH:mm";
             }
 
             Label labelTechStatus = new Label()

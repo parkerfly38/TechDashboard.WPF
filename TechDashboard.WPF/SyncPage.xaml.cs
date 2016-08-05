@@ -50,9 +50,10 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold
             };
 
-            Label labelUpdateWarning = new Label()
+            TextBlock labelUpdateWarning = new TextBlock()
             {
-                Content = "This will refresh the data on your application, using the time frame that can be adjusted in Settings.  It requires either mobile data or WiFi connectivity.",
+                Text = "This will refresh the data on your application, using the time frame that can be adjusted in Settings.  It requires either mobile data or WiFi connectivity.",
+                TextWrapping = TextWrapping.Wrap,
                 Foreground = asbestos,
                 FontWeight = FontWeights.Bold
             };
@@ -64,7 +65,7 @@ namespace TechDashboard.WPF
                 BorderBrush = emerald,
                 FontWeight = FontWeights.Bold,
                 Height = 50,
-                Margin = new Thickness(30,10,30,10)
+                Margin = new Thickness(0,20,0,20)
             };
             //later, add check for connectivity and make this presentation conditional
             buttonUpdateData.Content = "UPDATE APP DATA";
@@ -74,11 +75,13 @@ namespace TechDashboard.WPF
             {
                 Height = 1,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Stroke = asbestos
+                Stroke = asbestos,
+                Margin = new Thickness(30,20,30,0)
             };
 
             StackPanel refreshLayout = new StackPanel
             {
+                Margin = new Thickness(30,10,30,0),
                 Children = {
                     labelUpdateAppData,
                     labelUpdateWarning,
@@ -90,13 +93,16 @@ namespace TechDashboard.WPF
             {
                 Content = "UPLOAD DATA",
                 Foreground = asbestos,
-                FontWeight = FontWeights.Bold
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(30,10,30,0)
             };
 
-            Label labelSendWarning = new Label()
+            TextBlock labelSendWarning = new TextBlock()
             {
-                Content = "This will send data from Tech Dashboard to JobOps.  This operations requires either mobile data or WiFi connections.",
-                Foreground = asbestos
+                Text = "This will send data from Tech Dashboard to JobOps.  This operations requires either mobile data or WiFi connections.",
+                TextWrapping = TextWrapping.Wrap,
+                Foreground = asbestos,
+                Margin = new Thickness(30, 10, 30, 0)
             };
 
             Label labelSendCount = new Label()
@@ -112,6 +118,14 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Colors.Red)
             };
+
+            Label labelLastSyncDate = new Label()
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Colors.Red),
+                Margin = new Thickness(30, 10, 30, 10)
+            };
+            labelLastSyncDate.Content = _vm.LastSyncDate;
 
             Button buttonSendData = new Button()
             {
@@ -167,6 +181,7 @@ namespace TechDashboard.WPF
                     new StackPanel()
                     {
                         Orientation = Orientation.Horizontal,
+                        Margin = new Thickness(30,10,30,0),
                         Children =
                         {
                             labelSendCount,
@@ -174,6 +189,7 @@ namespace TechDashboard.WPF
                         }
         
                     },
+                    labelLastSyncDate,
                     buttonViewData,
                     buttonSendData
                 }

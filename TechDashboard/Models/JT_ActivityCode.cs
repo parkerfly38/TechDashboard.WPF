@@ -37,5 +37,10 @@ namespace TechDashboard.Models
         /// Billing Rate Multiplier - numeric(15, 6)
         /// </summary>
         public decimal BillingRateMultiplier { get; set; }
+
+        public string ActivityCodeAndDescription
+        {
+            get { return ActivityCode + " - " + ActivityDescription;  }
+        }
     }
 }

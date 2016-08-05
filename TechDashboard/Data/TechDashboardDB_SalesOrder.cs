@@ -227,6 +227,7 @@ namespace TechDashboard.Data
             }
 
             FillLocalTable<SO_ShipToAddress>("where", sb.ToString());
+            //FillLocalTable<SO_ShipToAddress>();
         }
 
         protected SO_ShipToAddress GetShipToAddress(SO_SalesOrderHeader salesOrderHeader)

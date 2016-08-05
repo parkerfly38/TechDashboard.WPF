@@ -19,6 +19,12 @@ namespace TechDashboard.ViewModels
             set { _transactionImportDetails = value;  }
         }
 
+        private string _lastSyncDate;
+        public string LastSyncDate
+        {
+            get { return (_lastSyncDate != null) ? "Last sync performed: " + _lastSyncDate : ""; }
+        }
+
         public int UpdateCount
         {
             get { return _transactionImportDetails.Count; }
@@ -27,6 +33,7 @@ namespace TechDashboard.ViewModels
         public SyncPageViewModel()
         {
             _transactionImportDetails = App.Database.GetCurrentExport();
+            _lastSyncDate = App.Database.GetApplicatioinSettings().LastSyncDate;
         }
 
         public void syncWithServer()
@@ -53,6 +60,10 @@ namespace TechDashboard.ViewModels
 
             PropertyChanged(this, new PropertyChangedEventArgs("UpdateCount"));
             PropertyChanged(this, new PropertyChangedEventArgs("transactionImportDetails"));
+
+            App_Settings appSettings = App.Database.GetApplicatioinSettings();
+            appSettings.LastSyncDate = DateTime.Now.ToString();
+            App.Database.SaveAppSettings(appSettings);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

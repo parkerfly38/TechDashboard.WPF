@@ -13,4 +13,3 @@ C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDas
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Release\TdWs.SDataClient.pdb
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.dll
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.pdb
-C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Release\TechDashboard.csprojResolveAssemblyReference.cache

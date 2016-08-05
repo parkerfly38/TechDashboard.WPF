@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 using TechDashboard.Models;
@@ -25,6 +26,21 @@ namespace TechDashboard.ViewModels
             get { return _erpOptions.DefaultTechnicianDepartStatusCode; }
         }
 
+        public string DefaultServiceTicketStatusCode
+        {
+            get { return _workTicket.StatusCode; }
+        }
+
+        public string DefaultActivityCode
+        {
+            get { return _workTicket.ActivityCode; }
+        }
+
+        public string DefaultEarningCode
+        {
+            get { return _activityCodeList.Where(x => x.ActivityCode == _workTicket.ActivityCode).Select(x => x.DefaultEarningCode).FirstOrDefault<string>(); }
+        }
+
         public string DefaultDepartStatusCodeDescription
         {
             get { return _erpOptions.DefaultTechnicianDepartStatusCodeDescription; }
@@ -38,6 +54,7 @@ namespace TechDashboard.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
 
         protected List<JT_TechnicianStatus> _technicianStatusList;
         public List<JT_TechnicianStatus> TechnicianStatusList

@@ -6,6 +6,7 @@ using SQLite;
 using System.Linq;
 using TechDashboard.Models;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TechDashboard.Data
 {
@@ -236,13 +237,22 @@ namespace TechDashboard.Data
 
         public List<T> GetErpDataFromRestService<T>(string filterType, string filterText)
         {
+            List<T> items = null;
+
             if(_restClient == null)
             {
                 _restClient = new RestClient(this);
             }
 
-            List<T> items = _restClient.GetDataSync<T>(filterType, filterText);
+            if (typeof(T) == typeof(SO_ShipToAddress) || typeof(T) == typeof(SO_SalesOrderDetail) || typeof(T) == typeof(AR_Customer) || typeof(T) == typeof(AR_CustomerContact) ||
+                typeof(T) == typeof(JT_ServiceEquipmentParts))
+            {
+                    items = _restClient.GetDataPostSync<T>(filterType, filterText);
+            }
+            else {
 
+                items = _restClient.GetDataSync<T>(filterType, filterText);
+            }
             return items;
         }
 
@@ -340,10 +350,17 @@ namespace TechDashboard.Data
         }
 
         public void CreateDependentTables(JT_Technician technician)
-        {            
+        {
+            //add a modicum of version checking
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            decimal versionNo = Convert.ToDecimal(version.Substring(0, 3));
+
             try { _database.DropTable<JT_TechnicianScheduleDetail>(); } catch { }
             try { _database.DropTable<SO_SalesOrderHeader>(); } catch { }
             try { _database.DropTable<SO_ShipToAddress>(); } catch { }
+            try { _database.DropTable<SO_SalesOrderDetail>(); } catch { }
             try { _database.DropTable<JT_WorkTicket>(); } catch { }
             try { _database.DropTable<JT_WorkTicketText>(); } catch { }
             try { _database.DropTable<JT_WorkTicketClass>(); } catch { }
@@ -370,6 +387,7 @@ namespace TechDashboard.Data
             // Next, create the tables       
             _database.CreateTable<JT_TechnicianScheduleDetail>();
             _database.CreateTable<SO_SalesOrderHeader>();
+            _database.CreateTable<SO_SalesOrderDetail>();
             _database.CreateTable<SO_ShipToAddress>();
             _database.CreateTable<JT_WorkTicket>();
             _database.CreateTable<JT_WorkTicketText>();
@@ -390,10 +408,13 @@ namespace TechDashboard.Data
 
             // Fill the tables with data.
             FillTechnicianScheduleDetailTable(technician.TechnicianNo);
+            
+           
             FillSalesOrderHeaderTable();
             FillShipToAddressTable();
             FillWorkTicketTable();
             FillWorkTicketTextTable();
+            FillSalesOrderDetails();
             FillCustomerTable();
             FillCustomerContactTable();
             FillServiceEquipmentPartsTable();
@@ -751,6 +772,33 @@ namespace TechDashboard.Data
 
                 // puke... need call back?
             }
+        }
+
+        #endregion
+
+        #region Default Sales Order Parts
+
+        public void FillSalesOrderDetails()
+        {
+            StringBuilder sb = new StringBuilder();
+            List<JT_WorkTicket> workTickets = GetWorkTicketsFromDB().ToList();
+
+            for (int i = 0; i < workTickets.Count; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append(" or ");
+                }
+                sb.Append("(");
+                sb.Append("SalesOrderNo eq '" + workTickets[i].SalesOrderNo + "' AND ");
+                sb.Append("JT158_WTNumber eq '" + workTickets[i].WTNumber + "' AND ");
+                sb.Append("JT158_WTStep eq '" + workTickets[i].WTStep + "' AND ");
+                sb.Append("JT158_WTPart eq 'Y' AND ");
+                sb.Append("JT158_WTBillFlag ne 'B' AND ");
+                sb.Append("JT158_WTPurchase eq 'Y')");
+            }
+            FillLocalTable<SO_SalesOrderDetail>("where", sb.ToString());
+            //FillLocalTable<SO_SalesOrderDetail>();
         }
 
         #endregion

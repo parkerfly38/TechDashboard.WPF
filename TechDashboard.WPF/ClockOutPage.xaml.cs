@@ -77,9 +77,9 @@ namespace TechDashboard.WPF
 
             _pickerStartTime = new DateTimePicker();
             //add a date, as much as I hate it, to make this work
-            _pickerStartTime.Value = new DateTime() +_vm.StartTime;
+            _pickerStartTime.Value = DateTime.Now +_vm.StartTime;
             _pickerStartTime.IsEnabled = false;
-            _pickerStartTime.Format = DateTimeFormat.LongTime;
+            _pickerStartTime.Format = DateTimeFormat.FullDateTime;
             _pickerStartTime.ShowDropDownButton = false;
             _pickerStartTime.AutoCloseCalendar = true;
 
@@ -91,19 +91,19 @@ namespace TechDashboard.WPF
             };
 
             _pickerDepartTime = new DateTimePicker {
-                Value = new DateTime() + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Value = DateTime.Now + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 ShowDropDownButton = false,
                 AutoCloseCalendar = true,
-                Format = DateTimeFormat.LongTime
+                Format = DateTimeFormat.FullDateTime
             };
             //_pickerDepartTime.Unfocused += PickerDepartTime_Unfocused;
 
             if (App.Database.GetApplicatioinSettings().TwentyFourHourTime)
             {
                 _pickerStartTime.Format = DateTimeFormat.Custom;
-                _pickerStartTime.FormatString = "HH:mm";
+                _pickerStartTime.FormatString = "d/mm/yyyy HH:mm";
                 _pickerDepartTime.Format = DateTimeFormat.Custom;
-                _pickerDepartTime.FormatString = "HH:mm";
+                _pickerDepartTime.FormatString = "d/mm/yyyy HH:mm";
             }
             _pickerDepartTime.ValueChanged += _pickerDepartTime_ValueChanged;
 
@@ -151,9 +151,9 @@ namespace TechDashboard.WPF
                 ItemsSource = _vm.ServiceTicketStatusList,
                 Margin = new Thickness(30, 0, 30, 0),
             };
+            _pickerTicketStatus.SelectedValuePath = "MiscellaneousCode";
             _pickerTicketStatus.DisplayMemberPath = "Description";
-
-            
+            _pickerTicketStatus.SelectedValue = _vm.DefaultServiceTicketStatusCode;
 
             Label labelActivityCode = new Label()
             {
@@ -166,7 +166,9 @@ namespace TechDashboard.WPF
                 ItemsSource = _vm.ActivityCodeList,
                 Margin = new Thickness(30, 0, 30, 0),
             };
-            _pickerActivityCode.DisplayMemberPath = "ActivityDescription";
+            _pickerActivityCode.SelectedValuePath = "ActivityCode";
+            _pickerActivityCode.DisplayMemberPath = "ActivityCodeAndDescription";
+            _pickerActivityCode.SelectedValue = _vm.DefaultActivityCode;
 
             Label labelEarningsCode = new Label()
             {
@@ -178,7 +180,9 @@ namespace TechDashboard.WPF
                 ItemsSource = _vm.EarningsCodeList,
                 Margin = new Thickness(30, 0, 30, 0),
             };
+            _pickerEarningsCode.SelectedValuePath = "EarningsCode";
             _pickerEarningsCode.DisplayMemberPath = "EarningsDeductionDesc";
+            _pickerEarningsCode.SelectedValue = _vm.DefaultEarningCode;
 
             Label labelMeterReading = new Label()
             {
@@ -205,6 +209,10 @@ namespace TechDashboard.WPF
 
             _editorWorkPerformed = new TextBox();
             _editorWorkPerformed.Margin = new Thickness(30, 0, 30, 0);
+            _editorWorkPerformed.VerticalAlignment = VerticalAlignment.Stretch;
+            _editorWorkPerformed.MinHeight = 80;
+            _editorWorkPerformed.AcceptsReturn = true;
+            _editorWorkPerformed.AcceptsTab = true;
             _editorWorkPerformed.TextChanged += EditorWorkPerformed_TextChanged;
 
             // create a "clock out" button to go back
@@ -250,7 +258,7 @@ namespace TechDashboard.WPF
                     titleLayout,
                     new StackPanel
                     {
-                        Margin = new Thickness(30,0,30,0),
+                        Margin = new Thickness(30,20,30,0),
                         Orientation = Orientation.Horizontal,
                         Children =
                         {
@@ -312,7 +320,7 @@ namespace TechDashboard.WPF
                     },
                     _pickerEarningsCode,
                     new StackPanel {
-                        Orientation = Orientation.Horizontal,
+                        Orientation = Orientation.Vertical,
                         Children = {
                             new StackPanel {
                                 Children = {
@@ -322,6 +330,7 @@ namespace TechDashboard.WPF
                             },
                             new StackPanel
                             {
+                                Orientation = Orientation.Vertical,
                                 Children = {
                                     labelWorkPerformed,
                                     _editorWorkPerformed

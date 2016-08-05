@@ -139,6 +139,7 @@
     <Compile Include="Models\JT_WorkTicketClass.cs" />
     <Compile Include="Models\JT_WorkTicketHistory.cs" />
     <Compile Include="Models\JT_WorkTicketText.cs" />
+    <Compile Include="Models\SO_SalesOrderDetail.cs" />
     <Compile Include="Models\SO_SalesOrderHeader.cs" />
     <Compile Include="Models\SO_ShipToAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

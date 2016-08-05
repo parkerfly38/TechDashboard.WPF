@@ -313,6 +313,12 @@ namespace TechDashboard.WPF
             JT_DailyTimeEntry newTimeEntry = new JT_DailyTimeEntry();
             JT_Technician currentTechnician = App.Database.GetCurrentTechnicianFromDb();
 
+            if (earningCodePicker.SelectedIndex == 0)
+            {
+                var result = System.Windows.MessageBox.Show("Please select an earnings code before saving.", "Missing Earnings Code", MessageBoxButton.OK);
+                return;
+            }
+
             newTimeEntry.DepartmentNo = currentTechnician.TechnicianDeptNo;
             newTimeEntry.EmployeeNo = currentTechnician.TechnicianNo;
             newTimeEntry.EndTime = ((DateTime)endTimePicker.Value).TimeOfDay.ToString();

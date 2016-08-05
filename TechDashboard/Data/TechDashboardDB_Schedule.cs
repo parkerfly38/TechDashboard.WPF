@@ -21,6 +21,22 @@ namespace TechDashboard.Data
         {
             FillLocalTable<JT_TechnicianScheduleDetail>("where", "TechnicianNo eq '" + technicianNumber + "'");
 
+            if (technicianNumber == "0000203")
+            {
+                JT_TechnicianScheduleDetail skedDetail = new JT_TechnicianScheduleDetail()
+                {
+                    TechnicianDeptNo = "13",
+                    TechnicianNo = "0000202",
+                    SalesOrderNo = "0001671",
+                    WTNumber = "001",
+                    WTStep = "001",
+                    ScheduleDate = DateTime.Now,
+                    StartTime = "1100",
+                    HoursScheduled = 5
+                };
+                _database.Insert(skedDetail);
+            }
+
             // now that we have the schedule details, remove any that don't match our date range
             // First, get the number of days before and after today that will be allowed.
             App_Settings appSettings = GetApplicatioinSettings();

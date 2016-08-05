@@ -250,16 +250,21 @@ namespace TechDashboard.WPF
             _entryComments.Style = (Style)this.Resources["styleComments"];
 
             _switchIsChargeable = new CheckBox();
-            _switchIsChargeable.SetBinding(CheckBox.IsCheckedProperty, "IsChargeable");
+            
             
             _switchIsPrintable = new CheckBox();
-            _switchIsPrintable.SetBinding(CheckBox.IsCheckedProperty, "IsPrintable");
 
             _switchIsPurchased = new CheckBox();
-            _switchIsPurchased.SetBinding(CheckBox.IsCheckedProperty, "IsPurchased");
 
             _switchIsOverhead = new CheckBox();
-            _switchIsOverhead.SetBinding(CheckBox.IsCheckedProperty, "IsOverhead");
+
+            if (_pageMode == PageMode.Edit)
+            {
+                _switchIsChargeable.SetBinding(CheckBox.IsCheckedProperty, "IsChargeable");
+                _switchIsPrintable.SetBinding(CheckBox.IsCheckedProperty, "IsPrintable");
+                _switchIsPurchased.SetBinding(CheckBox.IsCheckedProperty, "IsPurchased");
+                _switchIsOverhead.SetBinding(CheckBox.IsCheckedProperty, "IsOverhead");
+            }
 
             Grid topGrid = new Grid();
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });

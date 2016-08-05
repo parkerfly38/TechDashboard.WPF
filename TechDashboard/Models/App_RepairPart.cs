@@ -48,6 +48,7 @@ namespace TechDashboard.Models
         public string PartItemCode
         {
             get { return _partItemCode; }
+            set { _partItemCode = value; }
         }
 
         /// <summary>
@@ -73,6 +74,7 @@ namespace TechDashboard.Models
         public string ProblemCode
         {
             get { return _problemCode; }
+            set { _problemCode = value; }
         }
 
         /// <summary>

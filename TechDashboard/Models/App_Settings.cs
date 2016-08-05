@@ -38,6 +38,8 @@ namespace TechDashboard.Models
 
         public string DeviceID { get; set; }
 
+        public string LastSyncDate { get; set; }
+
         public App_Settings()
         {
             // empty

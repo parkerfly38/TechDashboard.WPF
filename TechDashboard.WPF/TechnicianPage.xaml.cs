@@ -85,8 +85,8 @@ namespace TechDashboard.WPF
             _buttonOK.Click += ButtonOK_Clicked;
 
             gridMain.Children.Add(new StackPanel
-            {
-
+            { 
+                Margin = new Thickness(30, 10, 30, 10),
                 Children = {
                     titleLayout,
      //               new Xamarin.Forms.Label 
@@ -95,7 +95,6 @@ namespace TechDashboard.WPF
                     new StackPanel
                     {
                         Orientation = Orientation.Horizontal,
-
                         Children =
                         {
                             _labelFirstName,
@@ -112,7 +111,7 @@ namespace TechDashboard.WPF
         protected async void ButtonOK_Clicked(object sender, EventArgs e)
         {
             JT_TechnicianStatus selectedStatus = _pickerTechnicianStatus.SelectedItem as JT_TechnicianStatus;
-            if (selectedStatus.StatusCode != _vm.Technician.CurrentStatus)
+            if (selectedStatus.StatusCode != _vm.Technician.CurrentStatus && App.Database.GetCurrentWorkTicket() != null)
             {
                 // update the status code
                 _vm.UpdateTechnicianStatus(selectedStatus);
@@ -122,7 +121,7 @@ namespace TechDashboard.WPF
             
             if (App.Database.GetCurrentWorkTicket() == null)
             {
-                contentArea.Content = null;
+                contentArea.Content = new SchedulePage();
             }
             else
             {

@@ -15,6 +15,7 @@ namespace TechDashboard.Data
         public List<App_RepairPart> RetrievePartsListFromWorkTicket(App_WorkTicket workTicket)
         {
             List<JT_TransactionImportDetail> importDetailList = null;
+            List<SO_SalesOrderDetail> salesOrderDetaillist = null;
             List<App_RepairPart> partsList = null;
 
             lock(_locker)
@@ -34,6 +35,37 @@ namespace TechDashboard.Data
                     foreach(JT_TransactionImportDetail detail in importDetailList)
                     {
                         partsList.Add(new App_RepairPart(detail, workTicket));
+                    }
+                }
+            }
+
+            // now let's check for default parts
+            lock(_locker)
+            {
+                salesOrderDetaillist =
+                    _database.Table<SO_SalesOrderDetail>().Where(
+                        tid => (tid.SalesOrderNo == workTicket.SalesOrderNo) &&
+                               (tid.JT158_WTPart == "Y") &&
+                               (tid.JT158_WTNumber == workTicket.WTNumber) &&
+                               (tid.JT158_WTStep == workTicket.WTStep))
+                     .ToList();
+
+
+                if ((salesOrderDetaillist != null) && (salesOrderDetaillist.Count > 0))
+                {
+                    foreach (SO_SalesOrderDetail detail in salesOrderDetaillist)
+                    {
+                        if ( importDetailList.Count(x => x.ItemCode == detail.ItemCode) <= 0)
+                        {
+                            var servicePart = _database.Table<JT_ServiceEquipmentParts>().Where(x => x.ItemCode == detail.ItemCode).FirstOrDefault();
+                            var equipmentAsset = _database.Table<JT_EquipmentAsset>().Where(x => x.ItemCode == detail.ItemCode).FirstOrDefault();
+                            var ciItem = _database.Table<CI_Item>().Where(x => x.ItemCode == detail.ItemCode).FirstOrDefault();
+                            App_RepairPart newRepairPart = new App_RepairPart(ciItem, workTicket);
+                            newRepairPart.PartItemCode = (servicePart != null) ? servicePart.PartItemCode : detail.ItemCode;
+                            newRepairPart.ProblemCode = (servicePart != null) ? servicePart.ProblemCode : "";
+                            SaveRepairPart(newRepairPart, workTicket, new App_Technician(GetCurrentTechnicianFromDb()));
+                            partsList.Add(newRepairPart);
+                        }
                     }
                 }
             }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TechDashboard.WPF"
         mc:Ignorable="d"
-        Title="Tech Dashboard" Height="464.121" Width="525" Icon="td_sq_h8J_icon.ico">
+        Title="Tech Dashboard" Height="388.928" Width="525" Icon="td_sq_h8J_icon.ico">
     <Grid>
         <Rectangle Margin="-1,0,0,0" Stroke="#FF3498DB" Fill="#FF3498DB" Height="46" VerticalAlignment="Top"/>
 
@@ -13,22 +13,21 @@
         <CheckBox x:Name="cbxIsUsingHttps" Content="http / https" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" IsChecked="{Binding IsUsingHttps}" Foreground="#FF7F8C8D"/>
         <Label x:Name="label" Content="URL:" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="#FF7F8C8D"/>
         <TextBox x:Name="textURL" Margin="99,81,10,0" TextWrapping="Wrap" Height="24" VerticalAlignment="Top" Text="{Binding SDataUrl}" Visibility="Hidden"/>
-        <Label x:Name="labelUserId" Content="User ID:" HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.588,-0.239" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <TextBox x:Name="textUserID" Margin="99,120,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding SDataUserId}" />
-        <Label x:Name="labelPassword" Content="Password:" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.087,-0.97" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="99,154,0,0" VerticalAlignment="Top" Width="148" Height="24" />
-        <Label x:Name="labelDaysBefore" Content="Days Before:" HorizontalAlignment="Left" Height="27" Margin="10,191,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <TextBox x:Name="textDaysBefore" HorizontalAlignment="Left" Height="24" Margin="99,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" Text="{Binding ScheduleDaysBefore}"/>
-        <Label x:Name="labelDaysAfter" Content="Days After:" HorizontalAlignment="Left" Height="24" Margin="10,226,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <TextBox x:Name="textDaysAfter" HorizontalAlignment="Left" Height="24" Margin="99,228,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" Text="{Binding ScheduleDaysAfter}"/>
-        <Button x:Name="btnSaveAppSettings" Content="SAVE SETTINGS" Margin="10,383,10,0" VerticalAlignment="Top" Height="34" Background="#FF2ECC71" BorderBrush="#FF2ECC71" Foreground="White" FontWeight="Bold"/>
+        <TextBox x:Name="textUserID" Margin="99,120,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding SDataUserId}" Visibility="Hidden" />
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="99,154,0,0" VerticalAlignment="Top" Width="148" Height="24" Visibility="Hidden" />
+        <Label x:Name="labelDaysBefore" Content="Days Before:" HorizontalAlignment="Left" Height="27" Margin="10,113,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
+        <TextBox x:Name="textDaysBefore" HorizontalAlignment="Left" Height="24" Margin="99,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" Text="{Binding ScheduleDaysBefore}"/>
+        <Label x:Name="labelDaysAfter" Content="Days After:" HorizontalAlignment="Left" Height="24" Margin="10,148,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
+        <TextBox x:Name="textDaysAfter" HorizontalAlignment="Left" Height="24" Margin="99,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79" Text="{Binding ScheduleDaysAfter}"/>
+        <Button x:Name="btnSaveAppSettings" Content="SAVE SETTINGS" Margin="10,305,10,0" VerticalAlignment="Top" Height="34" Background="#FF2ECC71" BorderBrush="#FF2ECC71" Foreground="White" FontWeight="Bold"/>
         <Label x:Name="labelHttpText" Content="http://" HorizontalAlignment="Left" Margin="58,81,0,0" VerticalAlignment="Top" FontSize="10.667" Foreground="#FF7F8C8D"/>
         <TextBox x:Name="textRESTURL" Height="24" Margin="99,79,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding RestServiceUrl}"/>
-        <CheckBox x:Name="checkBox" Content="24 Hour Time" HorizontalAlignment="Left" Margin="99,338,0,0" VerticalAlignment="Top" Height="25" Foreground="#FF7F8C8D" IsChecked="{Binding Use24HourTime}"/>
-        <Label x:Name="labelDaysAfter_Copy" Content="Tech No:" HorizontalAlignment="Left" Height="24" Margin="10,259,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <Label x:Name="labelDaysAfter_Copy1" Content="Tech Dept:" HorizontalAlignment="Left" Height="24" Margin="10,292,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
-        <TextBox x:Name="textUserID_Copy" Margin="99,263,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding LoggedInTechnicianNo}" />
-        <TextBox x:Name="textUserID_Copy1" Margin="99,296,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding LoggedInTechnicianDeptNo}" />
+        <CheckBox x:Name="checkBox" Content="24 Hour Time" HorizontalAlignment="Left" Margin="99,260,0,0" VerticalAlignment="Top" Height="25" Foreground="#FF7F8C8D" IsChecked="{Binding Use24HourTime}"/>
+        <Label x:Name="labelDaysAfter_Copy" Content="Tech No:" HorizontalAlignment="Left" Height="24" Margin="10,181,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
+        <Label x:Name="labelDaysAfter_Copy1" Content="Tech Dept:" HorizontalAlignment="Left" Height="24" Margin="10,214,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold" Foreground="#FF7F8C8D"/>
+        <TextBox x:Name="textUserID_Copy" Margin="99,185,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding LoggedInTechnicianNo}" />
+        <TextBox x:Name="textUserID_Copy1" Margin="99,218,0,0" TextWrapping="Wrap" Width="148" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding LoggedInTechnicianDeptNo}" />
+        <Label x:Name="lblVersion" Content="Label" Margin="0,267,10,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="97"/>
 
     </Grid>
 </Window>
