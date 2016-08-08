@@ -172,6 +172,9 @@ namespace TechDashboard.WPF
             _pickerWarehouse = new ComboBox();
             _pickerWarehouse.Width = 100;
             _pickerWarehouse.HorizontalAlignment = HorizontalAlignment.Left;
+
+            _pickerWarehouse.SelectionChanged += _pickerWarehouse_SelectionChanged;
+
             foreach (string warehouse in _vm.WarehouseList)
             {
                 _pickerWarehouse.Items.Add(warehouse);
@@ -434,7 +437,13 @@ namespace TechDashboard.WPF
                 }
             });
         }
-        
+
+        private void _pickerWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+
+        }
+
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             ContentControl contentArea = (ContentControl)this.Parent;
