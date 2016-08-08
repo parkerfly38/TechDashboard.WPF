@@ -9,6 +9,9 @@ namespace TechDashboard.Models
 {
     public class App_Settings
     {
+        private string _loggedintechno = "";
+        private string _loggedintechdeptno = "";
+
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
@@ -30,9 +33,15 @@ namespace TechDashboard.Models
 
         public bool TwentyFourHourTime { get; set; }
 
-        public string LoggedInTechnicianNo { get; set; }
+        public string LoggedInTechnicianNo {
+            get { return _loggedintechno; }
+            set { _loggedintechno = value; }
+        }
 
-        public string LoggedInTechnicianDeptNo { get; set; }
+        public string LoggedInTechnicianDeptNo {
+            get { return _loggedintechdeptno; }
+            set { _loggedintechdeptno = value; }
+        }
 
         public string DeviceName { get; set; }
 

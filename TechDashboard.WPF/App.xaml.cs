@@ -36,6 +36,8 @@ namespace TechDashboard.WPF
         }
         protected async override void OnStartup(StartupEventArgs e)
         {
+            SplashScreen splashScreen = new SplashScreen("/Resources/td_sq.png");
+            splashScreen.Show(true);
             bool hasValidSetup = await Database.HasValidSetup();
             if (!hasValidSetup)
             {
@@ -47,7 +49,9 @@ namespace TechDashboard.WPF
                 }
             }
             else {
-                if (Database.GetApplicatioinSettings().LoggedInTechnicianNo.Length <= 0 && Database.HasDataConnection())
+                string loggedintechnicianno = (Database.GetApplicatioinSettings().LoggedInTechnicianNo != null) ? Database.GetApplicatioinSettings().LoggedInTechnicianNo : "";
+
+                if (loggedintechnicianno.Length <= 0 && Database.HasDataConnection())
                     Database.CreateGlobalTables();
             }
             AppDomain currentDomain = AppDomain.CurrentDomain;

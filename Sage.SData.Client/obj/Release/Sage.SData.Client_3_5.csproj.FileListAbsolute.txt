@@ -2,3 +2,7 @@ C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\Sage.SD
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\bin\Release\Sage.SData.Client.pdb
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Release\Sage.SData.Client.dll
 C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Release\Sage.SData.Client.pdb
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\Sage.SData.Client\bin\Release\Sage.SData.Client.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\Sage.SData.Client\bin\Release\Sage.SData.Client.pdb
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\Sage.SData.Client\obj\Release\Sage.SData.Client.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\Sage.SData.Client\obj\Release\Sage.SData.Client.pdb

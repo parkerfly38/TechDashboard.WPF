@@ -14,3 +14,15 @@ C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDas
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Debug\TechDashboard.pdb
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\bin\Debug\Newtonsoft.Json.xml
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard\obj\Debug\TechDashboard.csprojResolveAssemblyReference.cache
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\TechDashboard.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\TechDashboard.pdb
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\RestSharp.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\System.Data.SQLite.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\RestSharp.xml
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\System.Data.SQLite.xml
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\bin\Debug\TdWs.SDataClient.pdb
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\obj\Debug\TechDashboard.csprojResolveAssemblyReference.cache
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\obj\Debug\TechDashboard.dll
+C:\Users\Brian Kresge\Documents\Visual Studio 2015\Projects\TechDashboardWPF\TechDashboard\obj\Debug\TechDashboard.pdb
