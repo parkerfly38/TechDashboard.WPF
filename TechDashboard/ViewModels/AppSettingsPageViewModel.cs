@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Reflection;
 using TechDashboard.Models;
 
 namespace TechDashboard.ViewModels
@@ -85,6 +85,7 @@ namespace TechDashboard.ViewModels
 
         public void SaveAppSettings()
         {
+            _appSettings.DbVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             App.Database.SaveAppSettings(_appSettings);
         }
     }

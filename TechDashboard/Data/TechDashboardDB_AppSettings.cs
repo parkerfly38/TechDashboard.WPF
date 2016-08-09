@@ -9,6 +9,7 @@ using TechDashboard.Data;
 using TechDashboard.Models;
 using Sage.SData.Client;
 using RestSharp;
+using System.Reflection;
 
 namespace TechDashboard.Data
 {
@@ -40,6 +41,14 @@ namespace TechDashboard.Data
             lock (_locker)
             {
                 appSettings = GetApplicatioinSettings();
+            }
+            //get version
+            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string dbVersion = (appSettings.DbVersion != null) ? appSettings.DbVersion : "0.0.0.0";
+
+            if(version.Substring(0,3) != dbVersion.Substring(0,3))
+            {
+                return false;
             }
 
             if (HasDataConnection())
@@ -77,6 +86,8 @@ namespace TechDashboard.Data
                 // it'll either have old data or it won't.
                 hasValidSetup = true;
             }
+
+
 
             // validate device
             

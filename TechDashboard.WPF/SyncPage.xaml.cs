@@ -204,7 +204,12 @@ namespace TechDashboard.WPF
 
         void ButtonSendData_Clicked(object sender, EventArgs e)
         {
+            Button buttonSendData = (Button)sender;
+            buttonSendData.IsEnabled = false;
+            buttonSendData.Content = "SENDING DATA...";
             _vm.syncWithServer();
+            buttonSendData.IsEnabled = true;
+            buttonSendData.Content = "SYNC DATA";
         }
 
         void ButtonUpdateData_Clicked(object sender, EventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rkl.Erp.Sage.Sage100.TableObjects;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -83,11 +84,30 @@ namespace TechDashboard.WPF
         private async void BtnSaveAppSettings_Click(object sender, RoutedEventArgs e)
         {
             OnSettingsSaved(sender, e);
+            btnSaveAppSettings.IsEnabled = false;
+            btnSaveAppSettings.Content = "SAVING...";
             _vm.SaveAppSettings();
+            //check for valid technician
+            string techno = (_vm.LoggedInTechnicianNo != null) ? _vm.LoggedInTechnicianNo : "";
+            string techdeptno = _vm.LoggedInTechnicianDeptNo != null ? _vm.LoggedInTechnicianDeptNo : "";
+            JT_Technician technician = App.Database.GetTechnician(_vm.LoggedInTechnicianDeptNo, _vm.LoggedInTechnicianNo);
+            if ((techdeptno.Length > 0 && techno.Length > 0) && technician == null)
+            {
+                var result = MessageBox.Show("The technician you entered is not valid.  Please check your entries and try again.", "Invalid Technician", MessageBoxButton.OK);
+
+                btnSaveAppSettings.IsEnabled = true;
+                btnSaveAppSettings.Content = "SAVE SETTINGS";
+                return;
+            }
+
             bool hasValidSetup = await App.Database.HasValidSetup();
             if (!hasValidSetup)
             {
                 var result = MessageBox.Show("These settings do not appear to work.  Please check your Internet connection or verify your settings.", "SETTINGS VERIFICATION FAILED", MessageBoxButton.OK);
+
+                btnSaveAppSettings.IsEnabled = true;
+                btnSaveAppSettings.Content = "SAVE SETTINGS";
+                return;
             }
             else
             {

@@ -25,13 +25,15 @@ namespace TechDashboard.Models
 
         public string SDataUserId { get; set; }
 
-        public string SDataPassword { get; set; } // puke... this shold be encrypted somehow
+        public string SDataPassword { get; set; }
 
         public int ScheduleDaysBefore { get; set; }
 
         public int ScheduleDaysAfter { get; set; }
 
         public bool TwentyFourHourTime { get; set; }
+
+        public string DbVersion { get; set; }
 
         public string LoggedInTechnicianNo {
             get { return _loggedintechno; }
@@ -51,7 +53,7 @@ namespace TechDashboard.Models
 
         public App_Settings()
         {
-            // empty
+            
         }
     }
 }
