@@ -40,8 +40,9 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Rkl.Erp.Sage.Sage100.TableObjects">
-      <HintPath>..\..\Tech Dashboard\ExternalReferences\Rkl.Erp.Sage.Sage100.TableObjects.dll</HintPath>
+    <Reference Include="Rkl.Erp.Sage.Sage100.TableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Rkl\Erp\Sage\Sage100\TableObjects\bin\Release\Rkl.Erp.Sage.Sage100.TableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Rkl.Erp.Sage.SData.Client">
       <HintPath>..\..\Tech Dashboard\ExternalReferences\Rkl.Erp.Sage.SData.Client.dll</HintPath>
@@ -111,6 +112,7 @@
     <Compile Include="Models\AR_Customer.cs" />
     <Compile Include="Models\AR_CustomerContact.cs" />
     <Compile Include="Models\CI_Item.cs" />
+    <Compile Include="Models\IM_ItemCost.cs" />
     <Compile Include="Models\IM_ItemWarehouse.cs" />
     <Compile Include="Models\JT_ActivityCode.cs" />
     <Compile Include="Models\JT_ClassificationCode.cs" />

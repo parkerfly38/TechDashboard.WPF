@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using TechDashboard.Models;
 
 namespace TechDashboard.ViewModels
 {
-    public class PartsEditPageViewModel
+    public class PartsEditPageViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         App_WorkTicket _workTicket;
         public App_WorkTicket WorkTicket
         {
@@ -25,6 +36,18 @@ namespace TechDashboard.ViewModels
         {
             get { return _warehouseList; }
         }
+
+        protected string _qtyAvailable;
+        public string QtyAvailable
+        {
+            get { return _qtyAvailable; }
+            set
+            {
+                _qtyAvailable = value;
+                NotifyPropertyChanged();
+            }
+        }
+
 
         public PartsEditPageViewModel(App_WorkTicket workTicket, CI_Item partToEdit)
         {
@@ -91,9 +114,14 @@ namespace TechDashboard.ViewModels
             return warehouseList;
         }
 
+        public void UpdateQuantityOnHand(string wareHouse, string serialNumber)
+        {
+            QtyAvailable = App.Database.GetQuantityOnHand(PartToEdit.PartItemCode, wareHouse, serialNumber);
+        }
+
         public List<string> GetMfgSerialNumbersForPart()
         {
-            List<string> serialNumberList = App.Database.GetMfgSerialNumbersForItem(_partToEdit.PartItemCode);
+            List<string> serialNumberList = App.Database.GetMfgSerialNumbersForItem(_partToEdit.PartItemCode, PartToEdit.Warehouse);
 
             return serialNumberList;
         }

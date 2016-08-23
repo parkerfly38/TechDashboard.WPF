@@ -183,7 +183,9 @@ namespace TechDashboard.Data
         public JT_Technician GetTechnician(string technicianDeptNo, string technicianNumber)
         {
             JT_Technician technician;
-
+            //can't validate if table doesn't exist so let's do that first
+            if (!TableExists<JT_Technician>())
+                return null;
             lock (_locker)
             {
                 technician = _database.Table<JT_Technician>().Where(

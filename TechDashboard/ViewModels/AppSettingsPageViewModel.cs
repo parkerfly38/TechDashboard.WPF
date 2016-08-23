@@ -86,6 +86,11 @@ namespace TechDashboard.ViewModels
         public void SaveAppSettings()
         {
             _appSettings.DbVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if ((DeviceName != null) && (_appSettings.DeviceID == null || _appSettings.DeviceID.Length <= 0))
+            {
+                App.Database.SaveAppSettings(_appSettings); //need to to do get right url
+                _appSettings.DeviceID = App.Database.GetDeviceID(DeviceName);
+            }
             App.Database.SaveAppSettings(_appSettings);
         }
     }

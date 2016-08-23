@@ -164,6 +164,11 @@ namespace TechDashboard.Data
 
         #region ERP IM_Item
 
+        public void FillItemCostTable()
+        {
+            FillLocalTable<IM_ItemCost>();
+        }
+
         /// <summary>
         /// Retreives Item Warehouse data from the ERP connection and uses
         /// it to fill the local IM_ItemWarehouse table.
@@ -237,14 +242,35 @@ namespace TechDashboard.Data
             return equipmentAsset;
         }
 
-        public List<string> GetMfgSerialNumbersForItem(string itemCode)
+        public List<string> GetMfgSerialNumbersForItem(string itemCode, string wareHouseCode)
         {
-            List<string> mfgSeialNumberList =
-                _database.Table<JT_EquipmentAsset>().Where(
+            //List<string> mfgSeialNumberList =
+            //    _database.Table<JT_EquipmentAsset>().Where(
+            //        ea => (ea.ItemCode == itemCode)
+            //    ).GroupBy(t => t.MfgSerialNo).Select(group => group.First().MfgSerialNo).ToList();
+
+            List<string> serialNumbers = _database.Table<IM_ItemCost>().Where(
+                    x => x.ItemCode == itemCode && x.WarehouseCode == wareHouseCode)
+                    .GroupBy(y => y.LotSerialNo).Select(group => group.First().LotSerialNo).ToList();
+
+            if (serialNumbers.Count() == 0)
+            {
+                serialNumbers = _database.Table<JT_EquipmentAsset>().Where(
                     ea => (ea.ItemCode == itemCode)
                 ).GroupBy(t => t.MfgSerialNo).Select(group => group.First().MfgSerialNo).ToList();
+            }
 
-            return mfgSeialNumberList;
+            return serialNumbers;
+        }
+
+        public string GetQuantityOnHand(string itemCode, string wareHouseCode, string serialNumber)
+        {
+            IM_ItemCost quantityOnHand = _database.Table<IM_ItemCost>().Where(x => x.ItemCode == itemCode && x.WarehouseCode == wareHouseCode && x.LotSerialNo == serialNumber).FirstOrDefault();
+            if (quantityOnHand == null)
+            {
+                return "0";
+            }
+            return (quantityOnHand.QuantityOnHand - quantityOnHand.QuantityCommitted).ToString();
         }
 
         #endregion

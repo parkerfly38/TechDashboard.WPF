@@ -97,6 +97,7 @@ namespace TechDashboard.Data
         
         public App_Settings GetApplicatioinSettings()
         {
+
             App_Settings appSettings = null;
 
             lock (_locker)
@@ -193,6 +194,13 @@ namespace TechDashboard.Data
             }
 
             return ((result.Count > 0) && (result[0]));
+        }
+
+        public string GetDeviceID(string DeviceName)
+        {
+            App_Settings appSettings = GetApplicatioinSettings();
+            RestClient restClient = new RestClient(appSettings);
+            return restClient.GetDeviceID(DeviceName);
         }
 
         public void SaveAppSettings(App_Settings appSettings)

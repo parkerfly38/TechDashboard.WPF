@@ -1,6 +1,6 @@
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\bin\Debug\Sage.SData.Client.XML
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\bin\Debug\Sage.SData.Client.dll
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\bin\Debug\Sage.SData.Client.pdb
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Debug\Sage.SData.Client_3_5.csprojResolveAssemblyReference.cache
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Debug\Sage.SData.Client.dll
 C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Debug\Sage.SData.Client.pdb
-C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\Sage.SData.Client\obj\Debug\Sage.SData.Client_3_5.csprojResolveAssemblyReference.cache

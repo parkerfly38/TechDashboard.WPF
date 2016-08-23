@@ -5,6 +5,7 @@ using System.Text;
 using SQLite;
 using System.Linq;
 using TechDashboard.Models;
+//using Rkl.Erp.Sage.Sage100.TableObjects;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -307,6 +308,7 @@ namespace TechDashboard.Data
             try { _database.DropTable<JT_FieldServiceOptions>(); } catch { }
             try { _database.DropTable<CI_Item>(); } catch { }
             try { _database.DropTable<IM_ItemWarehouse>(); } catch { }
+            try { _database.DropTable<IM_ItemCost>(); } catch { }
             try { _database.DropTable<JT_MiscellaneousCodes>(); } catch { }
             try { _database.DropTable<JT_ClassificationCode>(); } catch { }
             try { _database.DropTable<JT_EarningsCode>(); } catch { }
@@ -382,6 +384,13 @@ namespace TechDashboard.Data
             {
                 try { _database.DropTable<JT_TransactionImportDetail>(); } catch { }
                 _database.CreateTable<JT_TransactionImportDetail>();
+            }
+
+            //for later versions, check to see if these tables exist
+            if (!TableExists<IM_ItemCost>())
+            {
+                try { _database.DropTable<IM_ItemCost>(); } catch { }
+                _database.CreateTable<IM_ItemCost>();
             }
 
             // Next, create the tables       

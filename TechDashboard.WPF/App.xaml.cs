@@ -17,7 +17,7 @@ namespace TechDashboard.WPF
     {
         protected static TechDashboardDatabase _database;
 
-        void App_Starup(object sender, StartupEventArgs e)
+        void App_Startup(object sender, StartupEventArgs e)
         {
             MainWindow window = new MainWindow();
             window.Show();

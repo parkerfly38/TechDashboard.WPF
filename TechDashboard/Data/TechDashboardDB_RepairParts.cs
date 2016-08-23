@@ -16,7 +16,7 @@ namespace TechDashboard.Data
         {
             List<JT_TransactionImportDetail> importDetailList = null;
             List<SO_SalesOrderDetail> salesOrderDetaillist = null;
-            List<App_RepairPart> partsList = null;
+            List<App_RepairPart> partsList = new List<App_RepairPart>();
 
             lock(_locker)
             {

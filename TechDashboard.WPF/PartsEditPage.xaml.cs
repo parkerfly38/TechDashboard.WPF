@@ -55,6 +55,7 @@ namespace TechDashboard.WPF
         Label _labelPartDescription;
         ComboBox _pickerSerialNumber;
         ComboBox _pickerWarehouse;
+        Label _labelQuantityAvailable;
         TextBox _entryQuantity;
         TextBox _entryUnitOfMeasure;
         TextBox _entryUnitCost;
@@ -142,7 +143,7 @@ namespace TechDashboard.WPF
 
             Label labelserial = new Label()
             {
-                Content = "MFG SERIAL:",
+                Content = "MFG/LOT SERIAL:",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
@@ -162,6 +163,7 @@ namespace TechDashboard.WPF
                 _pickerSerialNumber.SelectedIndex = 0;
             }
             _pickerSerialNumber.HorizontalAlignment = HorizontalAlignment.Left;
+            _pickerSerialNumber.SelectionChanged += _pickerSerialNumber_SelectionChanged;
 
             Label labelWarehouse = new Label()
             {
@@ -302,6 +304,7 @@ namespace TechDashboard.WPF
             amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150, GridUnitType.Pixel) });
             amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
             amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
@@ -316,19 +319,38 @@ namespace TechDashboard.WPF
             Grid.SetColumn(_entryUnitOfMeasure, 2);
             Grid.SetRow(_entryUnitOfMeasure, 0);
 
+            _labelQuantityAvailable = new Label()
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = asbestos
+            };
+            _labelQuantityAvailable.SetBinding(ContentProperty, _vm.QtyAvailable);
+            amtsGrid.Children.Add(_labelQuantityAvailable);
+            Grid.SetColumn(_labelQuantityAvailable, 1);
+            Grid.SetRow(_labelQuantityAvailable, 1);
+            Label labelAvailable = new Label()
+            {
+                Content = "available",
+                FontWeight = FontWeights.Bold,
+                Foreground = asbestos
+            };
+            amtsGrid.Children.Add(labelAvailable);
+            Grid.SetColumn(labelAvailable, 2);
+            Grid.SetRow(labelAvailable, 1);
+
             amtsGrid.Children.Add(labelUnitCost);
             Grid.SetColumn(labelUnitCost, 0);
-            Grid.SetRow(labelUnitCost, 1);
+            Grid.SetRow(labelUnitCost, 2);
             amtsGrid.Children.Add(_entryUnitCost);
-            Grid.SetColumn(_entryUnitCost, 1);
-            Grid.SetRow(_entryUnitCost, 1);
+            Grid.SetColumn(_entryUnitCost, 2);
+            Grid.SetRow(_entryUnitCost, 2);
 
             amtsGrid.Children.Add(labelPrice);
             Grid.SetColumn(labelPrice, 0);
-            Grid.SetRow(labelPrice, 2);
+            Grid.SetRow(labelPrice, 3);
             amtsGrid.Children.Add(_entryUnitPrice);
             Grid.SetColumn(_entryUnitPrice, 1);
-            Grid.SetRow(_entryUnitPrice, 2);
+            Grid.SetRow(_entryUnitPrice, 3);
 
             Label labelExtPrice = new Label()
             {
@@ -339,10 +361,10 @@ namespace TechDashboard.WPF
 
             amtsGrid.Children.Add(labelExtPrice);
             Grid.SetColumn(labelExtPrice, 0);
-            Grid.SetRow(labelExtPrice, 3);
+            Grid.SetRow(labelExtPrice, 4);
             amtsGrid.Children.Add(_labelExtensionPrice);
             Grid.SetColumn(_labelExtensionPrice, 1);
-            Grid.SetRow(_labelExtensionPrice, 3);
+            Grid.SetRow(_labelExtensionPrice, 4);
 
             _buttonAddPart = new Button();
             TextBlock buttonAddPartText = new TextBlock();
@@ -438,9 +460,15 @@ namespace TechDashboard.WPF
             });
         }
 
+        private void _pickerSerialNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
+        }
+
         private void _pickerWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+            _vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
 
         }
 
