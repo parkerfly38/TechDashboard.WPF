@@ -31,7 +31,7 @@ namespace TechDashboard.ViewModels
 
             foreach (var workTicket in workTickets)
             {
-                List<JT_Transaction> transactionCode = App.Database.GetTransactions(workTicket.SalesOrderNo);
+                List<JT_Transaction> transactionCode = App.Database.GetTransactions(workTicket.SalesOrderNo, workTicket.WTNumber, workTicket.WTStep);
                 JT_ServiceAgreementHeader serviceAgreementHeader;
                 JT_ServiceAgreementDetail serviceAgreementDetail;
                 if (equipmentAsset != null && equipmentAsset.ContractCode != null)

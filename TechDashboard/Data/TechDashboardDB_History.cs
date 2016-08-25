@@ -42,6 +42,15 @@ namespace TechDashboard.Data
 			&& x.WTStep == WTStep).ToList();
 		}
 
+        public List<JT_Transaction> GetTransactions(string SalesOrdeRNo, string WTNumber, string WTStep)
+        {
+            return _database.Table<JT_Transaction>().Where(
+                x => x.SalesOrderNo == SalesOrdeRNo &&
+                     x.WTNumber == WTNumber &&
+                     x.WTStep == WTStep
+                     && (x.RecordType == "LD" || x.RecordType == "IM")).ToList();
+        }
+
 		public JT_EquipmentAsset GetEquipmentAsset(string ItemCode)
 		{
 			return _database.Table<JT_EquipmentAsset>().Where(x => x.ItemCode == ItemCode).FirstOrDefault();
