@@ -143,16 +143,17 @@ namespace TechDashboard.WPF
             _labelTitle.Content = "TECHNICIAN";
             _labelTitle.FontWeight = FontWeights.Bold;
             _labelTitle.FontSize = 18;
-            _labelTitle.Foreground = new SolidColorBrush(Colors.White); 
+            _labelTitle.Foreground = new SolidColorBrush(Colors.White);
 
-            Label labelTechnicianNo = new Label();
-            labelTechnicianNo.Content = _vm.AppTechnician.FormattedTechnicianNumber;
-            labelTechnicianNo.Foreground = new SolidColorBrush(Colors.White);
+            //Label labelTechnicianNo = new Label();
+            //labelTechnicianNo.Content = _vm.AppTechnician.FormattedTechnicianNumber;
+            //labelTechnicianNo.Foreground = new SolidColorBrush(Colors.White);
 
             Label labelTechnicianName = new Label()
             {
                 Content = _vm.AppTechnician.FirstName + ' ' + _vm.AppTechnician.LastName,
-                Foreground = new SolidColorBrush(Colors.White)
+                Foreground = new SolidColorBrush(Colors.White),
+                FontSize = 18
             };
 
             Grid titleLayout = new Grid()
@@ -168,11 +169,11 @@ namespace TechDashboard.WPF
             titleLayout.Children.Add(_labelTitle);
             Grid.SetColumn(_labelTitle, 0);
             Grid.SetRow(_labelTitle, 0);
-            titleLayout.Children.Add(labelTechnicianNo);
-            Grid.SetColumn(labelTechnicianNo, 0);
-            Grid.SetRow(labelTechnicianNo, 1);
+            //titleLayout.Children.Add(labelTechnicianNo);
+            //Grid.SetColumn(labelTechnicianNo, 0);
+            //Grid.SetRow(labelTechnicianNo, 1);
             titleLayout.Children.Add(labelTechnicianName);
-            Grid.SetColumn(labelTechnicianName, 1);
+            Grid.SetColumn(labelTechnicianName, 0);
             Grid.SetRow(labelTechnicianName, 1);
             //stackPanelMain.Children.Add(labelTechnicianName);
             stackPanelMain.Children.Add(titleLayout);
@@ -239,51 +240,100 @@ namespace TechDashboard.WPF
             Label labelTelephoneTitle = new Label()
             {
                 Content = "Main Phone:",
-                FontWeight = FontWeights.Bold
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
             };
 
             // label for the phone number
-            TextBlock labelTelephoneNo = new TextBlock();
-            labelTelephoneNo.Text = _vm.Customer.TelephoneNo;
+            Label labelTelephoneNo = new Label();
+            labelTelephoneNo.Content = _vm.Customer.TelephoneNo;
             if ((_vm.Customer.TelephoneExt != null) &&
                 (_vm.Customer.TelephoneExt.Trim().Length > 0))
             {
-                labelTelephoneNo.Text += " Ext. " + _vm.Customer.TelephoneExt;
-
+                labelTelephoneNo.Content += " Ext. " + _vm.Customer.TelephoneExt;
+            
             }
-            TextBlock labelShipToPhoneTitle = new TextBlock()
+
+            labelTelephoneNo.HorizontalAlignment = HorizontalAlignment.Left;
+            labelTelephoneNo.VerticalAlignment = VerticalAlignment.Top;
+            Label labelShipToPhoneTitle = new Label()
             {
-                Text = "Shipping Phone:",
-                FontWeight = FontWeights.Bold
+                Content = "Shipping Phone:",
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
             };
-            TextBlock labelShipToPhoneNo = new TextBlock();
-            labelShipToPhoneNo.Text = _vm.SalesOrder.TelephoneNo;
+            Label labelShipToPhoneNo = new Label();
+            labelShipToPhoneNo.Content = _vm.SalesOrder.TelephoneNo;
             if (_vm.SalesOrder.TelephoneExt != null && _vm.SalesOrder.TelephoneExt.Trim().Length > 0)
             {
-                labelShipToPhoneNo.Text += "Ext. " + _vm.SalesOrder.TelephoneExt;
+                labelShipToPhoneNo.Content += "Ext. " + _vm.SalesOrder.TelephoneExt;
             }
 
-            TextBlock labelContactPhoneTitle = new TextBlock()
+            labelShipToPhoneNo.HorizontalAlignment = HorizontalAlignment.Left;
+            labelShipToPhoneNo.VerticalAlignment = VerticalAlignment.Top;
+
+            Label labelContactPhoneTitle = new Label()
             {
-                Text = "Contact Phone:",
-                FontWeight = FontWeights.Bold
+                Content = "Contact Phone:",
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
             };
-            TextBlock labelContactPhone1 = new TextBlock();
-            labelContactPhone1.Text = _vm.CustomerContact.TelephoneNo1;
+            Label labelContactPhone1 = new Label();
+            labelContactPhone1.HorizontalAlignment = HorizontalAlignment.Left;
+            labelContactPhone1.VerticalAlignment = VerticalAlignment.Top;
+            labelContactPhone1.Content = _vm.CustomerContact.TelephoneNo1;
             if (_vm.CustomerContact.TelephoneExt1 != null && _vm.CustomerContact.TelephoneExt1.Trim().Length > 0)
             {
-                labelContactPhone1.Text += "Ext. " + _vm.CustomerContact.TelephoneExt1;
+                labelContactPhone1.Content += "Ext. " + _vm.CustomerContact.TelephoneExt1;
             }
 
-            TextBlock labelContactPhone2 = new TextBlock();
+            Label labelContactPhone2 = new Label();
             if (_vm.CustomerContact.TelephoneNo2 != null && _vm.CustomerContact.TelephoneNo2.Trim().Length > 0)
             {
-                labelContactPhone2.Text = _vm.CustomerContact.TelephoneNo2;
+                labelContactPhone2.Content = _vm.CustomerContact.TelephoneNo2;
             }
             if (_vm.CustomerContact.TelephoneExt2 != null && _vm.CustomerContact.TelephoneExt2.Trim().Length > 0)
             {
-                labelContactPhone2.Text += "Ext. " + _vm.CustomerContact.TelephoneExt2;
+                labelContactPhone2.Content += "Ext. " + _vm.CustomerContact.TelephoneExt2;
             }
+            labelContactPhone2.HorizontalAlignment = HorizontalAlignment.Left;
+            labelContactPhone2.VerticalAlignment = VerticalAlignment.Top;
+            labelContactPhone2.Content = _vm.CustomerContact.TelephoneNo1;
+
+            Grid phoneGrid = new Grid();
+            phoneGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            phoneGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            phoneGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            phoneGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            phoneGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star),  });
+            phoneGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            phoneGrid.Children.Add(labelTelephoneTitle);
+            Grid.SetColumn(labelTelephoneTitle, 0);
+            Grid.SetRow(labelTelephoneTitle, 0);
+            phoneGrid.Children.Add(labelTelephoneNo);
+            Grid.SetColumn(labelTelephoneNo, 1);
+            Grid.SetRow(labelTelephoneNo, 0);
+            phoneGrid.Children.Add(labelShipToPhoneTitle);
+            Grid.SetColumn(labelShipToPhoneTitle, 0);
+            Grid.SetRow(labelShipToPhoneTitle, 1);
+            phoneGrid.Children.Add(labelShipToPhoneNo);
+            Grid.SetColumn(labelShipToPhoneNo, 1);
+            Grid.SetRow(labelShipToPhoneNo, 1);
+            phoneGrid.Children.Add(labelContactPhoneTitle);
+            Grid.SetColumn(labelContactPhoneTitle, 0);
+            Grid.SetRow(labelContactPhoneTitle, 2);
+            Grid.SetRowSpan(labelContactPhoneTitle, 2);
+            phoneGrid.Children.Add(labelContactPhone1);
+            Grid.SetColumn(labelContactPhone1, 1);
+            Grid.SetRow(labelContactPhone1, 2);
+            phoneGrid.Children.Add(labelContactPhone2);
+            Grid.SetColumn(labelContactPhone2, 1);
+            Grid.SetRow(labelContactPhone2, 3);
+            
+
             Label labelServiceTicketTitle = new Label()
             {
                 Content = "Service Ticket",
@@ -351,7 +401,12 @@ namespace TechDashboard.WPF
             topGrid.Children.Add(stackPanelAddress);
             Grid.SetColumn(stackPanelAddress, 1);
             Grid.SetRow(stackPanelAddress, 3);
-            topGrid.Children.Add(labelTelephoneTitle);
+            topGrid.Children.Add(phoneGrid);
+            Grid.SetColumn(phoneGrid, 0);
+            Grid.SetRow(phoneGrid, 4);
+            Grid.SetColumnSpan(phoneGrid, 2);
+            Grid.SetRowSpan(phoneGrid, 3);
+            /*topGrid.Children.Add(labelTelephoneTitle);
             Grid.SetColumn(labelTelephoneTitle, 0);
             Grid.SetRow(labelTelephoneTitle, 4);
             topGrid.Children.Add(labelTelephoneNo);
@@ -381,6 +436,7 @@ namespace TechDashboard.WPF
             topGrid.Children.Add(spContactPhone);
             Grid.SetColumn(spContactPhone, 1);
             Grid.SetRow(spContactPhone, 6);
+            */
 
             //ticket info
             TextBlock labelStepNumber = new TextBlock()
@@ -559,10 +615,10 @@ namespace TechDashboard.WPF
             Grid.SetRow(switchServiceAgreement, 0);
             Grid.SetColumn(switchServiceAgreement, 1);
             serviceAgreementGrid.Children.Add(switchWarrantyRepair);
-            Grid.SetRow(switchWarrantyRepair, 1);
+            Grid.SetRow(switchWarrantyRepair, 2);
             Grid.SetColumn(switchWarrantyRepair, 1);
             serviceAgreementGrid.Children.Add(switchPreventativeMaintenance);
-            Grid.SetRow(switchPreventativeMaintenance, 2);
+            Grid.SetRow(switchPreventativeMaintenance, 1);
             Grid.SetColumn(switchPreventativeMaintenance, 1);
             Grid.SetRowSpan(serviceAgreementGrid, 6);
 
