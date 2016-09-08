@@ -178,9 +178,9 @@ namespace TechDashboard.WPF
             //stackPanelMain.Children.Add(labelTechnicianName);
             stackPanelMain.Children.Add(titleLayout);
 
-            Label labelServiceTicketNo = new Label()
+            TextBlock labelServiceTicketNo = new TextBlock()
             {
-                Content = _vm.WorkTicket.FormattedTicketNumber
+                Text = _vm.WorkTicket.FormattedTicketNumber
             };
 
             TextBlock labelServiceTicketDesc = new TextBlock()
@@ -355,9 +355,10 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold
             };
             Grid topGrid = new Grid();
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Pixel) });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Pixel) });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Pixel) });
+            topGrid.Margin = new Thickness(10);
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -491,7 +492,7 @@ namespace TechDashboard.WPF
             TextBlock labelMfgSerialNoDesc = new TextBlock();
             if (_vm.RepairItem != null)
             {
-                labelMfgSerialNoDesc.Text = _vm.RepairItem.ItemCodeDesc + _vm.RepairItem.StandardUnitOfMeasure;
+                labelMfgSerialNoDesc.Text = _vm.RepairItem.ItemCodeDesc; // + _vm.RepairItem.StandardUnitOfMeasure;
             }
             StackPanel mfgSerLayout = new StackPanel()
             {
@@ -623,6 +624,7 @@ namespace TechDashboard.WPF
             Grid.SetRowSpan(serviceAgreementGrid, 6);
 
             Grid stepGrid = new Grid();
+            stepGrid.Margin = new Thickness(10);
             stepGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             stepGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             stepGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });

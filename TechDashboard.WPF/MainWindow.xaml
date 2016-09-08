@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TechDashboard.WPF"
         mc:Ignorable="d"
-        Title="Tech Dashboard" Height="567.888" Width="673.607" Icon="td_sq_h8J_icon.ico">
+        Title="Tech Dashboard" Height="768" Width="1024" Icon="td_sq_h8J_icon.ico">
     <Grid>
         <DockPanel x:Name="dpMainMenu" HorizontalAlignment="Left" LastChildFill="False" Width="156" Background="#FF3498DB">
             <StackPanel >

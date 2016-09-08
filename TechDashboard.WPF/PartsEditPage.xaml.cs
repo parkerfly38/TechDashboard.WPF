@@ -325,18 +325,18 @@ namespace TechDashboard.WPF
                 Foreground = asbestos
             };
             _labelQuantityAvailable.SetBinding(ContentProperty, _vm.QtyAvailable);
-            amtsGrid.Children.Add(_labelQuantityAvailable);
-            Grid.SetColumn(_labelQuantityAvailable, 1);
-            Grid.SetRow(_labelQuantityAvailable, 1);
+            //amtsGrid.Children.Add(_labelQuantityAvailable);
+            //Grid.SetColumn(_labelQuantityAvailable, 1);
+            //Grid.SetRow(_labelQuantityAvailable, 1);
             Label labelAvailable = new Label()
             {
                 Content = "available",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
-            amtsGrid.Children.Add(labelAvailable);
-            Grid.SetColumn(labelAvailable, 2);
-            Grid.SetRow(labelAvailable, 1);
+            //amtsGrid.Children.Add(labelAvailable);
+            //Grid.SetColumn(labelAvailable, 2);
+            //Grid.SetRow(labelAvailable, 1);
 
             amtsGrid.Children.Add(labelUnitCost);
             Grid.SetColumn(labelUnitCost, 0);
@@ -462,23 +462,26 @@ namespace TechDashboard.WPF
 
         private void _pickerSerialNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
+            //_vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
         }
 
         private void _pickerWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
-            _vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
+            if (_pickerSerialNumber.SelectedIndex > -1)
+            {
+                _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                //_vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
+            }
 
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             ContentControl contentArea = (ContentControl)this.Parent;
-            if (_pageMode == PageMode.Add)
-            {
-                contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
-            }
+            //if (_pageMode == PageMode.Add)
+            //{
+            contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
+            //}
            
         }
 

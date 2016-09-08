@@ -164,13 +164,13 @@ namespace TechDashboard.WPF
             grid.Children.Add(labelActualDate);
             Grid.SetColumn(labelActualDate, 2);
             Grid.SetRow(labelActualDate, 1);
-            if (_vm.TimeEntryDetail != null)
+            if (_vm.ImportDetail != null)
             {
-                if (_vm.TimeEntryDetail.StartTime != null)
+                if (_vm.ImportDetail.StartTime != null)
                 {
                     Label labelActualStartTime = new Label()
                     {
-                        Content = _vm.TimeEntryDetail.StartTime,
+                        Content = _vm.ImportDetail.StartTime,
                         Foreground = asbestos
                     };
                     grid.Children.Add(labelActualStartTime);
@@ -178,11 +178,11 @@ namespace TechDashboard.WPF
                     Grid.SetRow(labelActualStartTime, 2);
                 }
 
-                if (_vm.TimeEntryDetail.EndTime != null)
+                if (_vm.ImportDetail.EndTime != null)
                 {
                     Label labelActualEndTime = new Label()
                     {
-                        Content = _vm.TimeEntryDetail.EndTime,
+                        Content = _vm.ImportDetail.EndTime,
                         Foreground = asbestos
                     };
                     grid.Children.Add(labelActualEndTime);
