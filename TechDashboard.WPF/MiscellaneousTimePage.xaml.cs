@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using TechDashboard.Models;
+using TechDashboard.Tools;
 using TechDashboard.ViewModels;
 using Xceed.Wpf.Toolkit;
 
@@ -321,9 +322,9 @@ namespace TechDashboard.WPF
 
             newTimeEntry.DepartmentNo = currentTechnician.TechnicianDeptNo;
             newTimeEntry.EmployeeNo = currentTechnician.TechnicianNo;
-            newTimeEntry.EndTime = ((DateTime)endTimePicker.Value).TimeOfDay.ToString();
+            newTimeEntry.EndTime = ((DateTime)endTimePicker.Value).TimeOfDay.ToSage100TimeString();
             newTimeEntry.IsModified = true;
-            newTimeEntry.StartTime = ((DateTime)startTimePicker.Value).TimeOfDay.ToString();
+            newTimeEntry.StartTime = ((DateTime)startTimePicker.Value).TimeOfDay.ToSage100TimeString();
             newTimeEntry.TransactionDate = (DateTime)transactionDatePicker.SelectedDate;
             newTimeEntry.WTNumber = currentTechnician.CurrentWTNumber;
             newTimeEntry.WTStep = currentTechnician.CurrentWTStep;

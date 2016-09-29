@@ -208,9 +208,13 @@ namespace TechDashboard.WPF
             };
 
             _editorWorkPerformed = new TextBox();
+            _editorWorkPerformed.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            _editorWorkPerformed.TextWrapping = TextWrapping.Wrap;
+            _editorWorkPerformed.VerticalAlignment = VerticalAlignment.Bottom;
             _editorWorkPerformed.Margin = new Thickness(30, 0, 30, 0);
             _editorWorkPerformed.VerticalAlignment = VerticalAlignment.Stretch;
             _editorWorkPerformed.MinHeight = 80;
+            _editorWorkPerformed.MaxHeight = _editorWorkPerformed.MinHeight;
             _editorWorkPerformed.AcceptsReturn = true;
             _editorWorkPerformed.AcceptsTab = true;
             _editorWorkPerformed.TextChanged += EditorWorkPerformed_TextChanged;

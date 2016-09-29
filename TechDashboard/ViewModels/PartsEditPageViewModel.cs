@@ -121,7 +121,7 @@ namespace TechDashboard.ViewModels
 
         public List<string> GetMfgSerialNumbersForPart()
         {
-            List<string> serialNumberList = App.Database.GetMfgSerialNumbersForItem(_partToEdit.PartItemCode, PartToEdit.Warehouse);
+            List<string> serialNumberList = App.Database.GetMfgSerialNumbersForItem(_partToEdit.PartItemCode, PartToEdit.Warehouse, _workTicket.SalesOrderNo, _workTicket.WTNumber, _workTicket.WTStep);
 
             return serialNumberList;
         }

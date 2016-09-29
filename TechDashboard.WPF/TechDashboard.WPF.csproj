@@ -103,8 +103,9 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Rkl.Erp.Sage.Sage100.TableObjects">
-      <HintPath>..\..\Tech Dashboard\ExternalReferences\Rkl.Erp.Sage.Sage100.TableObjects.dll</HintPath>
+    <Reference Include="Rkl.Erp.Sage.Sage100.TableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ExternalReferences\Rkl.Erp.Sage.Sage100.TableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Saleslogix.SData.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ca62383dd1d25f65, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetSDataClient.2.0.1.1556\lib\net40-client\Saleslogix.SData.Client.dll</HintPath>

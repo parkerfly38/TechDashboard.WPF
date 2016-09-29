@@ -242,16 +242,41 @@ namespace TechDashboard.Data
             return equipmentAsset;
         }
 
-        public List<string> GetMfgSerialNumbersForItem(string itemCode, string wareHouseCode)
+        public List<string> GetMfgSerialNumbersForItem(string itemCode, string wareHouseCode, string SalesOrderNo, string WTNumber, string WTStep)
         {
-            //List<string> mfgSeialNumberList =
-            //    _database.Table<JT_EquipmentAsset>().Where(
-            //        ea => (ea.ItemCode == itemCode)
-            //    ).GroupBy(t => t.MfgSerialNo).Select(group => group.First().MfgSerialNo).ToList();
+            
+            //first let's get the sales order part valuation field vis a vis Chris' instructions
+            // if it doesn't have one I'm defaulting to serial
+            string ValuationField = _database.Table<SO_SalesOrderDetail>().Where(
+                    x => x.SalesOrderNo == SalesOrderNo
+                    && x.ItemCode == itemCode
+                    && x.WarehouseCode == wareHouseCode
+                    && x.JT158_WTNumber == WTNumber
+                    && x.JT158_WTPart == "Y"
+                    && x.JT158_WTStep == WTStep
+                ).Select(x => x.Valuation).FirstOrDefault();
 
-            List<string> serialNumbers = _database.Table<IM_ItemCost>().Where(
-                    x => x.ItemCode == itemCode && x.WarehouseCode == wareHouseCode)
-                    .GroupBy(y => y.LotSerialNo).Select(group => group.First().LotSerialNo).ToList();
+            //
+            List<string> serialNumbers = new List<string>();
+
+            if (ValuationField == "5")
+            {
+                serialNumbers = _database.Table<IM_ItemCost>().Where(
+                        x => x.ItemCode == itemCode 
+                        && x.WarehouseCode == wareHouseCode
+                        && x.TierType == "3"
+                        && (x.QuantityOnHand - x.QuantityCommitted) <= 0)
+                        .GroupBy(y => y.LotSerialNo).Select(group => group.First().LotSerialNo).ToList();
+            } else
+            {
+                serialNumbers = _database.Table<IM_ItemCost>().Where(
+                        x => x.ItemCode == itemCode
+                        && x.WarehouseCode == wareHouseCode
+                        && x.TierType == "4"
+                        && (x.QuantityOnHand - x.QuantityCommitted) <= 0)
+                        .GroupBy(y => y.LotSerialNo).Select(group => group.First().LotSerialNo).ToList();
+            }
+
 
             if (serialNumbers.Count() == 0)
             {

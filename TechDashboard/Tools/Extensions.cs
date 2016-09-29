@@ -48,6 +48,14 @@ namespace TechDashboard.Tools
         }
     }
 
+    public static class TimeSpanExtensions
+    {
+        public static string ToSage100TimeString(this TimeSpan timeSpanObj)
+        {
+            return new DateTime(timeSpanObj.Ticks).ToString("HHmm");
+        }
+    }
+
     public static class StringExtensions
     {
         public static TimeSpan ToSage100TimeSpan(this string sage100Time)

@@ -158,7 +158,7 @@ namespace TechDashboard.WPF
 
             Label labelActualDate = new Label()
             {
-                Content = _vm.TechnicianScheduleDetail.ScheduleDate.ToShortDateString(),
+                Content = _vm.TimeEntryDetail.TransactionDate.ToShortDateString(),
                 Foreground = asbestos
             };
             grid.Children.Add(labelActualDate);
@@ -170,7 +170,7 @@ namespace TechDashboard.WPF
                 {
                     Label labelActualStartTime = new Label()
                     {
-                        Content = _vm.ImportDetail.StartTime,
+                        Content = _vm.TimeEntryDetail.StartTime,
                         Foreground = asbestos
                     };
                     grid.Children.Add(labelActualStartTime);
@@ -182,7 +182,7 @@ namespace TechDashboard.WPF
                 {
                     Label labelActualEndTime = new Label()
                     {
-                        Content = _vm.ImportDetail.EndTime,
+                        Content = _vm.TimeEntryDetail.EndTime,
                         Foreground = asbestos
                     };
                     grid.Children.Add(labelActualEndTime);

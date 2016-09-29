@@ -340,12 +340,12 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td>{5691AE29-4ACC-4DD1-9174-8BC4E1C2200E}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sdata.client.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>{40461544-BD5E-4C86-B7B9-17C8D85A043A}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sage100.tableob</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>SQLitePCL.raw.dll</td><td>{2FB50FA4-C58E-4BD8-B7D1-3791B537C893}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlitepcl.raw.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>SQLite_net.dll</td><td>{0A482805-34CD-49A2-8673-EB7B553DE50F}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite_net.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td>{8962EAAF-4E40-4E20-9D2F-C3E637102F78}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sdata.client.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>{91E7768A-87C6-4618-A3AF-9F3E57A4493B}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sage100.tableob</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>SQLitePCL.raw.dll</td><td>{49DD95BD-E78F-4714-B0AD-5D3439C50522}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlitepcl.raw.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>SQLite_net.dll</td><td>{E6319B84-144E-470F-A67A-CED72FC66C03}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite_net.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TechDashboard.WPF.Primary_output</td><td>{9E8B6272-76F3-44F6-959D-33EA22D96D0E}</td><td>INSTALLDIR</td><td>2</td><td/><td>techdashboard.wpf.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>sqlite3.dll</td><td>{34522621-A89C-402E-9DE5-6EFB97EEF728}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite3.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>sqlite3.dll</td><td>{284987AC-2866-4400-B397-281056A3D374}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite3.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1896,11 +1896,11 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>rkl.erp.sage.sage100.tableob</td><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>1</td><td/></row>
-		<row><td>rkl.erp.sage.sdata.client.dl</td><td>Rkl.Erp.Sage.SData.Client.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.SData.Client.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.SData.Client.dll</td><td>1</td><td/></row>
-		<row><td>sqlite3.dll</td><td>sqlite3.dll</td><td>sqlite3.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\x86\sqlite3.dll</td><td>1</td><td/></row>
-		<row><td>sqlite_net.dll</td><td>SQLite_net.dll</td><td>SQLITE~1.DLL|SQLite-net.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLite-net.dll</td><td>1</td><td/></row>
-		<row><td>sqlitepcl.raw.dll</td><td>SQLitePCL.raw.dll</td><td>SQLITE~1.DLL|SQLitePCL.raw.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLitePCL.raw.dll</td><td>1</td><td/></row>
+		<row><td>rkl.erp.sage.sage100.tableob</td><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>1</td><td/></row>
+		<row><td>rkl.erp.sage.sdata.client.dl</td><td>Rkl.Erp.Sage.SData.Client.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.SData.Client.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.SData.Client.dll</td><td>1</td><td/></row>
+		<row><td>sqlite3.dll</td><td>sqlite3.dll</td><td>sqlite3.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\x86\sqlite3.dll</td><td>1</td><td/></row>
+		<row><td>sqlite_net.dll</td><td>SQLite_net.dll</td><td>SQLITE~1.DLL|SQLite-net.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLite-net.dll</td><td>1</td><td/></row>
+		<row><td>sqlitepcl.raw.dll</td><td>SQLitePCL.raw.dll</td><td>SQLITE~1.DLL|SQLitePCL.raw.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLitePCL.raw.dll</td><td>1</td><td/></row>
 		<row><td>techdashboard.wpf.primary_ou</td><td>TechDashboard.WPF.Primary_output</td><td>TechDashboard.WPF.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TechDashboard.WPF&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2043,12 +2043,12 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td/><td/><td>_61878A66_BEF0_424E_B918_79D6C2E62979_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td/><td/><td>_372DF8E1_046B_4375_AEBF_17371708834F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>SQLitePCL.raw.dll</td><td/><td/><td>_78712A6B_65E6_48CC_94E7_44E2C86691E8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>SQLite_net.dll</td><td/><td/><td>_73CE9DA3_E6E9_4FC1_BC46_F2A82F82D97B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td/><td/><td>_5F6440C5_DB56_4C5E_95A9_8F524AEE4F4E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td/><td/><td>_01B1FDF8_03FC_49E4_80FE_121C071C725A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>SQLitePCL.raw.dll</td><td/><td/><td>_83A08049_28AD_4BBB_A0C2_B011329EADEC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>SQLite_net.dll</td><td/><td/><td>_3C934ED5_CA2F_4041_8A88_5D653221C77F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TechDashboard.WPF.Primary_output</td><td/><td/><td>_E0D867C0_F003_4488_92FC_591A0609B898_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>sqlite3.dll</td><td/><td/><td>_706C2A57_B1B3_4623_926F_965D00FD1479_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>sqlite3.dll</td><td/><td/><td>_9ACB6483_FA75_4D38_B1E3_7448F0909DCA_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -3992,7 +3992,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{670E8FDC-3C4D-4B69-8B70-B87F31CD0BF0}</td></row>
 		<row><td>ISUSSignature</td><td>{39F65927-0ED4-4C24-BB47-DAB6063E6CED}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewSystemSearch,viewRelease,viewAppFiles,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewTextMessages,viewShortcuts,viewIniFiles</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewSystemSearch,viewRelease,viewAppFiles,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewTextMessages,viewShortcuts,viewIniFiles,viewUpgradePaths</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4370,7 +4370,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]TechDashboard.WPF.Primary output</td><td/></row>
 		<row><td>ProductCode</td><td>{0E028CE2-641E-4A56-BE7D-D98EB96E1BA1}</td><td/></row>
 		<row><td>ProductName</td><td>Tech Dashboard</td><td/></row>
-		<row><td>ProductVersion</td><td>1.1</td><td/></row>
+		<row><td>ProductVersion</td><td>1.3</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

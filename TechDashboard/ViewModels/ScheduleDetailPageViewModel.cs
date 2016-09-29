@@ -33,6 +33,18 @@ namespace TechDashboard.ViewModels
 			get { return _timeEntryDetail; }
 		}
 
+        protected JT_DailyTimeEntry _clockedInEntry;
+        public JT_DailyTimeEntry ClockedInEntry
+        {
+            get { return _clockedInEntry; }
+        }
+
+        protected JT_DailyTimeEntry _clockedOutEntry;
+        public JT_DailyTimeEntry ClockedOutEntry
+        {
+            get { return _clockedOutEntry; }
+        }
+
         //protected JT_TransactionImportDetail _timeEntryActual;
         //public JT
 
@@ -48,6 +60,7 @@ namespace TechDashboard.ViewModels
 			_technicianScheduleDetail = App.Database.GetTechnicianScheduleDetailFromDB().Where(x => x.WTNumber == _scheduleDetail.WorkTicketNumber
 				&& x.WTStep == _scheduleDetail.WorkTicketStep).FirstOrDefault();
 			_timeEntryDetail = App.Database.GetTimeEntryData(scheduleDetail);
+
             _timportDetail = App.Database.GetCurrentExport().Where(x => x.RecordType == "L" && x.WTNumber == _scheduleDetail.WorkTicketNumber
                 && x.WTStep == _scheduleDetail.WorkTicketStep && x.SalesOrderNo == _scheduleDetail.SalesOrderNumber).FirstOrDefault();
 		}

@@ -484,6 +484,7 @@ namespace TechDashboard.WPF
 
             TextBox txtMfgSerialNo = new TextBox();
             txtMfgSerialNo.Text = _vm.WorkTicket.DtlMfgSerialNo;
+            txtMfgSerialNo.IsEnabled = false; //until we get that functionality sorted out
             txtMfgSerialNo.TextChanged += async delegate (object sender, TextChangedEventArgs e)
             {
                 _vm.WorkTicket.DtlMfgSerialNo = ((TextBox)sender).Text;

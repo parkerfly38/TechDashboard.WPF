@@ -76,6 +76,7 @@ namespace TechDashboard.Data
             newTimeEntry.WTNumber = scheduledAppointment.WorkTicketNumber;
             newTimeEntry.WTStep = scheduledAppointment.WorkTicketStep;
             newTimeEntry.StartTime = startDateTime.ToSage100TimeString();
+            newTimeEntry.TransactionDate = startDateTime;
             newTimeEntry.IsModified = true;
 
             rows = _database.Insert(newTimeEntry);
@@ -137,6 +138,7 @@ namespace TechDashboard.Data
             return false;
         }
 
+
         #endregion
 
         #region Clock Out
@@ -178,12 +180,21 @@ namespace TechDashboard.Data
                     hoursBilled = (stopDateTime - startDateTime).TotalHours;
                 }
 
+                // update time entry first
+                JT_DailyTimeEntry currentTimeEntry = GetClockedInTimeEntry(technician);
+                if (currentTimeEntry != null)
+                {
+                    currentTimeEntry.EndTime = stopDateTime.ToSage100TimeString();
+                    _database.Update(currentTimeEntry);
+                }
+
                 erpTech.CurrentStartDate = new DateTime();
                 erpTech.CurrentStartTime = null;
                 erpTech.CurrentSalesOrderNo = null;
                 erpTech.CurrentWTNumber = null;
                 erpTech.CurrentWTStep = null;
                 rows = _database.Update(erpTech);
+                
 
                 // insert the JT_TransactionImportDetail record
                 JT_TransactionImportDetail importDetail = new JT_TransactionImportDetail();
@@ -283,7 +294,7 @@ namespace TechDashboard.Data
                         x.DepartmentNo == technician.TechnicianDeptNo &&
                         x.WTNumber == scheduledAppointment.WorkTicketNumber &&
                         x.WTStep == scheduledAppointment.WorkTicketStep
-                    ).FirstOrDefault();
+                    ).OrderByDescending(x => x.TransactionDate).FirstOrDefault();
                 }
             }
 
