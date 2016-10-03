@@ -1,0 +1,119 @@
+﻿using Rkl.Erp.Sage.Sage100.TableObjects;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using TechDashboard.Data;
+using TechDashboard.ViewModels;
+
+namespace TechDashboard.WPF
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class SettingsPage : Window
+    {
+        public event EventHandler SettingsSaved;
+        public void OnSettingsSaved(object sender, EventArgs e)
+        {
+            if (SettingsSaved != null)
+            {
+                SettingsSaved(sender, e);
+            }
+        }
+
+        AppSettingsPageViewModel _vm;
+
+        public SettingsPage()
+        {
+            InitializeComponent();
+            _vm = new AppSettingsPageViewModel();
+            this.DataContext = _vm;
+            //textURL.SetBinding(TextBox.TextProperty, "SDataUrl");
+            //textUserID.SetBinding(TextBox.TextProperty, "SDataUserId");
+            //textDaysAfter.SetBinding(TextBox.TextProperty, "ScheduleDaysAfter");
+            //textDaysBefore.SetBinding(TextBox.TextProperty, "ScheduleDaysBefore");
+            btnSaveAppSettings.Click += BtnSaveAppSettings_Click;
+            passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
+            cbxIsUsingHttps.Checked += CbxIsUsingHttps_Checked;
+            cbxIsUsingHttps.Unchecked += CbxIsUsingHttps_Unchecked;
+            //cbxIsUsingHttps.SetBinding(CheckBox.IsCheckedProperty, "IsUsingHttps");
+            //labelHttpText.Content = (_vm.IsUsingHttps ? @"https://" : @"http://");
+            this.Closing += SettingsPage_Closed;
+
+            //add a modicum of version checking
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            decimal versionNo = Convert.ToDecimal(version.Substring(0, 3));
+            lblVersion.Content = "Version " + versionNo.ToString();
+        }
+
+        private void SettingsPage_Closed(object sender, EventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+        }
+
+        private void CbxIsUsingHttps_Unchecked(object sender, RoutedEventArgs e)
+        {
+            labelHttpText.Content = @"http://";
+        }
+
+        private void CbxIsUsingHttps_Checked(object sender, RoutedEventArgs e)
+        {
+            labelHttpText.Content = @"https://";
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            _vm.SDataPassword = passwordBox.Password;
+        }
+
+        private async void BtnSaveAppSettings_Click(object sender, RoutedEventArgs e)
+        {
+            OnSettingsSaved(sender, e);
+            btnSaveAppSettings.IsEnabled = false;
+            btnSaveAppSettings.Content = "SAVING...";
+            _vm.SaveAppSettings();
+            //check for valid technician
+            string techno = (_vm.LoggedInTechnicianNo != null) ? _vm.LoggedInTechnicianNo : "";
+            string techdeptno = _vm.LoggedInTechnicianDeptNo != null ? _vm.LoggedInTechnicianDeptNo : "";
+            JT_Technician technician = App.Database.GetTechnician(_vm.LoggedInTechnicianDeptNo, _vm.LoggedInTechnicianNo);
+            if ((techdeptno.Length > 0 && techno.Length > 0) && technician == null)
+            {
+                var result = MessageBox.Show("The technician you entered is not valid.  Please check your entries and try again.", "Invalid Technician", MessageBoxButton.OK);
+
+                btnSaveAppSettings.IsEnabled = true;
+                btnSaveAppSettings.Content = "SAVE SETTINGS";
+                return;
+            }
+
+            bool hasValidSetup = await App.Database.HasValidSetup();
+            if (!hasValidSetup)
+            {
+                var result = MessageBox.Show("These settings do not appear to work.  Please check your Internet connection or verify your settings.", "SETTINGS VERIFICATION FAILED", MessageBoxButton.OK);
+
+                btnSaveAppSettings.IsEnabled = true;
+                btnSaveAppSettings.Content = "SAVE SETTINGS";
+                return;
+            }
+            else
+            {
+                App.Database.CreateGlobalTables();
+                this.Close();
+            }
+        }
+    }
+}

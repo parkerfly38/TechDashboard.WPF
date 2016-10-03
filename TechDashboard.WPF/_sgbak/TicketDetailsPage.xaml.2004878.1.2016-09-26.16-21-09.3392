@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="TechDashboard.WPF.TicketDetailsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TechDashboard.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="500">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="9pt" />
+            <Setter Property="Foreground" Value="#7F8C8D" />
+        </Style>
+        <Style TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="0,10"></Setter>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontSize" Value="9pt" />
+            <Setter Property="Foreground" Value="#7F8C8D" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Padding" Value="10" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="stackPanelMain" Background="White" Margin="0,0,0,67" HorizontalAlignment="Stretch" CanVerticallyScroll="True"/>
+        </ScrollViewer>
+        <Rectangle Fill="#FF95A5A6" Stroke="#FF95A5A6" HorizontalAlignment="Stretch" Height="67" VerticalAlignment="Bottom" />
+        <StackPanel Margin="0,433,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="btnClockInOut" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="44" Width="61" HorizontalAlignment="Center" VerticalAlignment="Stretch" RenderTransformOrigin="0.556,0.231" Margin="0">
+                    <Image Source="Resources\time.png" Height="32" Margin="8,0,9,0"/>
+                    <TextBlock x:Name="txtClockInOut" FontWeight="Bold" Margin="-21,0,-21,0" VerticalAlignment="Bottom" TextAlignment="Center" FontSize="9.333" Foreground="White" Height="17" ><Run Text="CLOCK IN"/></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnNotes" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="45" Width="49" HorizontalAlignment="Center" RenderTransformOrigin="0.556,0.231">
+                    <Image Source="Resources\clipboard.png" Height="32" Width="32" HorizontalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" Margin="0,0,0,0" TextAlignment="Center" FontSize="9.333" Foreground="White" Height="18"><Run Text="NOTES" Foreground="White" /></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCustomer" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="45" Width="56" HorizontalAlignment="Center" RenderTransformOrigin="0.556,0.231">
+                    <Image Source="Resources\user.png" Height="32" Width="32" HorizontalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" Margin="0" TextAlignment="Center" FontSize="9.333" Height="14" Foreground="White"><Run Text="CUSTOMER" Foreground="White" /></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnSchedule" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="45" Width="49" HorizontalAlignment="Center" RenderTransformOrigin="0.556,0.231">
+                    <Image Source="Resources\viewdetails.png" Height="32" Width="32" HorizontalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" Margin="0" TextAlignment="Center" FontSize="9.333" Height="13" Foreground="White"><Run Text="SCHEDULE" Foreground="White" /></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnMap" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="45" Width="49" HorizontalAlignment="Center" RenderTransformOrigin="0.556,0.231">
+                    <Image Source="Resources\mapmarker.png" Height="32" Width="32" HorizontalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" Margin="0" TextAlignment="Center" FontSize="9.333" Foreground="White" Height="13" ><Run Text="MAP"/></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnParts" Background="{x:Null}" HorizontalAlignment="Center" BorderBrush="{x:Null}" Foreground="White" Width="56" Margin="0,0,0,0" Height="67" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="45" Width="49" HorizontalAlignment="Center" RenderTransformOrigin="0.556,0.231">
+                    <Image Source="Resources\cog.png" Height="32" Width="32" HorizontalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" Margin="0" TextAlignment="Center" FontSize="9.333" Height="14" Foreground="White"><Run Text="PARTS" Foreground="White" /></TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

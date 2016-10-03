@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="TechDashboard.WPF.SchedulePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TechDashboard.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!--Set DataGrid Cell padding -->
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Padding" Value="30" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Padding="{TemplateBinding Padding}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid x:Name="gridSchedule" AutoGenerateColumns="False" AlternatingRowBackground="White" 
+                  HeadersVisibility="None"
+                  GridLinesVisibility="None" 
+                  VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Stretch" Margin="0,153,0,0">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush x:Name="BaseColor" Color="#ECF0F1"></SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding ServiceTicketNumber}" FontWeight="Bold" FontSize="18" Foreground="#7f8c8d"></TextBlock>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding SchedDateStartTime}" FontWeight="Bold" FontSize="16" Foreground="#7f8c8d"></TextBlock>
+                                        <TextBlock Text="{Binding NameLocPhone}" FontWeight="Bold" FontSize="16" Foreground="#7f8c8d"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Image Source="{Binding CurrentImageFileName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Rectangle Height="153" VerticalAlignment="Top" Fill="#3498DB" Stroke="#FF3498DB" HorizontalAlignment="Stretch" />
+        <Label x:Name="labelTitle" Content="SELECT TICKET" Height="34" Foreground="White" Margin="83,17,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <DatePicker x:Name="filterStartDate" Margin="10,51,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultStartDate}" SelectedDate="{Binding DefaultStartDate}"/>
+        <DatePicker x:Name="filterEndDate" Margin="10,80,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultEndDate}" SelectedDate="{Binding DefaultEndDate}"/>
+        <Button x:Name="buttonFilter" Margin="10,112,10,0" VerticalAlignment="Top" Background="#FF2ECC71" Foreground="White" BorderBrush="#FF2ECC71" Content="FILTER TICKETS BY DATE" FontWeight="Bold" Click="buttonFilter_Click" Height="33" FontSize="16"/>
+    </Grid>
+</UserControl>

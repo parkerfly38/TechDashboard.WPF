@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="DotNetSDataClient" version="2.0.1.1556" targetFramework="net452" />
+  <package id="EntityFramework" version="6.0.0" targetFramework="net452" />
+  <package id="Extended.Wpf.Toolkit" version="2.7" targetFramework="net452" />
+  <package id="Microsoft.Maps.MapControl.WPF" version="1.0.0.3" targetFramework="net452" />
+  <package id="Newtonsoft.Json" version="8.0.3" targetFramework="net452" />
+  <package id="RestSharp" version="105.2.3" targetFramework="net452" />
+  <package id="sqlite-net-pcl" version="1.1.1" targetFramework="net452" />
+  <package id="SQLitePCL.raw" version="0.8.6" targetFramework="net452" />
+</packages>
