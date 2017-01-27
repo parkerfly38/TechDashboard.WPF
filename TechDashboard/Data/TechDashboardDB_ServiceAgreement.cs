@@ -8,13 +8,54 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_ServiceAgreement.cs
+     * 12/01/2016 DCH Exclude Service Agreements with null division
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region Service Agreement Header
 
         public void FillServiceAgreementHeaderTable()
         {
-            FillLocalTable<JT_ServiceAgreementHeader>();  // puke filter
+            // Fill Service Agreement Details based on Tickets
+            //FillLocalTable<JT_ServiceAgreementHeader>();  // TODO filter
+
+            StringBuilder sbH = new StringBuilder();
+
+            List<JT_TechnicianScheduleDetail> scheduledTickets = GetTechnicianScheduleDetailFromDB();
+
+           List<JT_WorkTicket> tickets = GetWorkTicketsFromDB();
+            List<SO_SalesOrderHeader> sohs = GetSalesOrderHeadersFromDB();
+
+            for (int i = 0; i < scheduledTickets.Count; i++)
+            {
+                JT_WorkTicket ticket = tickets.FirstOrDefault(s => s.SalesOrderNo == scheduledTickets[i].SalesOrderNo &&
+                    s.WTNumber == scheduledTickets[i].WTNumber && s.WTStep == "000" && s.HdrServiceContractCode != null);
+                if (ticket != null)
+                {
+                    SO_SalesOrderHeader soHdr = sohs.FirstOrDefault(s => s.SalesOrderNo == scheduledTickets[i].SalesOrderNo);
+                    if (soHdr != null)
+                    {
+                        if (sbH.Length > 0)
+                        {
+                            sbH.Append(" or ");
+                        }
+                        sbH.Append("(ContractCode eq '");
+                        sbH.Append(ticket.HdrServiceContractCode);
+                        sbH.Append("' and CustomerNo eq '");
+                        sbH.Append(soHdr.CustomerNo);
+                        sbH.Append("' and ARDivisionNo eq '");
+                        sbH.Append(soHdr.ARDivisionNo);
+
+                        sbH.Append("')");
+                    }
+                }
+            }
+
+            FillLocalTable<JT_ServiceAgreementHeader>("where", sbH.ToString());
+            FillLocalTable<JT_ServiceAgreementDetail>("where", sbH.ToString());
+            FillLocalTable<JT_ServiceAgreementPMDetail>("where", sbH.ToString());
         }
 
         #endregion
@@ -63,7 +104,7 @@ namespace TechDashboard.Data
             {
                 serviceAgreementHeader =
                     _database.Table<JT_ServiceAgreementHeader>().Where(
-                        sah => (sah.ContractCode == workTicket.HdrServiceContractCode)
+                        sah => (sah.ContractCode == workTicket.HdrServiceContractCode && sah.ARDivisionNo != null)
                     ).FirstOrDefault();
 
                 if (serviceAgreementHeader != null)

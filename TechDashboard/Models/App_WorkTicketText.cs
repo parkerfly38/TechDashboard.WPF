@@ -4,6 +4,10 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_WorkTicketText.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class App_WorkTicketText
     {
         public bool _isModified;
@@ -24,7 +28,7 @@ namespace TechDashboard.Models
         }
 
         /// <summary>
-        /// puke
+        /// TODO
         /// </summary>
         public bool IsModified
         {

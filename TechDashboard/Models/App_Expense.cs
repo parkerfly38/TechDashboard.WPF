@@ -8,6 +8,10 @@ using SQLite;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_Expense.cs
+     * 12/01/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class App_Expense : INotifyPropertyChanged
     {
         protected int _id;
@@ -128,7 +132,11 @@ namespace TechDashboard.Models
                 Date = importDetail.TransactionDateAsDateTime;
             }
             Category = null;
-            BillingDescription = importDetail.BillingDescription;
+
+            // dch rkl 12/09/2016 per Chris, use ItemCodeDesc
+            //BillingDescription = importDetail.BillingDescription;
+            BillingDescription = importDetail.ItemCodeDesc;
+
             ChargeCode = importDetail.ItemCode;
             Quantity = importDetail.QuantityUsed;
             UnitOfMeasure = importDetail.UnitOfMeasure;
@@ -156,7 +164,7 @@ namespace TechDashboard.Models
                 UnitPrice = double.Parse(brokenDescription[2]);
             }
 
-            UnitCost = 0; // puke
+            UnitCost = 0; // TODO
             IsReimbursable = false;
             IsChargeableToCustomer = false;
         }

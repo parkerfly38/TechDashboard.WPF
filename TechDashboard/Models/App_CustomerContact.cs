@@ -68,14 +68,29 @@ namespace TechDashboard.Models
 
         public App_CustomerContact(AR_CustomerContact contact)
         {
-            _arDivisionNo = contact.ARDivisionNo;
-            _customerNo = contact.CustomerNo;
-            _contactCode = contact.ContactCode;
-            _contactName = contact.ContactName;
-            _telephoneNo1 = contact.TelephoneNo1;
-            _telephoneExt1 = contact.TelephoneExt1;
-            _telephoneNo2 = contact.TelephoneNo2;
-            _telephoneExt2 = contact.TelephoneExt2;
+            // dch rkl 10/31/2016 Make Sure Contact is not Null
+            if (contact != null)
+            {
+                _arDivisionNo = contact.ARDivisionNo;
+                _customerNo = contact.CustomerNo;
+                _contactCode = contact.ContactCode;
+                _contactName = contact.ContactName;
+                _telephoneNo1 = contact.TelephoneNo1;
+                _telephoneExt1 = contact.TelephoneExt1;
+                _telephoneNo2 = contact.TelephoneNo2;
+                _telephoneExt2 = contact.TelephoneExt2;
+            }
+            else
+            {
+                _arDivisionNo = "";
+                _customerNo = "";
+                _contactCode = "";
+                _contactName = "";
+                _telephoneNo1 = "";
+                _telephoneExt1 = "";
+                _telephoneNo2 = "";
+                _telephoneExt2 = "";
+            }
         }
     }
 }

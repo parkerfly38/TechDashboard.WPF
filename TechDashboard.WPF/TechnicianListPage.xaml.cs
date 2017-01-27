@@ -76,7 +76,8 @@ namespace TechDashboard.WPF
 
         private async void GridTechnician_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            bool hasValidSetup = await App.Database.HasValidSetup();
+            //bool hasValidSetup = await App.Database.HasValidSetup();
+            bool hasValidSetup = App.Database.HasValidSetup();
             if (!hasValidSetup)
             {
                 var result = MessageBox.Show("Your connection settings appear to be invalid.  Check your Internet Connection or verify your settings.", "CANNOT CONNECT TO SERVER", MessageBoxButton.OK);
@@ -92,7 +93,7 @@ namespace TechDashboard.WPF
             mainWindow.btnHistory.Visibility = Visibility.Visible;
             mainWindow.btnMiscTime.Visibility = Visibility.Visible;
             mainWindow.btnExpenses.Visibility = Visibility.Visible;
-            mainWindow.btnSMS.Visibility = Visibility.Visible;
+            //mainWindow.btnSMS.Visibility = Visibility.Visible;
             mainWindow.btnSync.Visibility = Visibility.Visible;
             mainWindow.Hide();
             Models.App_Technician appTechnician = (Models.App_Technician)gridTechnician.SelectedItem;

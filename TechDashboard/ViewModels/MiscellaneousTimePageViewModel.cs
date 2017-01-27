@@ -7,9 +7,15 @@ using System.Runtime.CompilerServices;
 
 namespace TechDashboard.ViewModels
 {
-	public class MiscellaneousTimePageViewModel
+    /*********************************************************************************************************
+     * HistoryPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
+    public class MiscellaneousTimePageViewModel
     {
-		protected App_Technician _appTechnician;
+        #region properties
+
+        protected App_Technician _appTechnician;
 		public App_Technician AppTechnician {
 			get {
 				return _appTechnician;
@@ -40,17 +46,38 @@ namespace TechDashboard.ViewModels
 			set { _dailyTimeEntry = value; }
 		}
 
-		public MiscellaneousTimePageViewModel ()
-		{
-			_appTechnician = new App_Technician(App.Database.GetCurrentTechnicianFromDb());
-			_jtearningscode = App.Database.GetEarningsCodesFromDBforMisc();
-			_timeEntries = App.Database.GetTimeEntriesByTech(_appTechnician.TechnicianNo);
+        #endregion
 
-		}
+        public MiscellaneousTimePageViewModel ()
+		{
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _appTechnician = new App_Technician(App.Database.GetCurrentTechnicianFromDb());
+			    _jtearningscode = App.Database.GetEarningsCodesFromDBforMisc();
+			    _timeEntries = App.Database.GetTimeEntriesByTech(_appTechnician.TechnicianNo);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.MiscellaneousTimePageViewModel()");
+            }
+        }
 		public void SaveDailyTimeEntry(double hoursWorked)
 		{
-			App.Database.SaveMiscellaneousTimeEntry(_dailyTimeEntry, hoursWorked);
-            TimeEntries = App.Database.GetTimeEntriesByTech(_appTechnician.TechnicianNo);
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                App.Database.SaveMiscellaneousTimeEntry(_dailyTimeEntry, hoursWorked);
+                TimeEntries = App.Database.GetTimeEntriesByTech(_appTechnician.TechnicianNo);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.MiscellaneousTimePageViewModel.SaveDailyTimeEntry()");
+            }
         }
         
 

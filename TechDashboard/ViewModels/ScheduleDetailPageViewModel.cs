@@ -15,7 +15,11 @@ using TechDashboard.Services;
 
 namespace TechDashboard.ViewModels
 {
-	public class ScheduleDetailPageViewModel
+    /*********************************************************************************************************
+     * ScheduleDetailPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
+    public class ScheduleDetailPageViewModel
 	{
 		protected App_ScheduledAppointment _scheduleDetail;
 		public App_ScheduledAppointment ScheduleDetail
@@ -56,14 +60,24 @@ namespace TechDashboard.ViewModels
 
 		public ScheduleDetailPageViewModel(App_ScheduledAppointment scheduleDetail)
 		{
-			_scheduleDetail = scheduleDetail;
-			_technicianScheduleDetail = App.Database.GetTechnicianScheduleDetailFromDB().Where(x => x.WTNumber == _scheduleDetail.WorkTicketNumber
-				&& x.WTStep == _scheduleDetail.WorkTicketStep).FirstOrDefault();
-			_timeEntryDetail = App.Database.GetTimeEntryData(scheduleDetail);
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _scheduleDetail = scheduleDetail;
+			    _technicianScheduleDetail = App.Database.GetTechnicianScheduleDetailFromDB().Where(x => x.WTNumber == _scheduleDetail.WorkTicketNumber
+				    && x.WTStep == _scheduleDetail.WorkTicketStep).FirstOrDefault();
+			    _timeEntryDetail = App.Database.GetTimeEntryData(scheduleDetail);
 
-            _timportDetail = App.Database.GetCurrentExport().Where(x => x.RecordType == "L" && x.WTNumber == _scheduleDetail.WorkTicketNumber
-                && x.WTStep == _scheduleDetail.WorkTicketStep && x.SalesOrderNo == _scheduleDetail.SalesOrderNumber).FirstOrDefault();
-		}
+                _timportDetail = App.Database.GetCurrentExport().Where(x => x.RecordType == "L" && x.WTNumber == _scheduleDetail.WorkTicketNumber
+                    && x.WTStep == _scheduleDetail.WorkTicketStep && x.SalesOrderNo == _scheduleDetail.SalesOrderNumber).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.ScheduleDetailPageViewModel");
+            }
+        }
 	}
 }
 

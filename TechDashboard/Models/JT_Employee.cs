@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_Employee.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class JT_Employee
     {
-        // PUKE - Does not exist in jobops2015dev database!
+        // TODO - Does not exist in jobops2015dev database!
 
         /// <summary>
         /// Department Number -

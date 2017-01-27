@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_History.cs
+     * 12/01/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class App_History
     {
         protected App_WorkTicket _workTicket;
@@ -23,6 +27,19 @@ namespace TechDashboard.Models
             _equipmentAsset = equipmentAsset;
             _serviceAgreementHeader = serviceAgreementHeader;
             _serviceAgreementDetail = serviceAgreementDetail;
+            _transaction = new JT_Transaction()
+            {
+                Comment = transactionHistory.Comment,
+                HoursWorked = transactionHistory.HoursWorked,
+                ItemCode = transactionHistory.ItemCode,
+                ItemCodeDesc = transactionHistory.ItemCodeDesc,
+                QuantityUsed = transactionHistory.QuantityUsed,
+                RecordType = transactionHistory.RecordType,
+                SalesOrderNo = transactionHistory.SalesOrderNo,
+                TransactionDate = transactionHistory.TransactionDate,
+                WTNumber = transactionHistory.WTNumber,
+                WTStep = transactionHistory.WTStep
+            };
             _transactionHistory = transactionHistory;
             _laborText = laborText;
         }
@@ -35,9 +52,21 @@ namespace TechDashboard.Models
             _item = item;
             _equipmentAsset = equipmentAsset;
             _serviceAgreementHeader = serviceAgreementHeader;
-            _serviceAgreementDetail = serviceAgreementDetail;
+            if (serviceAgreementDetail == null)
+            {
+                _serviceAgreementDetail = new JT_ServiceAgreementDetail();
+            }
+            else {
+                _serviceAgreementDetail = serviceAgreementDetail;
+            }
             _transaction = transaction;
-            _laborText = laborText;
+            if (laborText == null)
+            {
+                _laborText = new JT_LaborText();
+            }
+            else {
+                _laborText = laborText;
+            }
         }
 
         /// <summary>
@@ -285,7 +314,7 @@ namespace TechDashboard.Models
             {
                 if (_transactionHistory != null)
                 {
-                    if (_transactionHistory.RecordType == "LD")
+                    if (_transactionHistory.RecordType == "LD" && _laborText != null)
                     {
                         return _laborText.BillingText;
                     }
@@ -296,7 +325,7 @@ namespace TechDashboard.Models
                 }
                 if (_transaction != null)
                 {
-                    if (_transaction.RecordType == "LD")
+                    if (_transaction.RecordType == "LD" && _laborText != null)
                     {
                         return _laborText.BillingText;
                     }

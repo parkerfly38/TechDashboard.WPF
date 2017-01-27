@@ -19,6 +19,19 @@ using System.Net;
 using RestSharp;
 using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    SyncPage
+ * Description: Sync Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels.
+ * 11/02/2016   DCH     Display message if sync fails; display message when sync is completed.
+ * 12/02/2016   DCH     Informational message text should not be bold.
+ * 01/20/2017   DCH     After database is refreshed, reset current technician based on the latest values pulled from JobOps    
+ * 01/24/2017   BK      Change language and such because it's so unclear now...not
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -45,17 +58,17 @@ namespace TechDashboard.WPF
             this.DataContext = _vm;
             Label labelUpdateAppData = new Label()
             {
-                Content = "REFRESH APP DATA",
+                Content = "REFRESH TECHNICIAN DASHBOARD DATA",
                 Foreground = asbestos,
                 FontWeight = FontWeights.Bold
             };
 
             TextBlock labelUpdateWarning = new TextBlock()
             {
-                Text = "This will refresh the data on your application, using the time frame that can be adjusted in Settings.  It requires either mobile data or WiFi connectivity.",
+                Text = "Select the Technician Dashboard Data button to refresh the Technician Dashboard data.  Access SETTINGS to specifiy a time range.  The refresh process requires a mobile data or WiFi connection.",
                 TextWrapping = TextWrapping.Wrap,
                 Foreground = asbestos,
-                FontWeight = FontWeights.Bold
+                //FontWeight = FontWeights.Bold   dch rkl 12/02/2016 this should not be bold
             };
 
             Button buttonUpdateData = new Button()
@@ -68,7 +81,7 @@ namespace TechDashboard.WPF
                 Margin = new Thickness(0,20,0,20)
             };
             //later, add check for connectivity and make this presentation conditional
-            buttonUpdateData.Content = "UPDATE APP DATA";
+            buttonUpdateData.Content = "REFRESH TECHNCIAN DASHBOARD DATA";
             buttonUpdateData.Click += ButtonUpdateData_Clicked;
 
             Rectangle separator = new Rectangle()
@@ -99,7 +112,7 @@ namespace TechDashboard.WPF
 
             TextBlock labelSendWarning = new TextBlock()
             {
-                Text = "This will send data from Tech Dashboard to JobOps.  This operations requires either mobile data or WiFi connections.",
+                Text = "Select the UPLOAD DATA button to send data from Technician Dashboard to JobOps/Sage 100c Manufacturing.  The sync process requires a mobile data or WiFi connection.",
                 TextWrapping = TextWrapping.Wrap,
                 Foreground = asbestos,
                 Margin = new Thickness(30, 10, 30, 0)
@@ -114,7 +127,7 @@ namespace TechDashboard.WPF
 
             Label labelSendContent = new Label()
             {
-                Content = "records awaiting sync.",
+                Content = "records awaiting upload.",
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Colors.Red)
             };
@@ -125,7 +138,7 @@ namespace TechDashboard.WPF
                 Foreground = new SolidColorBrush(Colors.Red),
                 Margin = new Thickness(30, 10, 30, 10)
             };
-            labelLastSyncDate.Content = _vm.LastSyncDate;
+            labelLastSyncDate.SetBinding(Label.ContentProperty, "LastSyncDate");
 
             Button buttonSendData = new Button()
             {
@@ -138,7 +151,7 @@ namespace TechDashboard.WPF
                 Margin = new Thickness(30, 10, 30, 10)
             };
             // same as bove, add check for connectivity and make this enabled conditional
-            buttonSendData.Content = "SYNC DATA";
+            buttonSendData.Content = "UPLOAD DATA";
             buttonSendData.Click += ButtonSendData_Clicked;
 
             Button buttonViewData = new Button()
@@ -165,7 +178,8 @@ namespace TechDashboard.WPF
                         FontWeight = FontWeights.Bold,
                         Foreground = new SolidColorBrush(Colors.White),
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
+                        VerticalAlignment = VerticalAlignment.Center,
+                        FontSize = 18       // dch rkl 10/26/2016
                     }
                 }
             };
@@ -207,7 +221,53 @@ namespace TechDashboard.WPF
             Button buttonSendData = (Button)sender;
             buttonSendData.IsEnabled = false;
             buttonSendData.Content = "SENDING DATA...";
-            _vm.syncWithServer();
+            
+            // dch rkl 11/02/2016 add try/catch to catch and display message if the sync fails
+            try
+            {
+
+                if (!App.Database.HasDataConnection())
+                {
+                    MessageBoxResult result = System.Windows.MessageBox.Show("No data connection presently, please check and try again.", "Connectivity Issue", MessageBoxButton.OK);
+                    if (result == MessageBoxResult.OK)
+                        return;
+                }
+                else
+                {
+                    // dch rkl 12/09/2016 return number failed and number successful
+                    int iSyncSuccess = 0;
+                    int iSyncFailed = 0;
+                    //_vm.syncWithServer();
+                    _vm.syncWithServer(ref iSyncSuccess, ref iSyncFailed);
+                    string syncMessage ="";
+                    if (iSyncFailed > 0 && iSyncSuccess > 0)
+                    {
+                        syncMessage = string.Format("{0} transactions synced successfully; {1} transactions failed during sync.", iSyncSuccess, iSyncFailed);
+                    }
+                    else if (iSyncSuccess > 0 && iSyncFailed == 0)
+                    {
+                        syncMessage = string.Format("{0} transactions synced successfully.", iSyncSuccess);
+                    }
+                    else if (iSyncSuccess == 0 && iSyncFailed > 0)
+                    {
+                        syncMessage = string.Format("{0} transactions failed during sync.", iSyncFailed);
+                    }
+                    else
+                    {
+                        syncMessage = "Sync completed successfully.";
+                    }
+
+                    // dch rkl 11/02/2016 display message when sync has completed
+                    //MessageBoxResult result = System.Windows.MessageBox.Show("Sync has completed successfully.", "Sync Completed", MessageBoxButton.OK);
+                    MessageBoxResult result = System.Windows.MessageBox.Show(syncMessage, "Sync Completed", MessageBoxButton.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show(String.Format("Sync failed with the following error: {0}",ex.ToString()), 
+                    "Sync Failed", MessageBoxButton.OK);
+            }
+
             buttonSendData.IsEnabled = true;
             buttonSendData.Content = "SYNC DATA";
         }
@@ -215,9 +275,19 @@ namespace TechDashboard.WPF
         void ButtonUpdateData_Clicked(object sender, EventArgs e)
         {
             JT_Technician currentTechnician = App.Database.GetCurrentTechnicianFromDb();
-            App.Database.CreateGlobalTables();
-            App.Database.SaveTechnicianAsCurrent(currentTechnician);
-            App.Database.CreateDependentTables(currentTechnician);
+            if (!App.Database.HasDataConnection())
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show("No data connection presently, please check and try again.", "Connectivity Issue", MessageBoxButton.OK);
+                if (result == MessageBoxResult.OK)
+                    return;
+            }
+            else {
+                App.Database.CreateGlobalTables(); 
+                // dch rkl 01/20/2017 After database is refreshed, reset current technician based on the latest values pulled from JobOps               
+                currentTechnician = App.Database.GetTechnician(currentTechnician.TechnicianDeptNo, currentTechnician.TechnicianNo);
+                App.Database.SaveTechnicianAsCurrent(currentTechnician);
+                App.Database.CreateDependentTables(currentTechnician);
+            }
             //App.Database.CreateDependentTables(currentTechnician);
         }
     }

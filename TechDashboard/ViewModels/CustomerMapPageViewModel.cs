@@ -13,6 +13,11 @@ using System.Xml;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * CustomerMapPageViewModel.cs
+     * 11/30/2016 DCH Add TODO
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
     public class CustomerMapPageViewModel
     {
         XmlDocument _customerLocation;
@@ -28,22 +33,42 @@ namespace TechDashboard.ViewModels
         //    get { return _customer; }
         //}
 
-        // puke
+        // TODO
         public CustomerMapPageViewModel()
         {
-            // puke
-            //_customer = App.Database.RetrieveCustomerFromCurrentWorkTicket();
-            SetCustomerLocationPin();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                SetCustomerLocationPin();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.CustomerMapPageViewModel()");
+            }
         }
 
         public CustomerMapPageViewModel(XmlDocument customerLocation)
         {
-            // puke
-            _customerLocation = customerLocation;
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _customerLocation = customerLocation;
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.CustomerMapPageViewModel(XmlDocument customerLocation)");
+            }
+
         }
 
         protected  void SetCustomerLocationPin()
         {
+            // TODO ??
+
             //Geocoder geoCoder = new Geocoder();
 
             //string xamarinAddress = "91 Oak Glen Dr, Pequea, PA 17565";

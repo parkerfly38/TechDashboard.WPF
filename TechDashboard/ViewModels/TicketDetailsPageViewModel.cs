@@ -15,8 +15,15 @@ using TechDashboard.Services;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * TicketDetailsPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
+
     public class TicketDetailsPageViewModel : INotifyPropertyChanged
     {
+        #region Properties
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -73,44 +80,81 @@ namespace TechDashboard.ViewModels
 			get { return _appTechnician; }
 		}
 
+        #endregion
+
         public TicketDetailsPageViewModel(App_ScheduledAppointment scheduledAppointment)
         {
-            _scheduledAppointment = scheduledAppointment;
-            _workTicket = App.Database.GetWorkTicket(_scheduledAppointment);
-             _customer = App.Database.GetAppCustomer(_workTicket);
-            _salesOrder = App.Database.GetSalesOrder(_workTicket, _customer);
-           
-			if (_workTicket.DtlRepairItemCode != null) {
-				_repairItem = App.Database.GetItemFromDB (_workTicket.DtlRepairItemCode);
-			} else {
-				_repairItem = new CI_Item ();
-			}
-			JT_Technician jt_technician = App.Database.GetCurrentTechnicianFromDb();
-			_appTechnician = new App_Technician(jt_technician);
-			AR_CustomerContact customerContact = App.Database.GetCustomerContact(_customer.ContactCode);
-			_customerContact = new App_CustomerContact(customerContact);
-        }
-
-        public TicketDetailsPageViewModel()
-        {
-            _scheduledAppointment = App.Database.RetrieveCurrentScheduledAppointment();
-
-            if (_scheduledAppointment != null)
+            // dch rkl 12/07/2016 catch exception
+            try
             {
+                _scheduledAppointment = scheduledAppointment;
                 _workTicket = App.Database.GetWorkTicket(_scheduledAppointment);
-                _customer = App.Database.GetAppCustomer(_salesOrderHeader.CustomerNo);
+                _customer = App.Database.GetAppCustomer(_workTicket);
                 _salesOrder = App.Database.GetSalesOrder(_workTicket, _customer);
+
                 if (_workTicket.DtlRepairItemCode != null)
                 {
                     _repairItem = App.Database.GetItemFromDB(_workTicket.DtlRepairItemCode);
                 }
-                else {
+                else
+                {
                     _repairItem = new CI_Item();
                 }
                 JT_Technician jt_technician = App.Database.GetCurrentTechnicianFromDb();
                 _appTechnician = new App_Technician(jt_technician);
-                AR_CustomerContact customerContact = App.Database.GetCustomerContact(_customer.ContactCode);
+
+                // dch rkl 10/31/2016 The Customer Contact comes from the Work Ticket
+                AR_CustomerContact customerContact;
+                if (_workTicket.HdrContactCode != null)
+                {
+                    customerContact = App.Database.GetCustomerContact(_workTicket.HdrContactCode);
+                }
+                else
+                {
+                    customerContact = App.Database.GetCustomerContact(_customer.ContactCode);
+                }
+                //AR_CustomerContact customerContact = App.Database.GetCustomerContact(_customer.ContactCode);
+
                 _customerContact = new App_CustomerContact(customerContact);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TicketDetailsPageViewModel(App_ScheduledAppointment scheduledAppointment)");
+            }
+        }
+
+        public TicketDetailsPageViewModel()
+        {
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _scheduledAppointment = App.Database.RetrieveCurrentScheduledAppointment();
+
+                if (_scheduledAppointment != null)
+                {
+                    _workTicket = App.Database.GetWorkTicket(_scheduledAppointment);
+                    _customer = App.Database.GetAppCustomer(_salesOrderHeader.CustomerNo);
+                    _salesOrder = App.Database.GetSalesOrder(_workTicket, _customer);
+                    if (_workTicket.DtlRepairItemCode != null)
+                    {
+                        _repairItem = App.Database.GetItemFromDB(_workTicket.DtlRepairItemCode);
+                    }
+                    else {
+                        _repairItem = new CI_Item();
+                    }
+                    JT_Technician jt_technician = App.Database.GetCurrentTechnicianFromDb();
+                    _appTechnician = new App_Technician(jt_technician);
+                    AR_CustomerContact customerContact = App.Database.GetCustomerContact(_customer.ContactCode);
+                    _customerContact = new App_CustomerContact(customerContact);
+                }
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TicketDetailsPageViewModel()");
             }
         }
 
@@ -122,7 +166,22 @@ namespace TechDashboard.ViewModels
 
         protected AR_Customer RetrieveCustomer(string customerNumber)
         {
-            return App.Database.GetCustomer(customerNumber);
+            // dch rkl 12/07/2016 catch exception
+            AR_Customer cust = new Models.AR_Customer();
+
+            try
+            {
+                cust = App.Database.GetCustomer(customerNumber);
+                //return App.Database.GetCustomer(customerNumber);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TicketDetailsPageViewModel()");
+            }
+
+            return cust;
         }
 
         

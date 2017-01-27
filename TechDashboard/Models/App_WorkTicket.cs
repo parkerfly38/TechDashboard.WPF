@@ -4,6 +4,11 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_WorkTicket.cs
+     * 11/30/2016 DCH DtlPreventiveMaintenance spelled incorrectly
+     * 12/02/2016 DCH Add StatusDate
+     *********************************************************************************************************/
     public class App_WorkTicket
     {
         private JT_WorkTicket _workTicket;
@@ -11,10 +16,8 @@ namespace TechDashboard.Models
         private JT_WorkTicketClass _workTicketClass;
         private App_RepairItem _repairItem;
         private App_ServiceAgreement _serviceAgreement;
-
         private JT_ClassificationCode _problemCode;
         private JT_ClassificationCode _coverageExceptionCode;
-
 
         private string _hdrServiceContractCode;
         private string _statusCode;
@@ -22,14 +25,8 @@ namespace TechDashboard.Models
         private string _dtlWarrantyRepair;
         private string _dtlCoveredOnContract;
         private string _dtlMfgSerialNo;
-
-
-
         private string _activityCode;
-
-
-
-
+        private DateTime _statusDate;       // dch rkl 12/01/2016 Add Status Date
 
         /// <summary>
         /// Work Ticket Number formatted for display
@@ -79,7 +76,7 @@ namespace TechDashboard.Models
             get { return _workTicketStepZero.Description; }
         }
 
-        // puke... work ticket status descriptioin
+        // TODO... work ticket status descriptioin
 
         /// <summary>
         /// Service agreement for this work ticket (should come from Step '000')
@@ -102,7 +99,7 @@ namespace TechDashboard.Models
         /// </summary>
         public string ManufacturerSerialNumber
         {
-            // puke... shouldn't this come from repair item?
+            // TODO... shouldn't this come from repair item?
             get { return _workTicket.DtlMfgSerialNo; }
         }
         /// <summary>
@@ -110,7 +107,7 @@ namespace TechDashboard.Models
         /// </summary>
         public string InternalSerialNumber
         {
-            // puke... shouldn't this come from repair item?
+            // TODO... shouldn't this come from repair item?
             get { return _workTicket.DtlInternalSerialNo; }
         }
 
@@ -132,7 +129,7 @@ namespace TechDashboard.Models
         /// </summary>
         public bool ArePartsCoveredOnWarranty
         {
-            // puke... add logic for dates
+            // TODO... add logic for dates
             get
             {
                 return ((_workTicket.DtlWarrantyRepair != null) &&
@@ -224,8 +221,11 @@ namespace TechDashboard.Models
         {
             get
             {
-                return ((_workTicket.DtlPreventitiveMaintenance != null) &&
-                    (_workTicket.DtlPreventitiveMaintenance.Trim().ToUpper() == "Y"));
+                // dch rkl 11/30/2016 Field was spelled incorrectly
+                //return ((_workTicket.DtlPreventitiveMaintenance != null) &&
+                //    (_workTicket.DtlPreventitiveMaintenance.Trim().ToUpper() == "Y"));
+                return ((_workTicket.DtlPreventiveMaintenance != null) &&
+                    (_workTicket.DtlPreventiveMaintenance.Trim().ToUpper() == "Y"));
             }
         }
 
@@ -236,12 +236,6 @@ namespace TechDashboard.Models
         {
             get { return _workTicket.HdrTemplateNo; }
         }
-
-
-
-
-
-
 
         /// <summary>
         /// Contact Code
@@ -299,8 +293,6 @@ namespace TechDashboard.Models
             get { return _dtlCoveredOnContract; }
         }
 
-
-
         /// <summary>
         /// Problem Code
         /// </summary>
@@ -350,6 +342,40 @@ namespace TechDashboard.Models
         }
 
         /// <summary>
+        /// Coverage Fixed Rate
+        /// dch rkl 12/02/2016
+        /// </summary>
+        public decimal DtlCoverageExceptionFixedRate
+        {
+            get
+            {
+                if (_coverageExceptionCode == null)
+                {
+                    return 0;
+                }
+
+                return _coverageExceptionCode.SE_FixedRate;
+            }
+        }
+
+        /// <summary>
+        /// Override Pricing
+        /// dch rkl 12/02/2016
+        /// </summary>
+        public string SE_OverridePricing
+        {
+            get
+            {
+                if (_coverageExceptionCode == null)
+                {
+                    return "";
+                }
+
+                return _coverageExceptionCode.SE_OverridePricing;
+            }
+        }
+
+        /// <summary>
         /// Coverage Exception Code Description
         /// </summary>
         public string DtlaCoverageExceptionCodeDescription
@@ -373,8 +399,6 @@ namespace TechDashboard.Models
             get { return _activityCode; }
         }
 
-
-
         public string DtlMfgSerialNo
         {
             get
@@ -388,7 +412,12 @@ namespace TechDashboard.Models
             }
         }
 
-
+        // dch rkl 12/01/2016 Add Status Date
+        public DateTime StatusDate
+        {
+            get { return _statusDate; }
+            set { _statusDate = value; }
+        }
 
         public App_WorkTicket(JT_WorkTicket workTicket, JT_WorkTicket workTicketStepZero, JT_WorkTicketClass workTicketClass,
             App_RepairItem repairItem, App_ServiceAgreement serviceAgreement, JT_ClassificationCode problemCode,
@@ -402,18 +431,15 @@ namespace TechDashboard.Models
             _problemCode = problemCode;
             _coverageExceptionCode = coverageExceptionCode;
 
-
-            // puke... need service agreement (hdr, dtl, pmdtl)
-            // puke... need sales order header for address info
-
-
             _hdrServiceContractCode = workTicket.HdrServiceContractCode;
             _statusCode = workTicket.StatusCode;
-            _statusDescription = "PUKE"; // comes from JT_Status.Description -- need to add
+            _statusDescription = ""; // comes from JT_Status.Description -- need to add TODO
             _dtlWarrantyRepair = workTicket.DtlWarrantyRepair;
             _dtlCoveredOnContract = workTicket.DtlCoveredOnContract;
             _activityCode = workTicket.ActivityCode;
             _dtlMfgSerialNo = workTicket.DtlMfgSerialNo;
+
+            _statusDate = workTicket.StatusDate;        // dch rkl 12/01/2016 Add Status Date
         }
 
         /// <summary>

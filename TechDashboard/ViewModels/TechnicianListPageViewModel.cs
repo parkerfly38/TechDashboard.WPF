@@ -15,6 +15,10 @@ using TechDashboard.Services;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * TechnicianListPageViewModel.cs
+     * 12/01/2016 DCH Correct Misspelling of GetApplicationSettings
+     *********************************************************************************************************/
     public class TechnicianListPageViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<App_Technician> TechnicianList;
@@ -35,11 +39,21 @@ namespace TechDashboard.ViewModels
 
         public TechnicianListPageViewModel()
         {
-            IsSignedIn = false;
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                IsSignedIn = false;
 
-            var listOfTechnicians = App.Database.GetTechniciansFromDB();
+                var listOfTechnicians = App.Database.GetTechniciansFromDB();
 
-            TechnicianList = new ObservableCollection<App_Technician>(listOfTechnicians.ToList());
+                TechnicianList = new ObservableCollection<App_Technician>(listOfTechnicians.ToList());
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechnicianListPageViewModel");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,7 +71,7 @@ namespace TechDashboard.ViewModels
             if (App.Database.HasDataConnection())
                 App.Database.CreateDependentTables(technician);
 
-            App_Settings appSettings = App.Database.GetApplicatioinSettings();
+            App_Settings appSettings = App.Database.GetApplicationSettings();
             appSettings.LoggedInTechnicianNo = technician.TechnicianNo;
             appSettings.LoggedInTechnicianDeptNo = technician.TechnicianDeptNo;
             App.Database.SaveAppSettings(appSettings);
@@ -67,16 +81,26 @@ namespace TechDashboard.ViewModels
 
         public void SignIn(App_Technician technician)
         {
-            App.Database.SaveTechnicianAsCurrent(technician);
-            if (App.Database.HasDataConnection())
-                App.Database.CreateDependentTables(technician);
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                App.Database.SaveTechnicianAsCurrent(technician);
+                if (App.Database.HasDataConnection())
+                    App.Database.CreateDependentTables(technician);
 
-            App_Settings appSettings = App.Database.GetApplicatioinSettings();
-            appSettings.LoggedInTechnicianNo = technician.TechnicianNo;
-            appSettings.LoggedInTechnicianDeptNo = technician.TechnicianDeptNo;
-            App.Database.SaveAppSettings(appSettings);
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+                appSettings.LoggedInTechnicianNo = technician.TechnicianNo;
+                appSettings.LoggedInTechnicianDeptNo = technician.TechnicianDeptNo;
+                App.Database.SaveAppSettings(appSettings);
 
-            IsSignedIn = true;
+                IsSignedIn = true;
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechnicianListPageViewModel.SignIn");
+            }
         }
 
     }

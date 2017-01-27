@@ -14,6 +14,13 @@ namespace TechDashboard.ViewModels
 {
     public class CustomerDetailsPageViewModel
     {
+        /*********************************************************************************************************
+         * CustomerDetailsPageViewModel.cs
+         * 12/07/2016 DCH Add error handling
+         *********************************************************************************************************/
+
+        #region Properties
+
         protected App_Customer _customer;
         public App_Customer Customer
         {
@@ -26,16 +33,38 @@ namespace TechDashboard.ViewModels
             get { return _customerContacts; }
         }
 
+        #endregion
+
         public CustomerDetailsPageViewModel()
         {
-            _customer = App.Database.GetCustomerFromCurrentWorkTicket();
-            _customerContacts = App.Database.GetAppCustomerContacts(_customer.CustomerNo);
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _customer = App.Database.GetCustomerFromCurrentWorkTicket();
+                _customerContacts = App.Database.GetAppCustomerContacts(_customer.CustomerNo);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.CustomerDetailsPageViewModel()");
+            }
         }
 
         public CustomerDetailsPageViewModel(App_Customer customer)
         {
-            _customer = customer;
-            _customerContacts = App.Database.GetAppCustomerContacts(_customer.CustomerNo);
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _customer = customer;
+                _customerContacts = App.Database.GetAppCustomerContacts(_customer.CustomerNo);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.CustomerDetailsPageViewModel(App_Customer customer)");
+            }
         }
     }
 }

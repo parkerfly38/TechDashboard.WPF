@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using TechDashboard.Data;
 using TechDashboard.Models;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * AppSettingsPageViewModel.cs
+     * 12/02/2016 DCH Correct spelling of GetApplicationSettings
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
+
     public class AppSettingsPageViewModel
     {
         private App_Settings _appSettings;
+
+        #region properties
 
         public bool IsUsingHttps
         {
@@ -76,22 +85,34 @@ namespace TechDashboard.ViewModels
 
         public AppSettingsPageViewModel()
         {
-            _appSettings = App.Database.GetApplicatioinSettings();
+            _appSettings = App.Database.GetApplicationSettings();
             if(_appSettings == null)
             {
                 _appSettings = new App_Settings();
             }
         }
 
+        #endregion
+
         public void SaveAppSettings()
         {
-            _appSettings.DbVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if ((DeviceName != null) && (_appSettings.DeviceID == null || _appSettings.DeviceID.Length <= 0))
+            // dch rkl 12/07/2016 catch exception
+            try
             {
-                App.Database.SaveAppSettings(_appSettings); //need to to do get right url
-                _appSettings.DeviceID = App.Database.GetDeviceID(DeviceName);
+                _appSettings.DbVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                if ((DeviceName != null) && (_appSettings.DeviceID == null || _appSettings.DeviceID.Length <= 0))
+                {
+                    App.Database.SaveAppSettings(_appSettings); //need to to do get right url
+                    _appSettings.DeviceID = App.Database.GetDeviceID(DeviceName);
+                }
+                App.Database.SaveAppSettings(_appSettings);
             }
-            App.Database.SaveAppSettings(_appSettings);
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.AppSettingsPageViewModel()");
+            }
         }
     }
 }

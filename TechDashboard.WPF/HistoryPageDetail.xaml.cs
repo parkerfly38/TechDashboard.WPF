@@ -16,6 +16,16 @@ using TechDashboard.ViewModels;
 
 namespace TechDashboard.WPF
 {
+    /**************************************************************************************************
+     * Page Name    HistoryPageDetail
+     * Description: History Page Detail
+     *-------------------------------------------------------------------------------------------------
+     *   Date       By      Description
+     * ---------- --------- ---------------------------------------------------------------------------
+     * 11/22/2016   DCH     Add filter by parts/labor/all
+     * 11/22/2016   DCH     Add ticket number to grid
+     **************************************************************************************************/
+
     /// <summary>
     /// Interaction logic for HistoryPageDetail.xaml
     /// </summary>
@@ -28,10 +38,21 @@ namespace TechDashboard.WPF
         SolidColorBrush peterriver = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498DB"));
 
         HistoryPageViewModel _vm;
-        
+
+        // dch rkl 11/22/2016 add filter by parts/labor/all
+        string _selectedTicketNumber;
+        RadioButton _radParts;
+        RadioButton _radLabor;
+        RadioButton _radAll;
+        ListView _historyList;
+
         public HistoryPageDetail(string selectedTicketNumber)
         {
-            _vm = new HistoryPageViewModel(selectedTicketNumber);
+            // dch rkl 11/22/2016 add filter by parts/labor/all
+            _selectedTicketNumber = selectedTicketNumber;
+            //_vm = new HistoryPageViewModel(selectedTicketNumber);
+            _vm = new HistoryPageViewModel(selectedTicketNumber, "");
+
             InitializeComponent();
             Initialize();
         }
@@ -94,152 +115,257 @@ namespace TechDashboard.WPF
 
         protected void Initialize()
         {
+            // dch rkl 11/22/2016 move ticket number to grid BEGIN
+            Label labelServiceTicketTitle = new Label()
+            {
+                Content = "Service Ticket",
+                FontWeight = FontWeights.Bold,
+                Foreground = asbestos
+            };
+            Label labelServiceTicket = new Label()
+            {
+                Foreground = asbestos
+            };
+            // dch rkl 11/22/2016 move ticket number to grid END
 
             Label labelItemCodeTitle = new Label()
             {
-                Content = "ITEM CODE",
+                Content = "Item Code",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             Label labelItemCode = new Label()
             {
-                Content = _vm.History[0].ItemCode,
                 Foreground = asbestos
             };
+            
+             
 
             Label labelItemCodeDesc = new Label()
             {
-                Content = _vm.History[0].ItemDesc,
                 Foreground = asbestos
             };
 
+
             Label mfgSerNoTitle = new Label()
             {
-                Content = "MFG SER NO",
+                Content = "Mfg Ser No",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             Label mfgSerNo = new Label()
             {
-                Content = _vm.History[0].MfgSerialNo,
-                FontWeight = FontWeights.Bold,
+                //FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
-
+           
             Label mfgSerNoDesc = new Label()
             {
-                Content = _vm.History[0].EADesc,
                 Foreground = asbestos
             };
 
             Label intSerNoTitle = new Label()
             {
-                Content = "INT SER NO",
+                Content = "Int Ser No",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
             Label intSerNo = new Label()
             {
-                Content = _vm.History[0].IntSerialNo,
                 Foreground = asbestos
             };
+
+           
             Label modelNoTitle = new Label()
             {
-                Content = "MODEL NO",
+                Content = "Model No",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
             Label modelNo = new Label()
             {
-                Content = _vm.History[0].ModelNo,
                 Foreground = asbestos
             };
+            //if (_vm.History.Count > 0)
+            //{
+            labelItemCode.Content = _vm.WorkTicket.DtlRepairItemCode; //_vm.History[0].ItemCode;
+            labelItemCodeDesc.Content = _vm.Item.ItemCodeDesc; //_vm.History[0].ItemDesc;
 
+            // dch rkl 11/22/2016 move ticket number to grid 
+            labelServiceTicket.Content = _vm.TicketNumber;
+
+            // dch rkl 10/18/2016 Make sure there is at least 1 history item before trying to assign the value.
+            // this was throwing a null exception
+            if (_vm.History.Count > 0)
+            {
+                mfgSerNo.Content = _vm.History[0].MfgSerialNo;
+                mfgSerNoDesc.Content = _vm.History[0].EADesc;
+                intSerNo.Content = _vm.History[0].IntSerialNo;
+                modelNo.Content = _vm.History[0].ModelNo;
+            }
+
+            //}
             //history 
-            ListView historyList = new ListView()
+            // dch rkl 11/22/2016 add filter by parts/labor/all
+            //ListView historyList = new ListView()
+            _historyList = new ListView()
             {
                 ItemsSource = _vm.History,
-                ItemTemplate = new DataTemplate(typeof(HistoryCell)) //,
-                /*Header = new Xamarin.Forms.Label
-                {
-                    Text = "Details",
-                    FontFamily = Device.OnPlatform("OpenSans-Bold", null, null),
-                    TextColor = Color.FromHex("#FFFFFF"),
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    VerticalOptions = LayoutOptions.Center,
-                    BackgroundColor = peterriver
-                }*/
+                ItemTemplate = (DataTemplate)this.Resources["HistoryDataTemplate"]
+                , Height = 475      // dch rkl 11/22/2016 this forces scrollbars   
             };
 
             Grid topGrid = new Grid();
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });     // dch rkl 11/22/2016 Add Row for Ticket
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(10, GridUnitType.Pixel)});     // dch rkl 11/22/2016 Add filtering
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });     // dch rkl 11/22/2016 Add filtering
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(10, GridUnitType.Pixel) });     // dch rkl 11/22/2016 Add filtering
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });     // dch rkl 11/22/2016 Add cancel and filter buttons
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200, GridUnitType.Pixel) });
+            
+            // dch rkl 11/22/2016 Add Row for Ticket
+            topGrid.Children.Add(labelServiceTicketTitle);
+            Grid.SetColumn(labelServiceTicketTitle, 0);
+            Grid.SetRow(labelServiceTicketTitle, 0);
+            topGrid.Children.Add(labelServiceTicket);
+            Grid.SetColumn(labelServiceTicket, 1);
+            Grid.SetRow(labelServiceTicket, 0);
+            Grid.SetColumnSpan(labelServiceTicket, 3);
 
             topGrid.Children.Add(labelItemCodeTitle);
             Grid.SetColumn(labelItemCodeTitle, 0);
-            Grid.SetRow(labelItemCodeTitle, 0);
+            Grid.SetRow(labelItemCodeTitle, 1);
             topGrid.Children.Add(labelItemCode);
             Grid.SetColumn(labelItemCode, 1);
-            Grid.SetRow(labelItemCode, 0);
+            Grid.SetRow(labelItemCode, 1);
             topGrid.Children.Add(labelItemCodeDesc);
             Grid.SetColumn(labelItemCodeDesc, 2);
-            Grid.SetRow(labelItemCodeDesc, 0);
+            Grid.SetRow(labelItemCodeDesc, 1);
             Grid.SetColumnSpan(labelItemCodeDesc, 2);
 
             topGrid.Children.Add(mfgSerNoTitle);
             Grid.SetColumn(mfgSerNoTitle, 0);
-            Grid.SetRow(mfgSerNoTitle, 1);
+            Grid.SetRow(mfgSerNoTitle, 2);
             topGrid.Children.Add(mfgSerNo);
             Grid.SetColumn(mfgSerNo, 1);
-            Grid.SetRow(mfgSerNo, 1);
+            Grid.SetRow(mfgSerNo, 2);
             topGrid.Children.Add(mfgSerNoDesc);
             Grid.SetColumn(mfgSerNoDesc, 2);
-            Grid.SetRow(mfgSerNoDesc, 1);
+            Grid.SetRow(mfgSerNoDesc, 2);
             Grid.SetColumnSpan(mfgSerNoDesc, 2);
 
             topGrid.Children.Add(intSerNoTitle);
             Grid.SetColumn(intSerNoTitle, 0);
-            Grid.SetRow(intSerNoTitle, 2);
+            Grid.SetRow(intSerNoTitle, 3);
             topGrid.Children.Add(intSerNo);
             Grid.SetColumn(intSerNo, 1);
-            Grid.SetRow(intSerNo, 2);
+            Grid.SetRow(intSerNo, 3);
             topGrid.Children.Add(modelNoTitle);
             Grid.SetColumn(modelNoTitle, 2);
-            Grid.SetRow(modelNoTitle, 2);
+            Grid.SetRow(modelNoTitle, 3);
             topGrid.Children.Add(modelNo);
             Grid.SetColumn(modelNo, 3);
-            Grid.SetRow(modelNo, 2);
+            Grid.SetRow(modelNo, 3);
+
+            // dch rkl 11/22/2016 add filtering radio buttons BEGIN
+            Label lblSpace = new Label();
+
+            _radParts = new RadioButton();
+            _radParts.Content = "Parts Only";
+            _radParts.FontWeight = FontWeights.Bold;
+            _radParts.Checked += new RoutedEventHandler(radPLB_Checked);
+
+            _radLabor = new RadioButton();
+            _radLabor.Content = "Labor Only";
+            _radLabor.FontWeight = FontWeights.Bold;
+            _radLabor.Checked += new RoutedEventHandler(radPLB_Checked);
+
+            _radAll = new RadioButton();
+            _radAll.Content = "Both";
+            _radAll.FontWeight = FontWeights.Bold;
+            _radAll.IsChecked = true;
+            _radAll.Checked += new RoutedEventHandler(radPLB_Checked);
+
+            topGrid.Children.Add(lblSpace);
+            Grid.SetColumn(lblSpace, 0);
+            Grid.SetRow(lblSpace, 5);
+            topGrid.Children.Add(_radParts);
+            Grid.SetColumn(_radParts, 1);
+            Grid.SetRow(_radParts, 5);
+            topGrid.Children.Add(_radLabor);
+            Grid.SetColumn(_radLabor, 2);
+            Grid.SetRow(_radLabor, 5);
+            topGrid.Children.Add(_radAll);
+            Grid.SetColumn(_radAll, 3);
+            Grid.SetRow(_radAll, 5);
+            // dch rkl 11/22/2016 add filtering radio buttons END
+
+            // dch rkl 11/22/2016 add cancel button BEGIN
+            Button buttonCancel = new Button()
+            {
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")),
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Margin = new Thickness(30, 5, 30, 5),
+                Height = 40
+            };
+            TextBlock cancelText = new TextBlock()
+            {
+                Text = "CANCEL",
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Colors.White)
+            };
+            buttonCancel.Content = cancelText;
+            buttonCancel.Click += buttonCancel_Clicked;
+
+            topGrid.Children.Add(buttonCancel);
+            Grid.SetColumn(buttonCancel, 0);
+            Grid.SetRow(buttonCancel, 7);
+            Grid.SetColumnSpan(buttonCancel, 4);
+            // dch rkl 11/22/2016 add filter and cancel buttons END
 
             gridMain.Children.Add(new StackPanel
             {
                 Children = {
-                    new StackPanel {
-                        Background = peterriver,
-                        Height = 80,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        VerticalAlignment = VerticalAlignment.Top,
-                        Children = {
-                            new Label {
-                                Content = "HISTORY",
-                                FontWeight = FontWeights.Bold,
-                                Foreground = new SolidColorBrush(Colors.White),
-                                HorizontalAlignment = HorizontalAlignment.Center,
-                                VerticalAlignment = VerticalAlignment.Center
-                            }
-                        }
-                    },
                     topGrid,
-                    historyList
-                }
+                    _historyList
+                },
             });
 
         }
+
+        // dch rkl 11/22/2016 add cancel button
+        private void buttonCancel_Clicked(object sender, RoutedEventArgs e)
+        {
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new HistoryPage();
+        }
+        
+        // dch rkl 11/22/2016 filter the list for parts/labor/both BEGIN
+        private void FilterList()
+        {
+            string sPLA = "";
+            if ((bool)_radParts.IsChecked) { sPLA = "P"; }
+            else if ((bool)_radLabor.IsChecked) { sPLA = "L"; }
+
+            _vm = new HistoryPageViewModel(_selectedTicketNumber, sPLA);
+            _historyList.ItemsSource = _vm.History;
+        }
+
+        private void radPLB_Checked(object sender, RoutedEventArgs e)
+        {
+            // Filter List
+            FilterList();
+        }
+        // dch rkl 11/22/2016 filter the list for parts/labor/both END
     }
 }
+

@@ -10,6 +10,10 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_SalesOrder.cs
+     * 01/23/2017 DCH Add function to retrieve sales order lines/details
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region App_SalesOrder
@@ -93,7 +97,8 @@ namespace TechDashboard.Data
                 sb.Append("')");
             }
 
-            FillLocalTable<SO_SalesOrderHeader>("where", sb.ToString());
+            //FillLocalTable<SO_SalesOrderHeader>("where", sb.ToString());
+            FillLocalTable<SO_SalesOrderHeader>();
         }
 
         protected List<SO_SalesOrderHeader> GetSalesOrderHeadersFromDB()
@@ -200,6 +205,21 @@ namespace TechDashboard.Data
         #endregion
 
         #region SO_SalesOrderDetail
+
+        // dch rkl 01/23/2017 Get Sales Order Detail
+        public List<SO_SalesOrderDetail> GetSalesOrderDetails(string SalesOrderNo)
+        {
+            List<SO_SalesOrderDetail> lsSODetails = null;
+
+            lock (_locker)
+            {
+                lsSODetails =
+                        _database.Table<SO_SalesOrderDetail>().Where(
+                            so => so.SalesOrderNo == SalesOrderNo).ToList();
+            }
+
+            return lsSODetails;
+        }
 
         #endregion
 

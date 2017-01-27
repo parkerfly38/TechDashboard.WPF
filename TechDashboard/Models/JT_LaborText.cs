@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_LaborText.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class JT_LaborText
     {
-        // PUKE - does not exist in jobops2015dev database!
+        // TODO - does not exist in jobops2015dev database!
 
         /// <summary>
         /// Sales Order Number -

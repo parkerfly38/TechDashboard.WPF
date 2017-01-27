@@ -225,6 +225,7 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
+		<row><td>DOTNETVERSION45FULL</td><td>DotNet45Full</td></row>
 	</table>
 
 	<table name="BBControl">
@@ -340,11 +341,14 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td>{8962EAAF-4E40-4E20-9D2F-C3E637102F78}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sdata.client.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>{91E7768A-87C6-4618-A3AF-9F3E57A4493B}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sage100.tableob</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Rkl.Erp.Sage.SData.Client.Primary_output</td><td>{83CC5AC2-BD66-4AEF-9095-23F46BE75FE3}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sdata.client.pr</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary_output</td><td>{795BCCE0-32DE-4E6B-AEF9-160B8C71106A}</td><td>INSTALLDIR</td><td>2</td><td/><td>rkl.erp.sage.sage100.tableob</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>SQLitePCL.raw.dll</td><td>{49DD95BD-E78F-4714-B0AD-5D3439C50522}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlitepcl.raw.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>SQLite_net.dll</td><td>{E6319B84-144E-470F-A67A-CED72FC66C03}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite_net.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>TechDashboard.WPF.Primary_output</td><td>{9E8B6272-76F3-44F6-959D-33EA22D96D0E}</td><td>INSTALLDIR</td><td>2</td><td/><td>techdashboard.wpf.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Sage.SData.Client_3_5.Primary_output</td><td>{B6DA70A0-DEC8-4D89-B984-9039ED903FC7}</td><td>INSTALLDIR</td><td>2</td><td/><td>sage.sdata.client_3_5.primar</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TechDashboard.Primary_output</td><td>{7D2A66B6-3946-4554-8189-E4B31B098CD4}</td><td>INSTALLDIR</td><td>2</td><td/><td>techdashboard.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TechDashboard.WPF.Content_Files</td><td>{9AEDB2CC-1499-47F4-95D3-6330388BA7EC}</td><td>INSTALLDIR</td><td>2</td><td/><td>techdashboard.wpf.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TechDashboard.WPF.Primary_output</td><td>{AEF614B8-FADE-4191-ACF7-E957B32A46F6}</td><td>INSTALLDIR</td><td>2</td><td/><td>techdashboard.wpf.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>sqlite3.dll</td><td>{284987AC-2866-4400-B397-281056A3D374}</td><td>INSTALLDIR</td><td>2</td><td/><td>sqlite3.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -914,10 +918,10 @@
 		<row><td>CustomSetup</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
 		<row><td>CustomSetup</td><td>Next</td><td>[_IsSetupTypeMin]</td><td>Custom</td><td>1</td><td>0</td></row>
 		<row><td>CustomSetupTips</td><td>OK</td><td>EndDialog</td><td>Return</td><td>1</td><td>1</td></row>
-		<row><td>CustomerInformation</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>1</td><td>1</td></row>
+		<row><td>CustomerInformation</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>CustomerInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>EndDialog</td><td>Exit</td><td>(SERIALNUMVALRETRYLIMIT) And (SERIALNUMVALRETRYLIMIT&lt;0) And (SERIALNUMVALRETURN&lt;&gt;SERIALNUMVALSUCCESSRETVAL)</td><td>2</td></row>
-		<row><td>CustomerInformation</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>(Not SERIALNUMVALRETURN) OR (SERIALNUMVALRETURN=SERIALNUMVALSUCCESSRETVAL)</td><td>3</td></row>
+		<row><td>CustomerInformation</td><td>Next</td><td>NewDialog</td><td>DestinationFolder</td><td>(Not SERIALNUMVALRETURN) OR (SERIALNUMVALRETURN=SERIALNUMVALSUCCESSRETVAL)</td><td>3</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>[ALLUSERS]</td><td>1</td><td>ApplicationUsers = "AllUsers" And Privileged</td><td>1</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>[ALLUSERS]</td><td>{}</td><td>ApplicationUsers = "OnlyCurrentUser" And Privileged</td><td>2</td></row>
 		<row><td>DatabaseFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
@@ -925,7 +929,7 @@
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>DATABASEDIR</td><td>1</td><td>2</td></row>
 		<row><td>DatabaseFolder</td><td>Next</td><td>NewDialog</td><td>SetupType</td><td>1</td><td>1</td></row>
-		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>0</td></row>
+		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>DestinationFolder</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>INSTALLDIR</td><td>1</td><td>2</td></row>
@@ -946,7 +950,7 @@
 		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>ISPrintButton</td><td>DoAction</td><td>ISPrint</td><td>1</td><td>0</td></row>
-		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
+		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Back</td><td>NewDialog</td><td>MaintenanceWelcome</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Next</td><td>NewDialog</td><td>CustomSetup</td><td>_IsMaintenance = "Change"</td><td>12</td></row>
@@ -977,7 +981,7 @@
 		<row><td>ReadmeInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>CustomSetup</td><td>Installed OR _IsSetupTypeMin = "Custom"</td><td>2</td></row>
-		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>NOT Installed</td><td>1</td></row>
+		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>DestinationFolder</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed AND _IsMaintenance = "Reinstall"</td><td>3</td></row>
 		<row><td>ReadyToInstall</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>EndDialog</td><td>Return</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
@@ -1055,10 +1059,13 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>INSTALLDIR</td><td>Rkl.Erp.Sage.SData.Client.dll</td></row>
-		<row><td>INSTALLDIR</td><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td></row>
+		<row><td>INSTALLDIR</td><td>Rkl.Erp.Sage.SData.Client.Primary_output</td></row>
+		<row><td>INSTALLDIR</td><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary_output</td></row>
 		<row><td>INSTALLDIR</td><td>SQLitePCL.raw.dll</td></row>
 		<row><td>INSTALLDIR</td><td>SQLite_net.dll</td></row>
+		<row><td>INSTALLDIR</td><td>Sage.SData.Client_3_5.Primary_output</td></row>
+		<row><td>INSTALLDIR</td><td>TechDashboard.Primary_output</td></row>
+		<row><td>INSTALLDIR</td><td>TechDashboard.WPF.Content_Files</td></row>
 		<row><td>INSTALLDIR</td><td>TechDashboard.WPF.Primary_output</td></row>
 		<row><td>INSTALLDIR</td><td>sqlite3.dll</td></row>
 	</table>
@@ -1076,6 +1083,7 @@
 		<row><td>ISSelfRegisterCosting</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterCosting</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFiles</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>257</td><td>SetAllUsers.dll</td><td>SetAllUsers</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
 		<row><td>LaunchProgramFileFromSetupCompleteSuccess</td><td>1</td><td>NewBinary19</td><td>LaunchProgram</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
@@ -1876,10 +1884,13 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>AlwaysInstall</td><td>Rkl.Erp.Sage.SData.Client.dll</td></row>
-		<row><td>AlwaysInstall</td><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Rkl.Erp.Sage.SData.Client.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>SQLitePCL.raw.dll</td></row>
 		<row><td>AlwaysInstall</td><td>SQLite_net.dll</td></row>
+		<row><td>AlwaysInstall</td><td>Sage.SData.Client_3_5.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TechDashboard.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TechDashboard.WPF.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TechDashboard.WPF.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>sqlite3.dll</td></row>
 	</table>
@@ -1896,11 +1907,14 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>rkl.erp.sage.sage100.tableob</td><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td>1</td><td/></row>
-		<row><td>rkl.erp.sage.sdata.client.dl</td><td>Rkl.Erp.Sage.SData.Client.dll</td><td>RKLERP~1.DLL|Rkl.Erp.Sage.SData.Client.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\Rkl.Erp.Sage.SData.Client.dll</td><td>1</td><td/></row>
+		<row><td>rkl.erp.sage.sage100.tableob</td><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary_output</td><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;Rkl.Erp.Sage.Sage100.TableObjects&gt;|Built</td><td>3</td><td/></row>
+		<row><td>rkl.erp.sage.sdata.client.pr</td><td>Rkl.Erp.Sage.SData.Client.Primary_output</td><td>Rkl.Erp.Sage.SData.Client.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;Rkl.Erp.Sage.SData.Client&gt;|Built</td><td>3</td><td/></row>
+		<row><td>sage.sdata.client_3_5.primar</td><td>Sage.SData.Client_3_5.Primary_output</td><td>Sage.SData.Client_3_5.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;Sage.SData.Client_3_5&gt;|Built</td><td>3</td><td/></row>
 		<row><td>sqlite3.dll</td><td>sqlite3.dll</td><td>sqlite3.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\x86\sqlite3.dll</td><td>1</td><td/></row>
 		<row><td>sqlite_net.dll</td><td>SQLite_net.dll</td><td>SQLITE~1.DLL|SQLite-net.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLite-net.dll</td><td>1</td><td/></row>
 		<row><td>sqlitepcl.raw.dll</td><td>SQLitePCL.raw.dll</td><td>SQLITE~1.DLL|SQLitePCL.raw.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\..\TechDashboard.WPF\TechDashboard.WPF\bin\x86\Release\SQLitePCL.raw.dll</td><td>1</td><td/></row>
+		<row><td>techdashboard.primary_output</td><td>TechDashboard.Primary_output</td><td>TechDashboard.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TechDashboard&gt;|Built</td><td>3</td><td/></row>
+		<row><td>techdashboard.wpf.content_fi</td><td>TechDashboard.WPF.Content_Files</td><td>TechDashboard.WPF.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TechDashboard.WPF&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>techdashboard.wpf.primary_ou</td><td>TechDashboard.WPF.Primary_output</td><td>TechDashboard.WPF.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TechDashboard.WPF&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2043,11 +2057,14 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>Rkl.Erp.Sage.SData.Client.dll</td><td/><td/><td>_5F6440C5_DB56_4C5E_95A9_8F524AEE4F4E_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.dll</td><td/><td/><td>_01B1FDF8_03FC_49E4_80FE_121C071C725A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Rkl.Erp.Sage.SData.Client.Primary_output</td><td/><td/><td>_67DE4039_FBF1_4B33_8C4F_9944D21BBB68_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Rkl.Erp.Sage.Sage100.TableObjects.Primary_output</td><td/><td/><td>_D6367A68_DE7D_442D_A1CD_A07A52BC33A9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>SQLitePCL.raw.dll</td><td/><td/><td>_83A08049_28AD_4BBB_A0C2_B011329EADEC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>SQLite_net.dll</td><td/><td/><td>_3C934ED5_CA2F_4041_8A88_5D653221C77F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>TechDashboard.WPF.Primary_output</td><td/><td/><td>_E0D867C0_F003_4488_92FC_591A0609B898_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Sage.SData.Client_3_5.Primary_output</td><td/><td/><td>_774AB8A3_8FB6_4604_8EE2_85B585E1BFCB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TechDashboard.Primary_output</td><td/><td/><td>_BC4AB648_F412_498D_884C_57C1B722F75E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TechDashboard.WPF.Content_Files</td><td/><td/><td>_B158EE00_ECB1_4E4F_83B8_AF8D279EA660_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TechDashboard.WPF.Primary_output</td><td/><td/><td>_CD9EB03F_2D42_4AC6_BA19_DABDCA2FE8E3_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>sqlite3.dll</td><td/><td/><td>_9ACB6483_FA75_4D38_B1E3_7448F0909DCA_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -2332,6 +2349,8 @@
 		<row><td>ISProjectDataFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISProjectFolder</td><td/><td/><td>1</td></row>
 		<row><td>ProgramFilesFolder</td><td/><td/><td>1</td></row>
+		<row><td>Rkl.Erp.Sage.SData.Client</td><td>..\..\Sage\SData\Client\Rkl.Erp.Sage.SData.Client.csproj</td><td/><td>2</td></row>
+		<row><td>Rkl.Erp.Sage.Sage100.TableObjects</td><td>..\..\Sage\Sage100\TableObjects\Rkl.Erp.Sage.Sage100.TableObjects.csproj</td><td/><td>2</td></row>
 		<row><td>Sage.SData.Client_3_5</td><td>Sage.SData.Client\Sage.SData.Client_3_5.csproj</td><td/><td>2</td></row>
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
 		<row><td>TechDashboard</td><td>TechDashboard\TechDashboard.csproj</td><td/><td>2</td></row>
@@ -2639,9 +2658,10 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Job Ops</td><td>0</td><td/><td>-1968957168</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Job Ops</td><td>0</td><td/><td>-1197136533</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL</td><td>1033</td><td>Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1965301323</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
@@ -3455,6 +3475,11 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>Job Ops Tech Dashboard</td><td>0</td><td/><td>1654933199</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>Job Ops Tech Dashboard</td><td>0</td><td/><td>-1968930065</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>Job Ops Tech Dashboard</td><td>0</td><td/><td>-1968917681</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME5</td><td>1033</td><td>JobOps Tech Dashboard</td><td>0</td><td/><td>1042557901</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME6</td><td>1033</td><td>JobOps Tech Dashboard</td><td>0</td><td/><td>1176816080</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME7</td><td>1033</td><td>JobOps Tech Dashboard</td><td>0</td><td/><td>1310988135</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME8</td><td>1033</td><td>JobOps Tech Dashboard</td><td>0</td><td/><td>1311031882</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME9</td><td>1033</td><td>JobOps Tech Dashboard</td><td>0</td><td/><td>1310982891</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>1654927977</td></row>
@@ -3743,8 +3768,8 @@
 		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1654927977</td></row>
-		<row><td>ID_STRING1</td><td>1033</td><td>http://www.JobOps.com</td><td>0</td><td/><td>-1968957168</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>Job Ops</td><td>0</td><td/><td>-1968957168</td></row>
+		<row><td>ID_STRING1</td><td>1033</td><td>http://www.JobOps.com</td><td>0</td><td/><td>-1197136533</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>Job Ops</td><td>0</td><td/><td>-1197136533</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>1654927977</td></row>
 	</table>
 
@@ -3905,6 +3930,7 @@
 		<row><td>ISSelfRegisterCosting</td><td/><td>2201</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td/><td>5601</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td/><td>6601</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td/><td>2202</td><td/><td/></row>
 		<row><td>InstallFiles</td><td/><td>4000</td><td>InstallFiles</td><td/></row>
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
@@ -3936,7 +3962,7 @@
 		<row><td>RegisterUser</td><td/><td>6000</td><td>RegisterUser</td><td/></row>
 		<row><td>RemoveDuplicateFiles</td><td/><td>3400</td><td>RemoveDuplicateFiles</td><td/></row>
 		<row><td>RemoveEnvironmentStrings</td><td/><td>3300</td><td>RemoveEnvironmentStrings</td><td/></row>
-		<row><td>RemoveExistingProducts</td><td/><td>1410</td><td>RemoveExistingProducts</td><td/></row>
+		<row><td>RemoveExistingProducts</td><td/><td>6601</td><td>RemoveExistingProducts</td><td/></row>
 		<row><td>RemoveFiles</td><td/><td>3500</td><td>RemoveFiles</td><td/></row>
 		<row><td>RemoveFolders</td><td/><td>3600</td><td>RemoveFolders</td><td/></row>
 		<row><td>RemoveIniValues</td><td/><td>3100</td><td>RemoveIniValues</td><td/></row>
@@ -3992,7 +4018,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{670E8FDC-3C4D-4B69-8B70-B87F31CD0BF0}</td></row>
 		<row><td>ISUSSignature</td><td>{39F65927-0ED4-4C24-BB47-DAB6063E6CED}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewSystemSearch,viewRelease,viewAppFiles,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewTextMessages,viewShortcuts,viewIniFiles,viewUpgradePaths</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewSystemSearch,viewRelease,viewAppFiles,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewTextMessages,viewShortcuts,viewIniFiles,viewUpgradePaths,viewProject,viewUpdateService</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4022,6 +4048,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FileCost</td><td/><td>900</td><td>FileCost</td><td/></row>
 		<row><td>FindRelatedProducts</td><td/><td>430</td><td>FindRelatedProducts</td><td/></row>
 		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Not Installed</td><td>1210</td><td>InstallWelcome</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
 		<row><td>LaunchConditions</td><td>Not Installed</td><td>410</td><td>LaunchConditions</td><td/></row>
@@ -4051,6 +4078,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
 		<row><td>(Not Version9X) And (Not ((VersionNT&gt;=400 And VersionNT&lt;=502) Or (VersionNT=600 And MsiNTProductType=1)))</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_OS##</td></row>
+		<row><td>DOTNETVERSION45FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL##</td></row>
 	</table>
 
 	<table name="ListBox">
@@ -4368,9 +4396,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]TechDashboard.WPF.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{0E028CE2-641E-4A56-BE7D-D98EB96E1BA1}</td><td/></row>
+		<row><td>ProductCode</td><td>{34813ECD-FB27-4F0D-9263-DA1C039F7D60}</td><td/></row>
 		<row><td>ProductName</td><td>Tech Dashboard</td><td/></row>
-		<row><td>ProductVersion</td><td>1.3</td><td/></row>
+		<row><td>ProductVersion</td><td>1.9</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4383,7 +4411,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
 		<row><td>SHOWLAUNCHPROGRAM</td><td>-1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL;ISACTIONPROP1</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{26257835-5443-43BD-B4CF-04A4BE5DFB22}</td><td/></row>
@@ -4428,6 +4456,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
+		<row><td>DotNet45Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Version</td><td>2</td></row>
 	</table>
 
 	<table name="Registry">
@@ -4532,7 +4561,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built</td><td>techda_1_tech_dashboard</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>TechDashboard.WPF.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built</td><td>techda_1_tech_dashboard</td><td>##IDS_SHORTCUT_DISPLAY_NAME9##</td><td>TechDashboard.WPF.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
@@ -4655,6 +4684,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
+		<row><td>{26257835-5443-43BD-B4CF-04A4BE5DFB22}</td><td>1.6</td><td>1.9</td><td></td><td>768</td><td/><td>ISACTIONPROP1</td><td>NewUpgradeEntry1</td></row>
 	</table>
 
 	<table name="Verb">

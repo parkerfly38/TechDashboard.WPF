@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\obj\Debug\
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\obj\Debug\
 TechDashboard.WPF
 none
 false
 DEBUG;TRACE
-C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\App.xaml
-24908930141
-2458321573
-33-424134151
-81-1608442827
-ClockInPage.xaml;ClockOutPage.xaml;CustomerDetailsPage.xaml;CustomerMapPage.xaml;ExpenseListPage.xaml;ExpensesEditPage.xaml;HistoryPage.xaml;HistoryPageDetail.xaml;MainWindow.xaml;MiscellaneousTimePage.xaml;NotesPage.xaml;PartsAddPage.xaml;PartsEditPage.xaml;PartsListPage.xaml;Progress.xaml;ScheduleDetailPage.xaml;SchedulePage.xaml;SettingsPage.xaml;SmsContentPage.xaml;SyncDetails.xaml;SyncPage.xaml;TechnicianListPage.xaml;TechnicianPage.xaml;TicketDetailsPage.xaml;
+C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\App.xaml
+26-1349736328
+2-1351870966
+35-1852074176
+81-627468588
+ClockInPage.xaml;ClockOutPage.xaml;CustomerDetailsPage.xaml;CustomerMapPage.xaml;ExpenseListPage.xaml;ExpensesEditPage.xaml;HistoryPage.xaml;HistoryPageDetail.xaml;MainWindow.xaml;MiscellaneousTimePage.xaml;NotesPage.xaml;PartsAddPage.xaml;PartsEditExtdDescPage.xaml;PartsEditLotSerNoPage.xaml;PartsEditPage.xaml;PartsListPage.xaml;Progress.xaml;ScheduleDetailPage.xaml;SchedulePage.xaml;SettingsPage.xaml;SmsContentPage.xaml;SyncDetails.xaml;SyncPage.xaml;TechnicianListPage.xaml;TechnicianPage.xaml;TicketDetailsPage.xaml;
 
 True
 

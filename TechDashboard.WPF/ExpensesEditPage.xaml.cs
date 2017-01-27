@@ -15,6 +15,19 @@ using System.Windows.Shapes;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    ExpenseEditPage
+ * Description: Application Settings
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/12/2016   DCH     Make sure all labels are in lower case, without colon at the end;
+ *                      The description label was not appearing above the description textbox;
+ *                      Display the service ticket number at the top of the page;
+ * 11/21/2016   DCH     Category can be blank
+ * 11/22/2016   DCH     Select all text in textbox on Focus
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -35,14 +48,23 @@ namespace TechDashboard.WPF
         TextBox _entryMarkupPercentage;
         TextBox _entryTotalPrice;
         CheckBox _switchIsReimbursable;
+        CheckBox _switchIsChargeCustomer;
         TextBox _editorDescription;
         Button _buttonAddEditExpense;
         Button _buttonCancel;
+        Button _buttonDelete;         // dch rkl 10/14/2016 When updating, add option to delete expense, only if it is in the JT_TransactionImportDetail table
         Label _labelTitle;
+
+        // dch rkl 10/12/2016
+        string workticket = "";
 
         public ExpensesEditPage(App_Expense expense)
         {
             //_expense = expense;
+
+            // dch rkl 10/12/2016 
+            workticket = expense.WorkTicket.FormattedTicketNumber;
+
             _vm = new ExpensesEditPageViewModel(expense);
             InitializeComponent();
             Initialize();
@@ -50,6 +72,9 @@ namespace TechDashboard.WPF
 
         public ExpensesEditPage(App_WorkTicket workTicket)
         {
+            // dch rkl 10/12/2016 
+            workticket = workTicket.FormattedTicketNumber;
+
             //_expense = new App_Expense();
             _vm = new ExpensesEditPageViewModel(workTicket);
             InitializeComponent();
@@ -94,6 +119,7 @@ namespace TechDashboard.WPF
 
             _datePickerExpenseDate = new DatePicker();
             _datePickerExpenseDate.SelectedDate = _vm.ExpenseDate;
+            _datePickerExpenseDate.Width = 100;     // dch rkl 11/22/2016
 
             Label labelCategory = new Label()
             {
@@ -102,11 +128,19 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold
             };
             _pickerCategory = new ComboBox { };
-            foreach (string s in _vm.ExpenseCategories)
+
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown BEGIN
+            List<JT_MiscellaneousCodes> lsMiscCodes = App.Database.GetExpenseCategoriesWithDesc();
+            foreach (JT_MiscellaneousCodes code in lsMiscCodes)
             {
-                _pickerCategory.Items.Add(s);
+                _pickerCategory.Items.Add(string.Format("{0} - {1}", code.MiscellaneousCode, code.Description));
             }
-            //_pickerCategory.BindingContext = _vm.ExpenseCategory; // puke... where does category go?
+            //foreach (string s in _vm.ExpenseCategories)
+            //{
+            //    _pickerCategory.Items.Add(s);
+            //}
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown END
+            //_pickerCategory.BindingContext = _vm.ExpenseCategory; 
             _pickerCategory.SelectionChanged += _pickerCategory_SelectionChanged;
 
             Label labelChargeCode = new Label()
@@ -116,10 +150,17 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold
             };
             _pickerChargeCode = new ComboBox() { };
-            foreach (string s in _vm.ExpenseChargeCodes)
+
+            // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown BEGIN
+            List<string> lsChgCodes = App.Database.GetExpenseChargeCodesWithDesc();
+            foreach (string chgCode in lsChgCodes)
             {
-                _pickerChargeCode.Items.Add(s);
+                _pickerChargeCode.Items.Add(chgCode);
             }
+            //foreach (string s in _vm.ExpenseChargeCodes)
+            //{
+            //    _pickerChargeCode.Items.Add(s);
+            //}
             //_pickerChargeCode.BindingContext = _vm.ExpenseChargeCode;
             _pickerChargeCode.SelectionChanged += _pickerChargeCode_SelectionChanged;
 
@@ -135,6 +176,7 @@ namespace TechDashboard.WPF
             };
             _entryQuantity = new TextBox();
             _entryQuantity.TextChanged += EntryQuantity_TextChanged;
+            _entryQuantity.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
 
             Label labelUoM = new Label()
             {
@@ -144,16 +186,19 @@ namespace TechDashboard.WPF
             };
 
             _entryUnitOfMeasure = new TextBox();
+            _entryUnitOfMeasure.MaxLength = 4;
+            _entryUnitOfMeasure.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
 
             Label labelUnitCost = new Label()
             {
-                Content = "UNIT COST",
+                Content = "Unit Cost",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             _entryUnitCost = new TextBox();
             _entryUnitCost.TextChanged += EntryUnitCost_TextChanged;
+            _entryUnitCost.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
 
             _entryTotalCost = new TextBox();
             _entryTotalCost.Text = "0.00";
@@ -162,6 +207,7 @@ namespace TechDashboard.WPF
             _entryUnitPrice = new TextBox();
             _entryUnitPrice.Text = "0.00";
             _entryUnitPrice.TextChanged += EntryUnitPrice_TextChanged;
+            _entryUnitPrice.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
 
             _entryTotalPrice = new TextBox();
             _entryTotalPrice.Text = "";
@@ -170,9 +216,13 @@ namespace TechDashboard.WPF
             _entryMarkupPercentage = new TextBox();
             _entryMarkupPercentage.Text = "0.00";
             _entryMarkupPercentage.TextChanged += EntryMarkupPercentage_TextChanged;
+            _entryMarkupPercentage.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
 
             _switchIsReimbursable = new CheckBox();
             //_switchIsReimbursable.IsToggled = _vm.ExpenseIsReimbursable;
+
+            _switchIsChargeCustomer = new CheckBox();
+
 
             _editorDescription = new TextBox();
             _editorDescription.AcceptsReturn = true;
@@ -189,6 +239,8 @@ namespace TechDashboard.WPF
             _buttonAddEditExpense.HorizontalAlignment = HorizontalAlignment.Stretch;
             _buttonAddEditExpense.Margin = new Thickness(10);
             _buttonAddEditExpense.Content = addEditExpenseText;
+            _buttonAddEditExpense.Height = 40;   // dch rkl 11/22/2016
+            _buttonAddEditExpense.Width = 175;   // dch rkl 11/22/2016
 
             _buttonCancel = new Button();
             _buttonCancel.Click += ButtonCancel_Click;
@@ -200,14 +252,37 @@ namespace TechDashboard.WPF
             _buttonCancel.HorizontalAlignment = HorizontalAlignment.Stretch;
             _buttonCancel.Margin = new Thickness(10);
             _buttonCancel.Content = buttonCancelText;
+            _buttonCancel.Height = 40;   // dch rkl 11/22/2016
+            _buttonCancel.Width = 175;   // dch rkl 11/22/2016
+
+            // dch rkl 10/14/2016 When updating, add option to delete expense, only if it is in the JT_TransactionImportDetail table
+            _buttonDelete = new Button();
+            _buttonDelete.Click += ButtonDelete_Click;
+            TextBlock buttonDeleteText = new TextBlock();
+            buttonDeleteText.Text = "DELETE";
+            buttonDeleteText.FontWeight = FontWeights.Bold;
+            buttonDeleteText.Foreground = new SolidColorBrush(Colors.White);
+            _buttonDelete.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
+            _buttonDelete.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _buttonDelete.Margin = new Thickness(10);
+            _buttonDelete.Content = buttonDeleteText;
+            _buttonDelete.Height = 40;   // dch rkl 11/22/2016
+            _buttonDelete.Width = 175;   // dch rkl 11/22/2016
+            if (_vm.ExpenseId == 0) { _buttonDelete.Visibility = Visibility.Hidden;}
 
             if (_vm.ExpenseId > 0)
-            {   
+            {
                 addEditExpenseText.Text = "UPDATE";
 
                 for (int i = 0; i < _pickerCategory.Items.Count; i++)
                 {
-                    if ((string)_pickerCategory.Items[i] == _vm.ExpenseCategory)
+                    // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown BEGIN
+                    string pickerCategory = "";
+                    try { pickerCategory = _pickerCategory.Items[i].ToString().Split(' ')[0].ToString().Trim(); }
+                    catch (Exception ex) { }
+                    //if ((string)_pickerCategory.Items[i] == _vm.ExpenseCategory)
+                    if (pickerCategory == _vm.ExpenseCategory)
+                    // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown END
                     {
                         _pickerCategory.SelectedIndex = i;
                         break;
@@ -216,7 +291,13 @@ namespace TechDashboard.WPF
 
                 for (int i = 0; i < _pickerChargeCode.Items.Count; i++)
                 {
-                    if ((string)_pickerChargeCode.Items[i] == _vm.ExpenseChargeCode)
+                    // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown BEGIN
+                    string pickerChargeCode = "";
+                    try { pickerChargeCode = _pickerChargeCode.Items[i].ToString().Split(' ')[0].ToString().Trim(); }
+                    catch (Exception ex) { }
+                    //if ((string)_pickerChargeCode.Items[i] == _vm.ExpenseChargeCode)
+                    if (pickerChargeCode == _vm.ExpenseChargeCode)
+                    // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown END
                     {
                         _pickerChargeCode.SelectedIndex = i;
                         break;
@@ -232,148 +313,173 @@ namespace TechDashboard.WPF
             }
 
             Grid topGrid = new Grid();
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(150) });
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // dch rkl 10/12/2016 service ticket row 0
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // date 1
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // expense category 2
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // charge code 3
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // quantity and U/M 4
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // unit cost and total cost 5 
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // unit price and total price 6
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // markup 7
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // reimburse employee 8
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // charge customer 9
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });     // dch rkl 10/12/1016 billing description label 10 
+            topGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(150) }); // description 11
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150, GridUnitType.Pixel) });
             topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
 
+            // dch rkl 10/12/2016 Make all labels lower case instead of upper case
+
+            // dch rkl 10/12/2016 display Service Ticket at top. BEGIN
+            Label labelSvcTicket = new Label()
+            {
+                Content = "Service Ticket",
+                FontWeight = FontWeights.Bold,
+                Foreground = asbestos
+            };
+            Label labelSvcTicketData = new Label()
+            {
+                Content = workticket,
+                Foreground = asbestos
+            };
+            topGrid.Children.Add(labelSvcTicket);
+            Grid.SetColumn(labelSvcTicket, 0);
+            Grid.SetRow(labelSvcTicket, 0);
+            topGrid.Children.Add(labelSvcTicketData);
+            Grid.SetColumn(labelSvcTicketData, 1);
+            Grid.SetRow(labelSvcTicketData, 0);
+            Grid.SetColumnSpan(labelSvcTicketData, 3);
+            // dch rkl 10/12/2016 display Service Ticket at top. END
+
             Label labelDate = new Label()
             {
-                Content = "DATE:",
+                Content = "Date",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelDate);
             Grid.SetColumn(labelDate, 0);
-            Grid.SetRow(labelDate, 0);
+            Grid.SetRow(labelDate, 1);
             topGrid.Children.Add(_datePickerExpenseDate);
             Grid.SetColumn(_datePickerExpenseDate, 1);
-            Grid.SetRow(_datePickerExpenseDate, 0);
+            Grid.SetRow(_datePickerExpenseDate, 1);
             Grid.SetColumnSpan(_datePickerExpenseDate, 3);
 
             Label labelExpenseCat = new Label()
             {
-                Content = "EXPENSE CATEGORY:",
+                Content = "Expense Category",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelExpenseCat);
             Grid.SetColumn(labelExpenseCat, 0);
-            Grid.SetRow(labelExpenseCat, 1);
+            Grid.SetRow(labelExpenseCat, 2);
             topGrid.Children.Add(_pickerCategory);
             Grid.SetColumn(_pickerCategory, 1);
-            Grid.SetRow(_pickerCategory, 1);
+            Grid.SetRow(_pickerCategory, 2);
             Grid.SetColumnSpan(_pickerCategory, 3);
 
             Label labelChargeCodeTitle = new Label()
             {
-                Content = "CHARGE CODE:",
+                Content = "Charge Code",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelChargeCodeTitle);
             Grid.SetColumn(labelChargeCodeTitle, 0);
-            Grid.SetRow(labelChargeCodeTitle, 2);
+            Grid.SetRow(labelChargeCodeTitle, 3);
             topGrid.Children.Add(_pickerChargeCode);
             Grid.SetColumn(_pickerChargeCode, 1);
-            Grid.SetRow(_pickerChargeCode, 2);
+            Grid.SetRow(_pickerChargeCode, 3);
             Grid.SetColumnSpan(_pickerChargeCode, 3);
 
             Label labelQuantityTitle = new Label()
             {
-                Content = "QUANTITY:",
+                Content = "Quantity",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelQuantityTitle);
             Grid.SetColumn(labelQuantityTitle, 0);
-            Grid.SetRow(labelQuantityTitle, 3);
+            Grid.SetRow(labelQuantityTitle, 4);
             topGrid.Children.Add(_entryQuantity);
             Grid.SetColumn(_entryQuantity, 1);
-            Grid.SetRow(_entryQuantity, 3);
+            Grid.SetRow(_entryQuantity, 4);
             topGrid.Children.Add(labelUoM);
             Grid.SetColumn(labelUoM, 2);
-            Grid.SetRow(labelUoM, 3);
+            Grid.SetRow(labelUoM, 4);
             topGrid.Children.Add(_entryUnitOfMeasure);
             Grid.SetColumn(_entryUnitOfMeasure, 3);
-            Grid.SetRow(_entryUnitOfMeasure, 3);
+            Grid.SetRow(_entryUnitOfMeasure, 4);
 
             topGrid.Children.Add(labelUnitCost);
             Grid.SetColumn(labelUnitCost, 0);
-            Grid.SetRow(labelUnitCost, 4);
+            Grid.SetRow(labelUnitCost, 5);
             topGrid.Children.Add(_entryUnitCost);
             Grid.SetColumn(_entryUnitCost, 1);
-            Grid.SetRow(_entryUnitCost, 4);
+            Grid.SetRow(_entryUnitCost, 5);
 
             Label labelTotalCost = new Label()
             {
-                Content = "TOTAL COST:",
+                Content = "Total Cost",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelTotalCost);
             Grid.SetColumn(labelTotalCost, 2);
-            Grid.SetRow(labelTotalCost, 4);
+            Grid.SetRow(labelTotalCost, 5);
             topGrid.Children.Add(_entryTotalCost);
             Grid.SetColumn(_entryTotalCost, 3);
-            Grid.SetRow(_entryTotalCost, 4);
+            Grid.SetRow(_entryTotalCost, 5);
 
             Label labelUnitPrice = new Label()
             {
-                Content = "UNIT PRICE:",
+                Content = "Unit Price",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelUnitPrice);
             Grid.SetColumn(labelUnitPrice, 0);
-            Grid.SetRow(labelUnitPrice, 5);
+            Grid.SetRow(labelUnitPrice, 6);
             topGrid.Children.Add(_entryUnitPrice);
             Grid.SetColumn(_entryUnitPrice, 1);
-            Grid.SetRow(_entryUnitPrice, 5);
+            Grid.SetRow(_entryUnitPrice, 6);
 
             Label labelTotalPrice = new Label()
             {
-                Content = "TOTAL PRICE:",
+                Content = "Billing Amount",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelTotalPrice);
             Grid.SetColumn(labelTotalPrice, 2);
-            Grid.SetRow(labelTotalPrice, 5);
+            Grid.SetRow(labelTotalPrice, 6);
             topGrid.Children.Add(_entryTotalPrice);
             Grid.SetColumn(_entryTotalPrice, 3);
-            Grid.SetRow(_entryTotalPrice, 5);
+            Grid.SetRow(_entryTotalPrice, 6);
 
             Label labelMarkup = new Label()
             {
-                Content = "MARKUP:",
+                Content = "Markup",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
 
             topGrid.Children.Add(labelMarkup);
             Grid.SetColumn(labelMarkup, 0);
-            Grid.SetRow(labelMarkup, 6);
+            Grid.SetRow(labelMarkup, 7);
             topGrid.Children.Add(_entryMarkupPercentage);
             Grid.SetColumn(_entryMarkupPercentage, 1);
-            Grid.SetRow(_entryMarkupPercentage, 6);
+            Grid.SetRow(_entryMarkupPercentage, 7);
 
             Label labelMarkUpPercent = new Label()
             {
@@ -383,36 +489,51 @@ namespace TechDashboard.WPF
             };
             topGrid.Children.Add(labelMarkUpPercent);
             Grid.SetColumn(labelMarkUpPercent, 2);
-            Grid.SetRow(labelMarkUpPercent, 6);
+            Grid.SetRow(labelMarkUpPercent, 7);
 
             Label labelReimbursableHdg = new Label
             {
-                Content = "REIMBURSABLE EMPLOYEE:",
+                Content = "Reimburse Employee",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
             topGrid.Children.Add(labelReimbursableHdg);
             Grid.SetColumn(labelReimbursableHdg, 0);
-            Grid.SetRow(labelReimbursableHdg, 7);
+            Grid.SetRow(labelReimbursableHdg, 8);
             Grid.SetColumnSpan(labelReimbursableHdg, 2);
             topGrid.Children.Add(_switchIsReimbursable);
             Grid.SetColumn(_switchIsReimbursable, 2);
-            Grid.SetRow(_switchIsReimbursable, 7);
+            Grid.SetRow(_switchIsReimbursable, 8);
+
+            Label labelChargeCustomer = new Label
+            {
+                Content = "Charge Customer",
+                FontWeight = FontWeights.Bold,
+                Foreground = asbestos
+            };
+
+            topGrid.Children.Add(labelChargeCustomer);
+            Grid.SetColumn(labelChargeCustomer, 0);
+            Grid.SetRow(labelChargeCustomer, 9);
+            Grid.SetColumnSpan(labelChargeCustomer, 2);
+            topGrid.Children.Add(_switchIsChargeCustomer);
+            Grid.SetColumn(_switchIsChargeCustomer, 2);
+            Grid.SetRow(_switchIsChargeCustomer, 9);
 
             Label labelDescription = new Label
             {
-                Content = "DESCRIPTION:",
+                Content = "Billing Description",
                 FontWeight = FontWeights.Bold,
                 Foreground = asbestos
             };
             topGrid.Children.Add(labelDescription);
             Grid.SetColumn(labelDescription, 0);
-            Grid.SetRow(labelDescription, 8);
+            Grid.SetRow(labelDescription, 10);
             Grid.SetColumnSpan(labelDescription, 4);
 
             topGrid.Children.Add(_editorDescription);
             Grid.SetColumn(_editorDescription, 0);
-            Grid.SetRow(_editorDescription, 9);
+            Grid.SetRow(_editorDescription, 11);
             Grid.SetColumnSpan(_editorDescription, 4);
 
             gridMain.Children.Add(new StackPanel
@@ -430,7 +551,8 @@ namespace TechDashboard.WPF
                         Children =
                         {
                             _buttonAddEditExpense,
-                            _buttonCancel
+                            _buttonCancel,
+                            _buttonDelete           // dch rkl 10/14/2016
                         }
                     }
 
@@ -444,18 +566,30 @@ namespace TechDashboard.WPF
             contentArea.Content = new ExpensesListPage();
         }
 
+        // dch rkl 10/14/2016 Delete - Remove Transaction from JT_TransactionImportDetail Table
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            // Delete Expense
+            _vm.DeleteExpenseItem();
+
+            // Return to Expense List Page
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new ExpensesListPage();
+        }
+
         private void ButtonAddEditExpense_Click(object sender, RoutedEventArgs e)
         {
             double quantity;
             double unitPrice;
             double unitCost;
 
-            if (_pickerCategory.SelectedIndex < 0)
-            {
-                //await DisplayAlert("Category", "Please enter a valid Category.", "OK");
-                var result = MessageBox.Show("Please entery a valid category.", "Category", MessageBoxButton.OK);
-                return;
-            }
+            // dch rkl 11/21/2016 Per Jeanne, do not require a category
+            //if (_pickerCategory.SelectedIndex < 0)
+            //{
+            //    //await DisplayAlert("Category", "Please enter a valid Category.", "OK");
+            //    var result = MessageBox.Show("Please entery a valid category.", "Category", MessageBoxButton.OK);
+            //    return;
+            //}
 
             try
             {
@@ -490,13 +624,29 @@ namespace TechDashboard.WPF
 
 
             _vm.ExpenseDate = (DateTime)_datePickerExpenseDate.SelectedDate;
-            _vm.ExpenseCategory = ((string)_pickerCategory.Items[_pickerCategory.SelectedIndex]);
-            _vm.ExpenseChargeCode = ((string)_pickerChargeCode.Items[_pickerChargeCode.SelectedIndex]);
+
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown BEGIN
+            string pickerCategory = "";
+            try { pickerCategory = _pickerCategory.Items[_pickerCategory.SelectedIndex].ToString().Split(' ')[0].ToString().Trim(); }
+            catch (Exception ex) { }
+            //_vm.ExpenseCategory = ((string)_pickerCategory.Items[_pickerCategory.SelectedIndex]);
+            _vm.ExpenseCategory = pickerCategory;
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown END
+
+            // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown BEGIN
+            string pickerChargeCode = "";
+            try { pickerChargeCode = _pickerChargeCode.Items[_pickerChargeCode.SelectedIndex].ToString().Split(' ')[0].ToString().Trim(); }
+            catch (Exception ex) { }
+            //_vm.ExpenseChargeCode = ((string)_pickerChargeCode.Items[_pickerChargeCode.SelectedIndex]);
+            _vm.ExpenseChargeCode = pickerChargeCode;
+            // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown END
+
             _vm.ExpenseQuantity = quantity;
             _vm.ExpenseUnitOfMeasure = _entryUnitOfMeasure.Text;
             _vm.ExpenseUnitCost = unitCost;
             _vm.ExpenseUnitPrice = unitPrice;
             _vm.ExpenseIsReimbursable = (bool)_switchIsReimbursable.IsChecked;
+            _vm.ExpenseIsChargeableToCustomer = (bool)_switchIsChargeCustomer.IsChecked;
             _vm.ExpenseBillingDescription = _editorDescription.Text;
 
             _vm.SaveExpenseItem();
@@ -594,9 +744,21 @@ namespace TechDashboard.WPF
             UpdateTotalPrice();
         }
 
+        // dch rkl 11/22/2016 select all text on focus
+        private void textbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tbx = (TextBox)sender;
+            tbx.SelectAll();
+        }
+
         private void _pickerChargeCode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _vm.ExpenseChargeCode = (string)_pickerChargeCode.Items[_pickerChargeCode.SelectedIndex];
+            // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown BEGIN
+            string pickerChargeCode = "";
+            try { pickerChargeCode = _pickerChargeCode.Items[_pickerChargeCode.SelectedIndex].ToString().Split(' ')[0].ToString().Trim(); }
+            catch (Exception ex) { }
+            //_vm.ExpenseChargeCode = (string)_pickerChargeCode.Items[_pickerChargeCode.SelectedIndex];
+            _vm.ExpenseChargeCode = pickerChargeCode;
 
             // update other display items
             _entryUnitOfMeasure.Text = _vm.ExpenseUnitOfMeasure;
@@ -614,12 +776,24 @@ namespace TechDashboard.WPF
 
         private void _pickerCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _vm.ExpenseCategory = (string)_pickerCategory.Items[_pickerCategory.SelectedIndex];
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown BEGIN
+            string pickerCategory = "";
+            try { pickerCategory = _pickerCategory.Items[_pickerCategory.SelectedIndex].ToString().Split(' ')[0].ToString().Trim(); }
+            catch (Exception ex) { }
+            //_vm.ExpenseCategory = (string)_pickerCategory.Items[_pickerCategory.SelectedIndex];
+            _vm.ExpenseCategory = pickerCategory;
+            // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown END
 
-            // puke... scroll charge code
+            // scroll charge code
             for (int i = 0; i < _pickerChargeCode.Items.Count; i++)
             {
-                if ((string)_pickerChargeCode.Items[i] == _vm.ExpenseChargeCode)
+                // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown BEGIN
+                string pickerChargeCode = "";
+                try { pickerChargeCode = _pickerChargeCode.Items[i].ToString().Split(' ')[0].ToString().Trim(); }
+                catch (Exception ex) { }
+                //if ((string)_pickerChargeCode.Items[i] == _vm.ExpenseChargeCode)
+                if (pickerChargeCode == _vm.ExpenseChargeCode)
+                // dch rkl 10/14/2016 Show Code + Description in Charge Code Dropdown END
                 {
                     _pickerChargeCode.SelectedIndex = i;
                     break;

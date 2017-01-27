@@ -141,7 +141,13 @@ namespace TechDashboard.Data
             // Now that the DB is updated, send same info back to HQ
             if (techToUpdate != null)
             {
-                bool result = await UpdateErpTechnicianStatus(techToUpdate);
+                try {
+                    bool result = await UpdateErpTechnicianStatus(techToUpdate);
+                }
+                catch (Exception exception)
+                {
+                    // this may fail absent a data connection, could return false
+                }
             }        
         }
 
@@ -206,29 +212,39 @@ namespace TechDashboard.Data
         /// <param name="technician">The JT_Technician object/record to mark as current.</param>
         public void SaveTechnicianAsCurrent(JT_Technician technician)
         {
-            int rows = 0;
+            // dch rkl 12/08/2016 add try/catch to capture exception
 
-            lock (_locker)
+            try
             {
-                // Unset any techs that are marked as "current"
-                List<JT_Technician> currentTechnicians = _database.Table<JT_Technician>().Where(t => t.IsCurrent == true).ToList();
-                if (currentTechnicians.Count > 0)
+                int rows = 0;
+
+                lock (_locker)
                 {
-                    foreach (JT_Technician technicianInList in currentTechnicians)
+                    // Unset any techs that are marked as "current"
+                    List<JT_Technician> currentTechnicians = _database.Table<JT_Technician>().Where(t => t.IsCurrent == true).ToList();
+                    if (currentTechnicians.Count > 0)
                     {
-                        technicianInList.IsCurrent = false;
+                        foreach (JT_Technician technicianInList in currentTechnicians)
+                        {
+                            technicianInList.IsCurrent = false;
+                        }
+                        _database.UpdateAll(currentTechnicians);
                     }
-                    _database.UpdateAll(currentTechnicians);
+
+                    // Set this tech as current.
+                    technician.IsCurrent = true;
+                    rows = _database.Update(technician);
                 }
 
-                // Set this tech as current.
-                technician.IsCurrent = true;
-                rows = _database.Update(technician);
+                if (rows > 0)
+                {
+                    OnCurrentTechnicianChanged(EventArgs.Empty);
+                }
             }
-
-            if (rows > 0)
+            catch (Exception ex)
             {
-                OnCurrentTechnicianChanged(EventArgs.Empty);
+                ErrorReporting oErrRpt = new Data.ErrorReporting();
+                oErrRpt.sendException(ex, "TechDashboard.Data.TechDashboardDB_Technician.cs/SaveTechnicianAsCurrent");
             }
         }
 
@@ -237,7 +253,7 @@ namespace TechDashboard.Data
         /// </summary>
         /// <returns>The current JT_Technician object.</returns>
         public JT_Technician GetCurrentTechnicianFromDb()
-        {// puke... make not-public at some point.
+        {// ... make not-public at some point.
             lock (_locker)
             {
                 return _database.Table<JT_Technician>().Where(t => t.IsCurrent == true).FirstOrDefault();

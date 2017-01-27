@@ -8,6 +8,11 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_Codes.cs
+     * 12/01/2016 DCH Added IM_Warehouse table, JT_CustomerBillingRates table
+     * 01/20/2017 DCH Added CI_UnitOfMeasure table.
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region Miscellaneous Codes
@@ -179,6 +184,206 @@ namespace TechDashboard.Data
             }
 
             return codeToReturn;
+        }
+
+        #endregion
+
+        // dch rkl 10/31/2016 Add JT_Options
+        #region JT_Options
+
+        public void FillJTOptionsTable()
+        {
+            FillLocalTable<JT_Options>(string.Empty, string.Empty);
+        }
+
+        public List<JT_Options> GetJTOptionsFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<JT_Options>().OrderBy(code => code.ModuleCode).ToList();
+            }
+        }
+
+        #endregion
+
+        // dch rkl 10/31/2016 Add PR_EarningsDeduction
+        #region PR_EarningsDeduction
+
+        public void FillPREarningsDeductionTable()
+        {
+            try
+            {
+                FillLocalTable<PR_EarningsDeduction>("where", "RecordType eq 'E'");
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        public List<PR_EarningsDeduction> GetPREarningsDeductionFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<PR_EarningsDeduction>().Where(x => x.RecordType != "e").OrderBy(code => code.EarningsCode).ToList();
+            }
+        }
+
+        #endregion
+
+        // dch rkl 11/03/2016 Add JT_TimeTrackerOptions
+        #region JT_TimeTrackerOptions
+
+        public void FillJTTimeTrackerOptions()
+        {
+            try
+            {
+                FillLocalTable<JT_TimeTrackerOptions>("where", "ModuleCode eq 'J/T'");
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        public List<JT_TimeTrackerOptions> GetJTTimeTrackerOptionsFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<JT_TimeTrackerOptions>().ToList();
+            }
+        }
+
+        #endregion
+
+        // dch rkl 11/16/2016 Add SO_Options
+        #region SO_Options
+
+        public void FillSOOptionsTable()
+        {
+            FillLocalTable<SO_Options>(string.Empty, string.Empty);
+        }
+
+        public List<SO_Options> GetSOOptionsFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<SO_Options>().OrderBy(code => code.ModuleCode).ToList();
+            }
+        }
+
+        #endregion
+
+        // dch rkl 12/01/2016 Add IM_Warehouse
+        #region IM_Warehouse
+
+        public void FillIMWarehouseTable()
+        {
+            FillLocalTable<IM_Warehouse>(string.Empty, string.Empty);
+        }
+
+        public List<IM_Warehouse> GetIMWarehouseFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<IM_Warehouse>().OrderBy(code => code.WarehouseCode).ToList();
+            }
+        }
+
+        #endregion
+
+        // dch rkl 12/01/2016 Add JT_CustomerBillingRates
+        #region JT_CustomerBillingRates
+
+        public void FillJT_CustomerBillingRatesTable()
+        {
+            FillLocalTable<JT_CustomerBillingRates>(string.Empty, string.Empty);
+        }
+
+        public List<JT_CustomerBillingRates> GetJT_CustomerBillingRatesFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<JT_CustomerBillingRates>().OrderBy(code => code.CustomerNo).ToList();
+            }
+        }
+
+        public JT_CustomerBillingRates GetJT_CustomerBillingRate(string divisionNo, string customerNo, string activityCode)
+        {
+            JT_CustomerBillingRates custBillRate = null;
+
+            lock (_locker)
+            {
+                custBillRate =
+                    _database.Table<JT_CustomerBillingRates>().Where(
+                        ac => (ac.ARDivisionNo == divisionNo && ac.CustomerNo == customerNo && ac.ActivityCode == activityCode)
+                        ).FirstOrDefault();
+            }
+
+            return custBillRate;
+        }
+
+        #endregion
+
+
+        // dch rkl 01/20/2017 Add CI_UnitOfMeasure
+        #region CI_UnitOfMeasure
+
+        public void FillCI_UnitOfMeasureTable()
+        {
+            FillLocalTable<CI_UnitOfMeasure>(string.Empty, string.Empty);
+        }
+
+        public List<CI_UnitOfMeasure> GetCI_UnitOfMeasureFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<CI_UnitOfMeasure>().OrderBy(code => code.UnitOfMeasure).ToList();
+            }
+        }
+
+        public CI_UnitOfMeasure GetCI_UnitOfMeasure(string umCode)
+        {
+            CI_UnitOfMeasure unitOfMeas = null;
+
+            lock (_locker)
+            {
+                unitOfMeas =
+                    _database.Table<CI_UnitOfMeasure>().Where(
+                        um => (um.UnitOfMeasure == umCode)
+                        ).FirstOrDefault();
+            }
+
+            return unitOfMeas;
+        }
+
+        #endregion
+
+        // dch rkl 01/23/2017 Add AR_Options
+        #region AR_Options
+
+        public void FillAR_OptionsTable()
+        {
+            FillLocalTable<AR_Options>(string.Empty, string.Empty);
+        }
+
+        public List<AR_Options> GetAR_OptionsFromDB()
+        {
+            lock (_locker)
+            {
+                return _database.Table<AR_Options>().OrderBy(code => code.ModuleCode).ToList();
+            }
+        }
+
+        public AR_Options GetAR_Options(string moduleCode)
+        {
+            AR_Options arOpt = null;
+
+            lock (_locker)
+            {
+                arOpt =
+                    _database.Table<AR_Options>().Where(
+                        ao => (ao.ModuleCode == moduleCode)
+                        ).FirstOrDefault();
+            }
+
+            return arOpt;
         }
 
         #endregion

@@ -10,14 +10,14 @@
     <Grid Margin="0,73,0,0">
         <m:Map x:Name="mapCustomer" CredentialsProvider="ArBc9gk1rx37doHgAYHLu4nTVK1N2rf1I_PxonXvcsEZi0y3VVg6Kp5a0bFX018X" ZoomLevel="16" Margin="0,-8,0,51" />
         <Rectangle Fill="#FF3498DB" Height="66" Margin="0,-74,0,0" Stroke="#FF3498DB" VerticalAlignment="Top"/>
-        <Label x:Name="label" Content="CUSTOMER MAP" Margin="83,-56,81,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="32" Foreground="White" FontWeight="Bold" FontSize="16"/>
+        <Label x:Name="label" Content="CUSTOMER MAP" Margin="83,-56,53,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="32" Foreground="White" FontWeight="Bold" FontSize="18" Width="164"/>
         <Rectangle Fill="#FF3498DB" Stroke="#FF3498DB" Height="51" VerticalAlignment="Bottom"/>
-        <Button x:Name="btnBack" Margin="10,0,0,14" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="75">
+        <Button x:Name="btnBack" Margin="3,-36,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="72">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Resources/arrow-111-64.png" Height="16" Margin="0,0,8,0">
                     </Image>
-                    <TextBlock Foreground="White" FontWeight="Bold" FontSize="14">BACK</TextBlock>
+                    <TextBlock Foreground="White" FontWeight="Bold" FontSize="14"><Run Text="BACK"/></TextBlock>
                 </StackPanel>
             </Button.Content>
         </Button>

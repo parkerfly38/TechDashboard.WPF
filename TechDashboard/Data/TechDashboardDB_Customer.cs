@@ -9,13 +9,17 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_Customer.cs
+     * 12/01/2016 DCH Add TODO
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region App_Customer
 
         public App_Customer GetAppCustomer(string customerNumber)
         {
-            // puke rename
+            // TODO rename
             AR_Customer customer;
 
             lock (_locker)
@@ -189,13 +193,13 @@ namespace TechDashboard.Data
                 sb.Append("')");
             }
 
-            FillLocalTable<AR_CustomerContact>("where", sb.ToString());  // puke filter
+            FillLocalTable<AR_CustomerContact>("where", sb.ToString());  // TODO filter
         }
 
 
 
         public List<AR_CustomerContact> GetCustomerContacts(string customerNumber)
-        {// puke
+        {// TODO
 
             List<AR_CustomerContact> customerContacts = null;
 
@@ -210,7 +214,7 @@ namespace TechDashboard.Data
 
 
         public AR_CustomerContact GetCustomerContact(string contactCode)
-        {// puke
+        {// TODO
             AR_CustomerContact customerContact;
 
             lock (_locker)

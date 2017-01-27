@@ -4,6 +4,15 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_RepairPart.cs
+     * 11/22/2016 DCH Handle null values
+     * 12/02/2016 DCH Add ItemType, QuantityReqd, Valuation, QuantityShipped
+     * 12/02/2016 DCH Get Item Unit Cost based on JT_Options.DefaultPartsCost
+     * 01/13/2017 DCH Add Extended Description
+     * 01/13/2017 DCH Part Description should come from sales order
+     * 01/23/2017 DCH Capture SO Line Key
+     *********************************************************************************************************/
     public class App_RepairPart
     {
         private App_WorkTicket _workTicket;
@@ -23,6 +32,12 @@ namespace TechDashboard.Models
         private bool _isPrintable;
         private bool _isPurchased;
         private bool _isOverhead;
+        private string _itemType;      // dch rkl 11/23/2016 add item type
+        private decimal _quantityReqd;       // dch rkl 11/30/2016 add quantity required
+        private string _valuation;         // dch rkl 12/05/2016 Add Item Valuation
+        private double _quantityShipped;        // dch rkl 12/05/2016 add qty shipped
+        private string _itemCodeDesc;       // dch rkl 01/13/2017 Add this for Extended Description
+        private string _soLineKey;             // dch rkl 01/23/2017 Save SOLineKey
 
         #region Public Properties
 
@@ -32,6 +47,7 @@ namespace TechDashboard.Models
         public int ID
         {
             get { return _id; }
+            set { _id = value; }
         }
 
         /// <summary>
@@ -57,6 +73,7 @@ namespace TechDashboard.Models
         public string PartItemCodeDescription
         {
             get { return _partItemCodeDescription; }
+            set { _partItemCodeDescription = value; }       // dch rkl 01/13/2017 allow set
         }
 
         /// <summary>
@@ -92,6 +109,7 @@ namespace TechDashboard.Models
         public double UnitCost
         {
             get { return _unitCost; }
+            set { _unitCost = value; }  // dch rkl 11/21/2016 this is editable
         }
 
         /// <summary>
@@ -118,6 +136,24 @@ namespace TechDashboard.Models
         {
             get { return _unitOfMeasure; }
             set { _unitOfMeasure = value; }
+        }
+
+        /// <summary>
+        /// dch rkl 11/23/2016 Add Item Type
+        /// </summary>
+        public string ItemType
+        {
+            get { return _itemType; }
+            set { _itemType = value; }
+        }
+
+        /// <summary>
+        /// dch rkl 12/05/2016 Add Item Valuation
+        /// </summary>
+        public string Valuation
+        {
+            get { return _valuation; }
+            set { _valuation = value; }
         }
 
         /// <summary>
@@ -167,6 +203,13 @@ namespace TechDashboard.Models
             }
         }
 
+        protected string _lotSerialNo;
+        public string LotSerialNo
+        {
+            get { return _lotSerialNo; }
+            set { _lotSerialNo = value; }
+        }
+
         /// <summary>
         /// Is Purchased
         /// </summary>
@@ -181,16 +224,131 @@ namespace TechDashboard.Models
         /// </summary>
         public bool IsOverhead
         {
-            // puke -- default initially from Work ticket class.  PartsCalculateOverheadDefault
+            // TODO -- default initially from Work ticket class.  PartsCalculateOverheadDefault
             get { return _isOverhead; }
             set { _isOverhead = value; }
         }
 
+        // dch rkl 11/30/2016 add quantity required
+        public decimal QuantityReqd
+        {
+            get { return _quantityReqd; }
+            set { _quantityReqd = value; }
+        }
+
+        // dch rkl 12/05/2016 add qty shipped
+        public double QuantityShipped
+        {
+            get { return _quantityShipped; }
+            set { _quantityShipped = value; }
+        }
+
+        /// <summary>
+        /// dch rkl 01/13/2017 Add Extended Description 
+        /// </summary>
+        public string ItemCodeDesc
+        {
+            get { return _itemCodeDesc; }
+            set { _itemCodeDesc = value; }
+        }
+
+        // dch rkl 01/23/2017 Save SOLineKey
+        public string SoLineKey
+        {
+            get { return _soLineKey; }
+            set { _soLineKey = value; }
+        }
+
         #endregion
 
-        public App_RepairPart(JT_ServiceEquipmentParts part, App_RepairItem puke)
+        public App_RepairPart(JT_ServiceEquipmentParts part, App_RepairItem TODO)
         {
-            // puke...stub to stop errors
+            // stub to stop errors
+        }
+
+        public App_RepairPart(JT_ServiceEquipmentParts part, App_WorkTicket workTicket, CI_Item item)
+        {
+            _workTicket = workTicket;
+            _id = 0;
+            _parentItemCode = workTicket.DtlRepairItemCode;
+            _partItemCode = part.ItemCode;
+            _partItemCodeDescription = item.ItemCodeDesc;
+            _warehouse = item.DefaultWarehouseCode;
+            _problemCode = part.ProblemCode;
+            _quantity = part.Quantity;
+
+            // dch rkl 12/02/2016 Get Item Unit Cost based on JT_Options.DefaultPartsCost
+            _unitCost = GetItemUnitCost(item.LastTotalUnitCost, item.AverageUnitCost, item.StandardUnitCost);
+            //_unitCost = (double)item.StandardUnitCost;
+
+            _unitPrice = (double)item.StandardUnitPrice;
+            _unitOfMeasure = item.StandardUnitOfMeasure;
+            _comment = "";
+            _isChargeable = part.IsChargeable;
+            _isPrintable = part.IsPrintable;
+            _isPurchased = part.IsPurchased;
+            _isOverhead = part.IsOverhead;
+
+            // dch rkl 11/23/2016 Add Item Type
+            _itemType = item.ItemType;
+
+            // dch rkl 12/05/2016 Add Item Valuation
+            _valuation = item.Valuation;
+
+            // dch rkl 11/30/2016 add quantity required
+            _quantityReqd = 0;
+
+            // dch rkl 12/05/2016 add qty shipped
+            _quantityShipped = 0;
+
+            // dch rkl 01/13/2017 Add Extended Description 
+            _itemCodeDesc = "";
+
+            // dch rkl 01/23/2017 Sales Order Line Key
+            _soLineKey = "";
+    }
+
+
+    public App_RepairPart(JT_EquipmentAsset part, App_WorkTicket workTicket, CI_Item item)
+        {
+            _workTicket = workTicket;
+            _id = 0;
+            _parentItemCode = workTicket.DtlRepairItemCode;
+            _partItemCode = part.ItemCode;
+            _partItemCodeDescription = item.ItemCodeDesc;
+            _warehouse = item.DefaultWarehouseCode;
+            _problemCode = workTicket.DtlProblemCode;
+            _quantity = 0.0;
+
+            // dch rkl 12/02/2016 Get Item Unit Cost based on JT_Options.DefaultPartsCost
+            _unitCost = GetItemUnitCost(item.LastTotalUnitCost, item.AverageUnitCost, item.StandardUnitCost);
+            //_unitCost = (double)item.StandardUnitCost;
+
+            _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
+            _unitOfMeasure = item.StandardUnitOfMeasure;
+            _comment = string.Empty;
+            _isChargeable = SetIsChargeable();
+            _isPrintable = (_isChargeable ? true : false);
+            _isPurchased = false;
+            _isOverhead = _workTicket.PartsCalculateOverheadDefault;
+
+            // dch rkl 11/23/2016 Add Item Type
+            _itemType = item.ItemType;
+
+            // dch rkl 12/05/2016 Add Item Valuation
+            _valuation = item.Valuation;
+
+            // dch rkl 11/30/2016 add quantity required
+            _quantityReqd = 0;
+
+            // dch rkl 12/05/2016 add qty shipped
+            _quantityShipped = 0;
+
+            // dch rkl 01/13/2017 Add Extended Description 
+            _itemCodeDesc = "";
+
+            // dch rkl 01/23/2017 Sales Order Line Key
+            _soLineKey = "";
         }
 
         /// <summary>
@@ -206,6 +364,17 @@ namespace TechDashboard.Models
             _parentItemCode = workTicket.DtlRepairItemCode;
             _partItemCode = importDetail.ItemCode;
             _partItemCodeDescription = importDetail.ItemCodeDesc;
+
+            // dch rkl 11/22/2016
+            CI_Item item = App.Database.GetItemFromDB(_partItemCode);
+            if (_partItemCodeDescription == null)
+            {
+                if (item != null && item.ItemCodeDesc != null) { _partItemCodeDescription = item.ItemCodeDesc; }
+                else { _partItemCodeDescription = ""; }
+            }
+
+            // dch rkl 12/05/2016 Make sure part has a valuation value
+
             _warehouse = importDetail.WarehouseCode;
             _problemCode = importDetail.ProblemCode;
             _quantity = importDetail.QuantityUsed;
@@ -213,10 +382,30 @@ namespace TechDashboard.Models
             _unitPrice = importDetail.UnitPrice;
             _unitOfMeasure = importDetail.UnitOfMeasure;
             _comment = importDetail.CommentText;
+            _lotSerialNo = importDetail.LotSerialNo;
             _isChargeable = (((importDetail.ChargePart != null) && (importDetail.ChargePart.Trim().ToUpper() == "Y")) ? true : false);
             _isPrintable = (((importDetail.PrintPart != null) && (importDetail.PrintPart.Trim().ToUpper() == "Y")) ? true : false);
             _isPurchased = (((importDetail.PurchasePart != null) && (importDetail.PurchasePart.Trim().ToUpper() == "Y")) ? true : false);
             _isOverhead = (((importDetail.Overhead != null) && (importDetail.Overhead.Trim().ToUpper() == "Y")) ? true : false);
+
+            // dch rkl 11/23/2016 Add Item Type
+            if (item != null && item.ItemType != null) { _itemType = item.ItemType; }
+
+            // dch rkl 12/05/2016 Add Item Valuation
+            if (item != null && item.Valuation != null) { _valuation = item.Valuation; }
+
+            // dch rkl 11/30/2016 add quantity required
+            _quantityReqd = (decimal)importDetail.QuantityRequired;
+
+            // dch rkl 12/05/2016 add qty shipped
+            _quantityShipped = importDetail.QuantityCompleted;
+
+            // dch rkl 01/13/2017 Add Extended Description 
+            if (importDetail.ItemCodeDesc != null) { _itemCodeDesc = importDetail.ItemCodeDesc; }
+            else { _itemCodeDesc = ""; }
+
+            // dch rkl 01/23/2017 Sales Order Line Key
+            _soLineKey = importDetail.SOLineKey;
         }
 
         public App_RepairPart(App_Item item, App_WorkTicket workTicket)
@@ -230,7 +419,11 @@ namespace TechDashboard.Models
             _warehouse = item.WarehouseCode;
             _problemCode = _workTicket.DtlProblemCode;
             _quantity = 0.0;
-            _unitCost = Convert.ToDouble(item.StandardUnitCost);
+
+            // dch rkl 12/02/2016 Get Item Unit Cost based on JT_Options.DefaultPartsCost
+            _unitCost = GetItemUnitCost(item.LastTotalUnitCost, item.AverageUnitCost, item.StandardUnitCost);
+            //_unitCost = (double)item.StandardUnitCost;
+
             _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
             _unitOfMeasure = item.StandardUnitOfMeasure;
             _comment = string.Empty;
@@ -238,6 +431,25 @@ namespace TechDashboard.Models
             _isPrintable = (_isChargeable ? true : false);
             _isPurchased = false;
             _isOverhead = _workTicket.PartsCalculateOverheadDefault;
+            _itemType = item.ItemType;          // dch rkl 11/23/2016 add item type
+
+            // dch rkl 11/30/2016 add quantity required
+            _quantityReqd = 0;
+
+            // dch rkl 11/23/2016 Add Item Type
+            _itemType = item.ItemType;
+
+            // dch rkl 12/05/2016 Add Item Valuation
+            _valuation = item.Valuation;
+
+            // dch rkl 12/05/2016 add qty shipped
+            _quantityShipped = 0;
+
+            // dch rkl 01/13/2017 Add Extended Description 
+            _itemCodeDesc = "";
+
+            // dch rkl 01/23/2017 Sales Order Line Key
+            _soLineKey = "";
         }
 
         public App_RepairPart(CI_Item item, App_WorkTicket workTicket)
@@ -246,19 +458,75 @@ namespace TechDashboard.Models
 
             _id = 0;
             _parentItemCode = workTicket.DtlRepairItemCode;
-            _partItemCode = item.ItemCode;
-            _partItemCodeDescription = item.ItemCodeDesc;
-            _warehouse = item.DefaultWarehouseCode;
+
+            // dch rkl 10/31/2016 handle nulls
+            if (item != null)
+            {
+                _partItemCode = item.ItemCode;
+                _partItemCodeDescription = item.ItemCodeDesc;
+                _warehouse = item.DefaultWarehouseCode;
+
+                // dch rkl 12/02/2016 Get Item Unit Cost based on JT_Options.DefaultPartsCost
+                _unitCost = GetItemUnitCost(item.LastTotalUnitCost, item.AverageUnitCost, item.StandardUnitCost);
+                //_unitCost = (double)item.StandardUnitCost;
+
+                _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
+                _unitOfMeasure = item.StandardUnitOfMeasure;
+
+                // dch rkl 11/23/2016 Add Item Type
+                _itemType = item.ItemType;
+
+                // dch rkl 12/05/2016 Add Item Valuation
+                _valuation = item.Valuation;
+            }
+            else
+            {
+                _partItemCode = "";
+                _partItemCodeDescription = "";
+                _warehouse = "";
+                _unitCost = 0;
+                _unitPrice = 0;
+                _unitOfMeasure = "";
+                _itemType = "";
+                _valuation = "";
+            }
+
             _problemCode = _workTicket.DtlProblemCode;
             _quantity = 0.0;
-            _unitCost = Convert.ToDouble(item.StandardUnitCost);
-            _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
-            _unitOfMeasure = item.StandardUnitOfMeasure;
             _comment = string.Empty;
             _isChargeable = SetIsChargeable();
             _isPrintable = (_isChargeable ? true : false);
             _isPurchased = false;
             _isOverhead = _workTicket.PartsCalculateOverheadDefault;
+
+            // dch rkl 11/30/2016 add quantity required
+            _quantityReqd = 0;
+
+            // dch rkl 12/05/2016 add qty shipped
+            _quantityShipped = 0;
+
+            // dch rkl 01/13/2017 Add Extended Description 
+            _itemCodeDesc = "";
+
+            // dch rkl 01/23/2017 Sales Order Line Key
+            _soLineKey = "";
+        }
+
+        // dch rkl 12/02/2016 Get Item Unit Cost based on JT_Options.DefaultPartsCost
+        private double GetItemUnitCost(decimal dLastTotalUnitCost, decimal dAverageUnitCost, decimal dStandardUnitCost)
+        {
+            double itemUnitCost = 0;
+
+            List<JT_Options> lsOptions = App.Database.GetJTOptionsFromDB();
+            if (lsOptions.Count > 0)
+            {
+                JT_Options options = lsOptions[0];
+                if (options.DefaultPartsCost == "L") { itemUnitCost = (double)dLastTotalUnitCost; }
+                else if (options.DefaultPartsCost == "A") { itemUnitCost = (double)dAverageUnitCost; }
+                else { itemUnitCost = (double)dStandardUnitCost; }
+            }
+
+            return itemUnitCost;
         }
 
         /// <summary>

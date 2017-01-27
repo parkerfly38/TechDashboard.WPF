@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-
+using TechDashboard.Data;
 using TechDashboard.Models;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * ExpensesEditPageViewModel.cs
+     * 11/21/2016 DCH Make sure category is not blank/null
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
     public class ExpensesEditPageViewModel
     {
+        #region Properties
+
         protected App_Expense _expenseItem;
         protected ObservableCollection<string> _expenseCategories;
         protected ObservableCollection<string> _expenseChargeCodes;
@@ -84,39 +91,65 @@ namespace TechDashboard.ViewModels
             set { _expenseItem.IsChargeableToCustomer = value; }
         }
 
-        protected void UpdateExpenseCategory(string category)
+        /*protected string GetExpenseCategory(string chargecode)
         {
             JT_MiscellaneousCodes categoryRecord = App.Database.GetExpenseCategory(category);
-            string[] brokenDescription = App_Expense.BreakDescription(categoryRecord.AddtlDescNum);            
 
+        }*/
+
+        protected void UpdateExpenseCategory(string category)
+        {
+            // dch rkl 12/07/2016 catch exception
             try
             {
-                _expenseItem.ChargeCode = brokenDescription[0];
+                // dch rkl 11/21/2016 make sure category is not blank/null BEGIN
+                if (category != null && category.Trim().Length > 0)
+                {
+                    // dch rkl 11/21/2016 make sure category is not blank/null END
+                    JT_MiscellaneousCodes categoryRecord = App.Database.GetExpenseCategory(category);
+                    string[] brokenDescription = App_Expense.BreakDescription(categoryRecord.AddtlDescNum);
+
+                    try
+                    {
+                        _expenseItem.ChargeCode = brokenDescription[0];
+                    }
+                    catch
+                    {
+                        _expenseItem.ChargeCode = null;
+                    }
+                    try
+                    {
+                        _expenseItem.UnitOfMeasure = brokenDescription[1];
+                    }
+                    catch
+                    {
+                        _expenseItem.UnitOfMeasure = null;
+                    }
+                    try
+                    {
+                        _expenseItem.UnitPrice = double.Parse(brokenDescription[2]);
+                    }
+                    catch
+                    {
+                        _expenseItem.UnitPrice = 0;
+                    }
+                    // dch rkl 11/21/2016 make sure category is not blank/null BEGIN
+                }
+                else
+                {
+                    _expenseItem.ChargeCode = "";
+                    _expenseItem.UnitOfMeasure = null;
+                    _expenseItem.UnitPrice = 0;
+                }
+                // dch rkl 11/21/2016 make sure category is not blank/null END
             }
-            catch
+            catch (Exception ex)
             {
-                _expenseItem.ChargeCode = null;
-            }
-            try
-            {
-                _expenseItem.UnitOfMeasure = brokenDescription[1];
-            }
-            catch
-            {
-                _expenseItem.UnitOfMeasure = null;
-            }
-            try
-            {
-                _expenseItem.UnitPrice = double.Parse(brokenDescription[2]);
-            }
-            catch
-            {
-                _expenseItem.UnitPrice = 0;
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.ExpensesEditPageViewModel.UpdateExpenseCategory");
             }
         }
-
-
-
 
         //public App_Expense ExpenseItem
         //{
@@ -133,28 +166,87 @@ namespace TechDashboard.ViewModels
             get { return _expenseChargeCodes; }
         }
 
+        #endregion
+
         public ExpensesEditPageViewModel(App_WorkTicket workTicket)
         {
-            _expenseItem = new App_Expense(new JT_TransactionImportDetail(), workTicket);
-            
-            Initialize();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _expenseItem = new App_Expense(new JT_TransactionImportDetail(), workTicket);
+
+                Initialize();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.ExpensesEditPageViewModel(App_WorkTicket workTicket)");
+            }
         }
 
         public ExpensesEditPageViewModel(App_Expense expenseItem)
         {
-            _expenseItem = expenseItem;
-            Initialize();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _expenseItem = expenseItem;
+                //_expenseItem.Category = 
+                Initialize();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.ExpensesEditPageViewModel(App_Expense expenseItem)");
+            }
         }
 
         protected void Initialize()
         {
-            _expenseCategories = new ObservableCollection<string>(App.Database.GetExpenseCategories());
-            _expenseChargeCodes = new ObservableCollection<string>(App.Database.GetExpenseChargeCodes());
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _expenseCategories = new ObservableCollection<string>(App.Database.GetExpenseCategories());
+                _expenseChargeCodes = new ObservableCollection<string>(App.Database.GetExpenseChargeCodes());
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.Initialize()");
+            }
         }
 
         public void SaveExpenseItem()
         {
-            App.Database.SaveExpense(_expenseItem); 
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                App.Database.SaveExpense(_expenseItem);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.SaveExpenseItem()");
+            }
         }  
+
+        // dch rkl 10/14/2016 Delete Expensen
+        public void DeleteExpenseItem()
+        {
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                App.Database.DeleteExpense(_expenseItem);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.DeleteExpenseItem()");
+            }
+        }
     }
 }

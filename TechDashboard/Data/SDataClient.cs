@@ -16,7 +16,7 @@ namespace TechDashboard.Data
 
         public SDataClient(TechDashboardDatabase database) : base()
         {
-            App_Settings appSettings = database.GetApplicatioinSettings();
+            App_Settings appSettings = database.GetApplicationSettings();
 
             if (appSettings != null)
             {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using TechDashboard.Data;
 
+using Rkl.Erp.Sage.Sage100.TableObjects;
+
 using SQLite;
 
 namespace TechDashboard.Models
@@ -50,6 +52,7 @@ namespace TechDashboard.Models
         public string DeviceID { get; set; }
 
         public string LastSyncDate { get; set; }
+        
 
         public App_Settings()
         {

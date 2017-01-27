@@ -14,21 +14,25 @@
                     <Label Content="{Binding ItemCode}" Foreground="#FF7F8C8D" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Qty:" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="Qty" FontWeight="Bold" Foreground="#FF7F8C8D" />
                     <Label Content="{Binding Quanitity}" Foreground="#FF7F8C8D" />
                     <Label Content="{Binding UnitOfMeasure}" Foreground="#FF7F8C8D" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Unit Price:" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="Unit Price" FontWeight="Bold" Foreground="#FF7F8C8D" />
                     <Label Content="{Binding UnitPrice}" Foreground="#FF7F8C8D" />
-                    <Label Content="Extd Price:" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="Extd Price" FontWeight="Bold" Foreground="#FF7F8C8D" />
                     <Label Content="{Binding ExtdPrice}" Foreground="#FF7F8C8D" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Unit Cost:" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="Unit Cost" FontWeight="Bold" Foreground="#FF7F8C8D" />
                     <Label Content="{Binding UnitCost}" Foreground="#FF7F8C8D" />
                 </StackPanel>
-                <TextBox Foreground="#FF7F8C8D" Text="{Binding BillingDescription}"></TextBox>
+                <!--<TextBox Foreground="#FF7F8C8D" Text="{Binding BillingDescription}"></TextBox>-->
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Billing Description" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="{Binding BillingDescription}" Foreground="#FF7F8C8D" />
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

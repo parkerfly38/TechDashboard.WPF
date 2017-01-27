@@ -4,6 +4,10 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_RepairItem.cs
+     * 12/02/2016 DCH Add IntLaborWarrantyPeriod
+     *********************************************************************************************************/
     public class App_RepairItem
     {
         private CI_Item _repairItem;
@@ -46,6 +50,12 @@ namespace TechDashboard.Models
         public bool IsEquipmentAsset
         {
             get { return (_equipmentAsset != null); }
+        }
+
+        // dch rkl 12/01/2016 add IntLaborWarrantyPeriod
+        public DateTime IntLaborWarrantyPeriod
+        {
+            get { return _equipmentAsset.IntLaborWarrantyPeriod; }
         }
 
         public App_RepairItem(CI_Item repairItem, JT_EquipmentAsset equipmentAsset)

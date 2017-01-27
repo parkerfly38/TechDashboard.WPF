@@ -8,6 +8,11 @@ using SQLite;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_WorkTicketHistory.cs
+     * 11/30/2016 DCH Correct misspelling of PreventiveMaintenance
+     * 12/01/2016 DCH Add StatusDate
+     *********************************************************************************************************/
     public class JT_WorkTicketHistory
     {
         /// <summary>
@@ -77,8 +82,9 @@ namespace TechDashboard.Models
 
         /// <summary>
         /// Preventative Maintenance Y/N - varchar(1)
+        /// dch rkl 11/30/2016 Field was spelled incorrectly
         /// </summary>
-        public string DtlPreventitiveMaintenance { get; set; }
+        public string DtlPreventiveMaintenance { get; set; }
 
         /// <summary>
         /// Problem Code - varchar(10)
@@ -100,6 +106,11 @@ namespace TechDashboard.Models
         /// </summary>
         public string HdrWtClass { get; set; }
 
+        /// <summary>
+        /// Status Date - datetime
+        /// dch rkl 12/01/2016 Add Status Date
+        /// </summary>
+        public DateTime StatusDate { get; set; }
 
         public JT_WorkTicketHistory()
         {
@@ -120,9 +131,14 @@ namespace TechDashboard.Models
             this.DtlWarrantyRepair = workTicket.DtlWarrantyRepair;
             this.DtlMfgSerialNo = workTicket.DtlMfgSerialNo;
             this.DtlCoveredOnContract = workTicket.DtlCoveredOnContract;
-            this.DtlPreventitiveMaintenance = workTicket.DtlPreventitiveMaintenance;
+            // dch rkl 11/30/2016 Field was spelled incorrectly
+            //this.DtlPreventitiveMaintenance = workTicket.DtlPreventitiveMaintenance;
+            this.DtlPreventiveMaintenance = workTicket.DtlPreventiveMaintenance;
             this.ActivityCode = workTicket.ActivityCode;
             this.DtlCoverageExceptionCode = workTicket.DtlCoverageExceptionCode;
+
+            // dch rkl 12/01/2016
+            this.StatusDate = workTicket.StatusDate;
         }
 
         [Ignore]

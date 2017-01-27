@@ -6,7 +6,34 @@
              xmlns:local="clr-namespace:TechDashboard.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="gridMain">
-            
+    <UserControl.Resources>
+        <DataTemplate x:Key="HistoryDataTemplate">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding Trx}" Width="50" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="{Binding ItemEmployee}" Width="120" Foreground="#FF7F8c8d" />
+                    <Label Content="Svc Tkt:" Width="60" FontWeight="Bold" Foreground="#FF7F8C8D" />
+                    <Label Content="{Binding ServiceTicketNo}" Width="110" Foreground="#FF7F8c8d" />
+                    <Label Content="Date:" FontWeight="Bold" Width="40" Foreground="#FF7F8C8D" />
+                    <Label Content="{Binding TransactionDate}" Width="80" Foreground="#FF7F8C8D" />
+                    <Label Content="Qty:" FontWeight="Bold" Width="35" Foreground="#FF7F8C8D" />
+                    <Label Content="{Binding Quantity}" Width="60" Foreground="#FF7F8c8d" />
+                    <Label Content="{Binding Description}" Foreground="#FF7F8c8d" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="gridMainHdr" Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Rectangle Height="60" VerticalAlignment="Top" Grid.ColumnSpan="2" Fill="#3498DB" Stroke="#FF3498DB" />
+        <Label x:Name="labelTitle" Content="HISTORY" IsTabStop="false" Grid.Row="0" Height="34" Foreground="White" Margin="83,17,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Grid x:Name="gridMain" VerticalAlignment="Top" Grid.Row="1" Margin="0">
+        </Grid>
     </Grid>
 </UserControl>

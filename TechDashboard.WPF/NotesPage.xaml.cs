@@ -15,6 +15,17 @@ using System.Windows.Shapes;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    NotesPage
+ * Description: Notes Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 10/31/2016   DCH     The notes are stored with delimeters for line breaks (~;~).  Use these 
+ *                      delimeters to display the text with a line feed, and do not include the
+ *                      delimeters on the screen.  When saving, replace line feeds with the delimeter.
+ **************************************************************************************************/
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -46,7 +57,7 @@ namespace TechDashboard.WPF
             _labelTitle = new Label();
             _labelTitle.Content = "NOTES";
             _labelTitle.FontWeight = FontWeights.Bold;
-            _labelTitle.FontSize = 22;
+            _labelTitle.FontSize = 18;
             _labelTitle.Foreground = new SolidColorBrush(Colors.White);
             _labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
             _labelTitle.VerticalAlignment = VerticalAlignment.Center;
@@ -71,8 +82,10 @@ namespace TechDashboard.WPF
                 AcceptsReturn = true,
                 AcceptsTab = true,
                 Height = 300,
-                Margin = new Thickness(30,10,30,10),
-                Text = (_vm.WorkTicketText.Text == null ? string.Empty : _vm.WorkTicketText.Text)
+                Margin = new Thickness(30, 10, 30, 10),
+                // dch rkl 10/31/2016 Their notes lines are delimited by "~;~" for a line feed.
+                //Text = (_vm.WorkTicketText.Text == null ? string.Empty : _vm.WorkTicketText.Text)
+                Text = (_vm.WorkTicketText.Text == null ? string.Empty : _vm.WorkTicketText.Text.Replace("~;~", "\r\n"))
             };
 
             Button buttonOK = new Button()
@@ -91,6 +104,10 @@ namespace TechDashboard.WPF
             buttonOK.Content = buttonOkText;
             buttonOK.Click += ButtonOK_Clicked;
 
+            // dch rkl 10/26/2016
+            buttonOK.Margin = new Thickness(30, 5, 30, 0);
+            buttonOK.Height = 40;
+
             Button buttonCancel = new Button()
             {
                 Margin = new Thickness(30,10,30,10),
@@ -105,6 +122,10 @@ namespace TechDashboard.WPF
             };
             buttonCancel.Content = buttonCancelText;
             buttonCancel.Click += ButtonCancel_Clicked;
+
+            // dch rkl 10/26/2016
+            buttonCancel.Margin = new Thickness(30, 5, 30, 0);
+            buttonCancel.Height = 40;
 
             Frame frame = new Frame();
             frame.Content = _editorNotes;
@@ -142,7 +163,10 @@ namespace TechDashboard.WPF
         private void ButtonOK_Clicked(object sender, RoutedEventArgs e)
         {
             // Update the note text
-            _vm.UpdateNotes(_editorNotes.Text);
+            // dch rkl 10/31/2016 insert delimiter back into text
+            //_vm.UpdateNotes(_editorNotes.Text);
+            _vm.UpdateNotes(_editorNotes.Text.Replace("\r\n", "~;~"));
+
             ContentControl contentArea = (ContentControl)this.Parent;
             contentArea.Content = new TicketDetailsPage(appScheduledAppt);
         }

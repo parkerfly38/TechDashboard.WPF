@@ -8,9 +8,23 @@ using TechDashboard.Models;
 //using Rkl.Erp.Sage.Sage100.TableObjects;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDatabase.cs
+     * 11/30/2016 DCH When data is pulled back from JobOps, remove any parts records in JT_TransactionImportDetail 
+     *                where quantity used is zero.  These are the default parts, and they will get reloaded 
+     *                when the parts screen is accessed for a ticket.  This will allow any changes in the Sales 
+     *                Order Detail table for the default parts to get refreshed.
+     * 12/01/2016 DCH Added IM_Warehouse, JT_CustomerBillingRates
+     * 01/20/2017 DCH Do not create database in base ProgramData folder.  Create in ProgramData / Job Ops.
+     * 01/20/2017 DCH Add CI_UnitOfMeasure table.
+     * 01/20/2017 DCH Load JT_WorkTicketText as part of Work Ticket load step.
+     * 01/23/2017 DCH Load AR_Options table.
+     * 01/27/2017 BK  Load CI_Options table
+     *********************************************************************************************************/
     public enum ConnectionType
     {
         SData,
@@ -79,7 +93,13 @@ namespace TechDashboard.Data
 
         public TechDashboardDatabase()
         {
-            _database = new SQLiteConnection(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\techdashboard.db");
+            // dch rkl 01/20/2017 Do not create database in base ProgramData folder
+            //_database = new SQLiteConnection(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\techdashboard.db");
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Job Ops") == false)
+            {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Job Ops");
+            }
+            _database = new SQLiteConnection(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Job Ops\\techdashboard.db");
         }
 
         public void FillLocalTable<T>()
@@ -124,7 +144,7 @@ namespace TechDashboard.Data
                     returnData = GetErpDataFromRestService<T>(filterType, filterText);
                     break;
                 case ConnectionType.SData:                    
-                    returnData = GetErpDataFromSData<T>(filterType, filterText); // puke... await this!
+                    returnData = GetErpDataFromSData<T>(filterType, filterText); // TODO... await this!
                     break;
                 default:
                     break;
@@ -148,20 +168,27 @@ namespace TechDashboard.Data
                 default:
                     break;
             }
-
+                
             return result;
         }
 
-        protected async Task<bool> InsertErpTransactionImportDetail(JT_TransactionImportDetail importDetail)
+        // dch rkl 12/09/2016 Insert now returns object result
+        //protected async Task<bool> InsertErpTransactionImportDetail(JT_TransactionImportDetail importDetail)
+        protected async Task<Rkl.Erp.Sage.Sage100.TableObjects.API_Results> InsertErpTransactionImportDetail(JT_TransactionImportDetail importDetail)
         {
-            bool result = false;
+            // dch rkl 12/09/2016 Insert now returns object result
+            //bool result = false;
+            Rkl.Erp.Sage.Sage100.TableObjects.API_Results result = new Rkl.Erp.Sage.Sage100.TableObjects.API_Results();
 
             switch (_dataConnectionType)
             {
                 case ConnectionType.Rest:
-                    result = await InsertTransactionImportDetailToRestService(importDetail);
+                    // dch rkl 12/09/2016 Insert now returns object result
+                    //result = await InsertTransactionImportDetailToRestService(importDetail);
+                    result.Success = await InsertTransactionImportDetailToRestService(importDetail);
                     break;
                 case ConnectionType.SData:
+                    // dch rkl 12/09/2016 Insert now returns object result
                     result = InsertTransactionImportDetailToSData(importDetail);
                     break;
                 default:
@@ -175,8 +202,11 @@ namespace TechDashboard.Data
         {
             foreach (var importDetail in importDetails)
             {
-                bool result = await InsertErpTransactionImportDetail(importDetail);
-                if (result)
+                // dch rkl 12/09/2016 Insert now returns object result
+                //bool result = await InsertErpTransactionImportDetail(importDetail);
+                Rkl.Erp.Sage.Sage100.TableObjects.API_Results result = await InsertErpTransactionImportDetail(importDetail);
+                //if (result)
+                if (result.Success)
                 {
                     DeleteExportRow(importDetail);
                 }
@@ -225,11 +255,15 @@ namespace TechDashboard.Data
             return result;
         }
 
-        protected bool InsertTransactionImportDetailToSData(JT_TransactionImportDetail importDetail)
+        // dch rkl 12/09/2016 Insert now returns object result
+        //protected bool InsertTransactionImportDetailToSData(JT_TransactionImportDetail importDetail)
+        protected Rkl.Erp.Sage.Sage100.TableObjects.API_Results InsertTransactionImportDetailToSData(JT_TransactionImportDetail importDetail)
         {
-            bool result = _sDataClient.InsertRecord(importDetail);
+            // dch rkl 12/09/2016 Insert now returns object result
+            //bool result = _sDataClient.InsertRecord(importDetail);
+            return _sDataClient.InsertRecord(importDetail);
 
-            return result;
+            //return result;
         }
 
         #endregion
@@ -303,8 +337,9 @@ namespace TechDashboard.Data
             //return;
 
             // always need all data in these tables
-    
+
             // Testing... first, drop the tables if they exist so all is clean
+            try { _database.DropTable<CI_Options>(); } catch { }
             try { _database.DropTable<JT_FieldServiceOptions>(); } catch { }
             try { _database.DropTable<CI_Item>(); } catch { }
             try { _database.DropTable<IM_ItemWarehouse>(); } catch { }
@@ -316,9 +351,23 @@ namespace TechDashboard.Data
             try { _database.DropTable<JT_Technician>(); } catch { }
             try { _database.DropTable<JT_TechnicianStatus>(); } catch { }
 
+            // dch rkl 10/31/2016 additional tables
+            try { _database.DropTable<JT_Options>(); } catch { }
+            try { _database.DropTable<PR_EarningsDeduction>(); } catch { }
+            try { _database.DropTable<JT_TimeTrackerOptions>(); } catch { }
+
+            // dch rkl 11/16/2016 additional tables
+            try { _database.DropTable<SO_Options>(); } catch { }
+
+            // dch rkl 12/01/2016 additional tables
+            try { _database.DropTable<IM_Warehouse>(); } catch { }
+            try { _database.DropTable<JT_CustomerBillingRates>(); } catch { }
+
             // Next, create the tables
+            _database.CreateTable<CI_Options>();
             _database.CreateTable<JT_FieldServiceOptions>();
             _database.CreateTable<CI_Item>();
+            _database.CreateTable<IM_ItemCost>();
             _database.CreateTable<IM_ItemWarehouse>();
             _database.CreateTable<JT_MiscellaneousCodes>();
             _database.CreateTable<JT_ClassificationCode>();
@@ -326,6 +375,27 @@ namespace TechDashboard.Data
             _database.CreateTable<JT_ActivityCode>();
             _database.CreateTable<JT_Technician>();
             _database.CreateTable<JT_TechnicianStatus>();
+
+            // dch rkl 10/31/2016 additional tables
+            _database.CreateTable<JT_Options>(); 
+            _database.CreateTable<PR_EarningsDeduction>();
+            _database.CreateTable<JT_TimeTrackerOptions>();
+
+            // dch rkl 11/16/2016 additional tables
+            _database.CreateTable<SO_Options>();
+
+            // dch rkl 12/01/2016 additional tables
+            _database.CreateTable<IM_Warehouse>();
+            _database.CreateTable<JT_CustomerBillingRates>();
+
+            // dch rkl 01/20/2017 CI_UnitOfMeasure table
+            _database.CreateTable<CI_UnitOfMeasure>();
+
+            // dch rkl 01/23/2017 AR_Options table
+            _database.CreateTable<AR_Options> ();
+
+            //Fill CI_Options
+            FillCIOptions();
 
             // Fill the tables with data.
             FillFieldServiceOptionsTable();
@@ -337,6 +407,24 @@ namespace TechDashboard.Data
             FillTechnicianTable();
             FillTechnicianStatusTable();
             FillClassificationCodeTable();
+
+            // dch rkl 10/31/2016 additional tables
+            FillJTOptionsTable();
+            FillPREarningsDeductionTable();
+            FillJTTimeTrackerOptions();
+
+            // dch rkl 11/16/2016 additional tables
+            FillSOOptionsTable();
+
+            // dch rkl 12/01/2016 additional tables
+            FillIMWarehouseTable();
+            FillJT_CustomerBillingRatesTable();
+
+            // dch rkl 01/20/2017 CI_UnitOfMeasure table
+            FillCI_UnitOfMeasureTable();
+
+            // dch rkl 01/23/2017 AR_Options table
+            FillAR_OptionsTable();
         }
 
         public void CreateDependentTables(App_Technician technician)
@@ -359,6 +447,13 @@ namespace TechDashboard.Data
             string version = fvi.FileVersion;
             decimal versionNo = Convert.ToDecimal(version.Substring(0, 3));
 
+            //ci options are now crucial, so
+            if (!TableExists<CI_Options>())
+            {
+                _database.CreateTable<CI_Options>();
+                FillCIOptions();
+            }
+
             try { _database.DropTable<JT_TechnicianScheduleDetail>(); } catch { }
             try { _database.DropTable<SO_SalesOrderHeader>(); } catch { }
             try { _database.DropTable<SO_ShipToAddress>(); } catch { }
@@ -370,7 +465,7 @@ namespace TechDashboard.Data
             try { _database.DropTable<AR_Customer>(); } catch { }
             try { _database.DropTable<AR_CustomerContact>(); } catch { }
             try { _database.DropTable<JT_ServiceEquipmentParts>(); } catch { }
-            try { _database.DropTable<JT_DailyTimeEntry>(); } catch { }
+            //try { _database.DropTable<JT_DailyTimeEntry>(); } catch { }
             try { _database.DropTable<JT_EquipmentAsset>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementHeader>(); } catch { }
             try { _database.DropTable<JT_ServiceAgreementDetail>(); } catch { }
@@ -380,10 +475,33 @@ namespace TechDashboard.Data
             try { _database.DropTable<JT_TransactionHistory>(); } catch { }
             try { _database.DropTable<JT_LaborText>(); } catch { }
 
+            // dch rkl 01/13/2017 add CI_ExtendedDescription
+            try { _database.DropTable<CI_ExtendedDescription>(); } catch { }
+
             if (!TableExists<JT_TransactionImportDetail>())
             {
                 try { _database.DropTable<JT_TransactionImportDetail>(); } catch { }
                 _database.CreateTable<JT_TransactionImportDetail>();
+            }
+            else
+            {
+                // dch rkl 11/30/2016
+                // When data is pulled back from JobOps, remove any parts records in JT_TransactionImportDetail where
+                // quantity used is zero.  These are the default parts, and they will get reloaded when the parts
+                // screen is accessed for a ticket.  This will allow any changes in the Sales Order Detail table
+                // for the default parts to get refreshed.
+                List<JT_TransactionImportDetail> lsTrans = _database.Table<JT_TransactionImportDetail>().Where(
+                    wt => (wt.RecordType == "P" && wt.QuantityUsed == 0)).ToList<JT_TransactionImportDetail>();
+                foreach (JT_TransactionImportDetail tranDtl in lsTrans)
+                {
+                    DeleteExportRow(tranDtl);
+                }
+            }
+
+            if (!TableExists<JT_DailyTimeEntry>())
+            {
+                try { _database.DropTable<JT_DailyTimeEntry>(); } catch { }
+                _database.CreateTable<JT_DailyTimeEntry>();
             }
 
             //for later versions, check to see if these tables exist
@@ -405,7 +523,7 @@ namespace TechDashboard.Data
             _database.CreateTable<AR_Customer>();
             _database.CreateTable<AR_CustomerContact>();
             _database.CreateTable<JT_ServiceEquipmentParts>();
-            _database.CreateTable<JT_DailyTimeEntry>();
+            //_database.CreateTable<JT_DailyTimeEntry>();
             _database.CreateTable<JT_EquipmentAsset>();
             _database.CreateTable<JT_ServiceAgreementHeader>();
             _database.CreateTable<JT_ServiceAgreementDetail>();
@@ -415,26 +533,35 @@ namespace TechDashboard.Data
             _database.CreateTable<JT_Transaction>();
             _database.CreateTable<JT_LaborText>();
 
+            // dch rkl 01/13/2017 add CI_ExtendedDescription
+            _database.CreateTable<CI_ExtendedDescription>();
+
             // Fill the tables with data.
-            FillTechnicianScheduleDetailTable(technician.TechnicianNo);
-            
+            FillTechnicianScheduleDetailTable(technician.TechnicianNo);            
            
+            FillWorkTicketTable();
+
+            // dch rkl 01/20/2017 This is done as part of work ticket load
+            //FillWorkTicketTextTable();
+
             FillSalesOrderHeaderTable();
             FillShipToAddressTable();
-            FillWorkTicketTable();
-            FillWorkTicketTextTable();
             FillSalesOrderDetails();
+            FillItemCostTable();
             FillCustomerTable();
             FillCustomerContactTable();
             FillServiceEquipmentPartsTable();
             FillDailyTimeEntryTable();
-            //FillExpensesTableFromSdata(); puke... not implemented yet.
+            //FillExpensesTableFromSdata(); TODO... not implemented yet.
             FillEquipmentAssetTable();
             FillServiceAgreementHeaderTable();
             FillWorkTicketClassTable();
             FillTransactionTable();
             FillTransactionHistoryTable();
             FillLaborTextTable();
+
+            // dch rkl 01/13/2017 add CI_ExtendedDescription
+            FillExtendedDescriptionTable();
         }
 
 
@@ -455,16 +582,21 @@ namespace TechDashboard.Data
                 sb.Append(scheduledTickets[i].SalesOrderNo);
                 sb.Append("' and WTNumber eq '");
                 sb.Append(scheduledTickets[i].WTNumber);
-               // sb.Append("' and WTStep eq '");
+                //sb.Append("' and WTStep eq '");
                 //sb.Append(scheduledTickets[i].WTStep);
                 sb.Append("')");
             }
-            
-            FillLocalTable<JT_WorkTicket>("where", sb.ToString()); 
-            FillLocalTable<JT_WorkTicketHistory>("where", sb.ToString());
+
+            //FillLocalTable<JT_WorkTicket>("where", sb.ToString()); 
+            //FillLocalTable<JT_WorkTicketHistory>("where", sb.ToString());
+            FillLocalTable<JT_WorkTicket>();
+            FillLocalTable<JT_WorkTicketHistory>();
+
+            // dch rkl 01/20/2017
+            FillLocalTable<JT_WorkTicketText>("where", sb.ToString());
         }
 
-        
+
 
         public JT_WorkTicket GetWorkTicket(JT_TechnicianScheduleDetail scheduleDetail)
         {
@@ -488,7 +620,7 @@ namespace TechDashboard.Data
 
         //public JT_WorkTicket GetWorkTicket(string formattedWorkTicketNumber)
         //{
-        //    // puke... obsolete?
+        //    // TODO... obsolete?
         //    JT_WorkTicket workTicket = null;
 
         //    lock (_locker)
@@ -550,7 +682,7 @@ namespace TechDashboard.Data
         //    //return workTicket;
         //}
 
-        // puke
+        // TODO
         public List<JT_WorkTicket> GetWorkTicketsFromDB()
         {
             lock (_locker)
@@ -614,7 +746,7 @@ namespace TechDashboard.Data
         //{
         //    lock (_locker)
         //    {
-        //        return new App_CurrentWorkTicket(); // puke... db stuff handled in class.  Should we remove and put here?
+        //        return new App_CurrentWorkTicket(); // TODO... db stuff handled in class.  Should we remove and put here?
         //    }
         //}
 
@@ -622,28 +754,29 @@ namespace TechDashboard.Data
 
         #region Work Ticket Text
 
-        public void FillWorkTicketTextTable()
-        {
-            StringBuilder sb = new StringBuilder();
+        // dch rkl 01/20/2017 This is done as part of work ticket load
+        //public void FillWorkTicketTextTable()
+        //{
+        //    StringBuilder sb = new StringBuilder();
 
-            List<JT_TechnicianScheduleDetail> scheduledTickets = GetTechnicianScheduleDetailFromDB();
-            for (int i = 0; i < scheduledTickets.Count; i++)
-            {
-                if (i > 0)
-                {
-                    sb.Append(" or ");
-                }
-                sb.Append("(SalesOrderNo eq '");
-                sb.Append(scheduledTickets[i].SalesOrderNo);
-                sb.Append("' and WTNumber eq '");
-                sb.Append(scheduledTickets[i].WTNumber);
-                sb.Append("' and WTStep eq '");
-                sb.Append(scheduledTickets[i].WTStep);
-                sb.Append("')");
-            }
+        //    List<JT_TechnicianScheduleDetail> scheduledTickets = GetTechnicianScheduleDetailFromDB();
+        //    for (int i = 0; i < scheduledTickets.Count; i++)
+        //    {
+        //        if (i > 0)
+        //        {
+        //            sb.Append(" or ");
+        //        }
+        //        sb.Append("(SalesOrderNo eq '");
+        //        sb.Append(scheduledTickets[i].SalesOrderNo);
+        //        sb.Append("' and WTNumber eq '");
+        //        sb.Append(scheduledTickets[i].WTNumber);
+        //        sb.Append("' and WTStep eq '");
+        //        sb.Append(scheduledTickets[i].WTStep);
+        //        sb.Append("')");
+        //    }
 
-            FillLocalTable<JT_WorkTicketText>("where", sb.ToString()); 
-        }
+        //    FillLocalTable<JT_WorkTicketText>("where", sb.ToString()); 
+        //}
 
         public App_WorkTicketText RetrieveTextFromWorkTicket(App_WorkTicket workTicket)
         {
@@ -738,14 +871,15 @@ namespace TechDashboard.Data
                     SalesOrderNo = workTicketText.SalesOrderNo,
                     WTNumber = workTicketText.WTNumber,
                     WTStep = workTicketText.WTStep,
-                    StepText = workTicketText.Text
+                    TransactionDate = DateTime.Now.ToString("yyyyMMdd"),        // dch rkl 11/03/2016 include transaction date for notes
+                StepText = workTicketText.Text
                 };
 
                 _database.Insert(transactionDetail);
 
 				SaveWorkTicketText(workTicketToSave);
                 /*workTicketText.IsModified = true;
-                // puke
+                // TODO
                 //JT_WorkTicketText itemToSave;
                 
 
@@ -758,7 +892,7 @@ namespace TechDashboard.Data
                     rows = _database.Insert(workTicketText);
                 }
 
-                // puke... need call back?*/
+                // TODO... need call back?*/
             }
         }
 
@@ -779,8 +913,17 @@ namespace TechDashboard.Data
                     rows = _database.Insert(workTicketText);
                 }
 
-                // puke... need call back?
+                // TODO... need call back?
             }
+        }
+
+        #endregion
+
+        #region CI_Options
+
+        public void FillCIOptions()
+        {
+            FillLocalTable<CI_Options>();
         }
 
         #endregion
@@ -802,12 +945,12 @@ namespace TechDashboard.Data
                 sb.Append("SalesOrderNo eq '" + workTickets[i].SalesOrderNo + "' AND ");
                 sb.Append("JT158_WTNumber eq '" + workTickets[i].WTNumber + "' AND ");
                 sb.Append("JT158_WTStep eq '" + workTickets[i].WTStep + "' AND ");
-                sb.Append("JT158_WTPart eq 'Y' AND ");
-                sb.Append("JT158_WTBillFlag ne 'B' AND ");
-                sb.Append("JT158_WTPurchase eq 'Y')");
+                sb.Append("JT158_WTPart eq 'Y')"); //AND ");
+                //sb.Append("JT158_WTBillFlag ne 'B' AND ");
+                //sb.Append("JT158_WTPurchase eq 'Y')");
             }
-            FillLocalTable<SO_SalesOrderDetail>("where", sb.ToString());
-            //FillLocalTable<SO_SalesOrderDetail>();
+            //FillLocalTable<SO_SalesOrderDetail>("where", sb.ToString());
+            FillLocalTable<SO_SalesOrderDetail>();
         }
 
         #endregion
@@ -911,14 +1054,14 @@ namespace TechDashboard.Data
 
         public void UpdatePartOnPartsList(CI_Item partToUpdate)
         {
-            // puke
+            // TODO
         }
 
         #endregion
 
         public void UploadDataToSage()
         {
-            //puke
+            //TODO
             throw new NotImplementedException();
         }
 
@@ -961,7 +1104,12 @@ namespace TechDashboard.Data
 
         public List<JT_TransactionImportDetail> GetCurrentExport()
         {
-            return _database.Table<JT_TransactionImportDetail>().ToList<JT_TransactionImportDetail>();
+            // dch rkl 10/14/2016 exclude parts with a quantity of zero.  These are the default parts.
+            List<JT_TransactionImportDetail> lsTrans = _database.Table<JT_TransactionImportDetail>().Where(
+            wt => (wt.RecordType != "P" ||
+                  (wt.RecordType == "P" && wt.QuantityUsed != 0))).ToList<JT_TransactionImportDetail>();
+            return lsTrans;
+           // return _database.Table<JT_TransactionImportDetail>().ToList<JT_TransactionImportDetail>();
         }
         
         public void DeleteExportRow(JT_TransactionImportDetail transaction)

@@ -5,8 +5,163 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TechDashboard.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="625">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="titleLayout" Background="#3498db" Grid.Row="0" HorizontalAlignment="Stretch" Height="80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelTitle" Content="CLOCK OUT" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="gridTIcketDetails" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelServiceTicket" Content="Service Ticket" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="0" />
+            <Label x:Name="textServiceTicket" Grid.Column="1" Grid.Row="0" Width="120" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" IsEnabled="false"/>
+            <Label x:Name="labelEmployeeNumber" Content="Employee Number" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="1" />
+            <Label x:Name="textEmployeeNumber" Grid.Column="1" Grid.Row="1" Width="120" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" IsEnabled="false"/>
+            <Label x:Name="textEmployeeName" Grid.Column="2" Grid.Row="1" Width="120" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" IsEnabled="false"/>
+        </Grid>        
+        <Grid x:Name="gridCoverage" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelSpace" Content="" />
+            <CheckBox x:Name="switchWarrRepair" Content="Warranty Repair" IsEnabled="false" Grid.Column="1" Grid.Row="1" />
+            <CheckBox x:Name="switchLaborCovWarr" Content="Labor Covered on Warranty" IsEnabled="false" Grid.Column="2" Grid.Row="1" />
+            <CheckBox x:Name="switchSvcAgrRepair" Content="Svc Agmt Repair" IsEnabled="false" Grid.Column="3" Grid.Row="1" />
+            <CheckBox x:Name="switchLaborCovSvcAgr" Content="Labor Covered on Svc Agmt" IsEnabled="false" Grid.Column="4" Grid.Row="1" />
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelStartTime" Content="Start Time" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="0" />
+            <TextBox x:Name="textStartDate" Grid.Column="1" Grid.Row="0" TabIndex="1" Width="75" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Height="22" LostFocus="textStartDate_LostFocus" GotFocus="textbox_GotFocus"/>
+            <TextBox x:Name="textStartTime" Grid.Column="2" Grid.Row="0" TabIndex="2" Width="60" Height="22" HorizontalAlignment="Left" 
+                             LostFocus="textStartTime_LostFocus" GotFocus="textbox_GotFocus"/>
+            <Label x:Name="labelEndTime" Content="Depart Time" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="1" />
+            <TextBox x:Name="textEndDate" Grid.Column="1" Grid.Row="1" TabIndex="3" Width="75"  HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Height="22" LostFocus="textEndDate_LostFocus" GotFocus="textbox_GotFocus"/>
+            <TextBox x:Name="textDepartTime" Grid.Column="2" Grid.Row="1" TabIndex="4" Width="60" Height="22" HorizontalAlignment="Left" 
+                             LostFocus="textDepartTime_LostFocus" GotFocus="textbox_GotFocus"/>
+            <Label x:Name="labelHoursWorked" Content="Hours Worked" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="2" />
+            <TextBox x:Name="editorHoursWorked" Grid.Column="1" Grid.Row="2" IsEnabled="False" TabIndex="3" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" GotFocus="textbox_GotFocus" TextChanged="editorHoursWorked_TextChanged"/>
+            <ComboBox x:Name="pickerBillable" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" IsEnabled="True" HorizontalAlignment="Left" 
+                      DisplayMemberPath="BillableDesc" SelectedValuePath="BillableFlag" Width="120" 
+                      SelectionChanged="pickerBillable_SelectionChanged" />
+            <Label x:Name="labelHoursBilled" Content="Billable Hours" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="3" />
+            <TextBox x:Name="editorHoursBilled" Grid.Column="1" Grid.Row="3" TabIndex="3" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" GotFocus="textbox_GotFocus"/>
+            <Label x:Name="labelRefRate" Content="Ref Rate" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="2" Grid.Row="3" />
+            <TextBox x:Name="editorRefRate" Grid.Column="3" Grid.Row="3" IsEnabled="False" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" />
+            <Label x:Name="lableBillableRate" Content="Billable Rate" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="4" />
+            <TextBox x:Name="editorBillableRate" Grid.Column="1" Grid.Row="4" IsEnabled="False" TabIndex="3" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" GotFocus="textbox_GotFocus"/>
+            <Label x:Name="labelBillableAmount" Content="Billable Amount" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="2" Grid.Row="4" />
+            <TextBox x:Name="editorBillableAmount" Grid.Column="3" Grid.Row="4" IsEnabled="False" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22"/>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelTechnicianStatus" Content="Technician Status" FontWeight="Bold" Foreground="#7F8C8D" 
+                   Grid.Column="0" Grid.Row="0" />
+            <ComboBox x:Name="pickerTechnicianStatus" DisplayMemberPath="StatusDescription" SelectedValuePath="StatusCode"  
+                      Width="250" Height="22" TabIndex="5" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="0" />
+            <Label x:Name="labelTicketStatus" Content="Ticket Status" FontWeight="Bold" Foreground="#7F8C8D" 
+                   Grid.Column="0" Grid.Row="1" />
+            <ComboBox x:Name="pickerTicketStatus" DisplayMemberPath="Description" SelectedValuePath="MiscellaneousCode" 
+                      Width="250" Height="22" TabIndex="6" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" />
+            <Label x:Name="labelActivityCode" Content="Activity Code" FontWeight="Bold" Foreground="#7F8C8D" 
+                   Grid.Column="0" Grid.Row="2" />
+            <ComboBox x:Name="pickerActivityCode" DisplayMemberPath="ActivityCodeAndDescription" SelectedValuePath="ActivityCode" 
+                      Width="250" TabIndex="7" Height="22" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="2"
+                      SelectionChanged="pickerActivityCode_SelectionChanged" />
+            <Label x:Name="labelDepartment" Content="Department" FontWeight="Bold" Foreground="#7F8C8D" 
+                   Grid.Column="0" Grid.Row="3" />
+            <ComboBox x:Name="pickerDepartment" DisplayMemberPath="Description" SelectedValuePath="MiscellaneousCode" 
+                      Width="250" TabIndex="8" Height="22" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="3" />
+            <Label x:Name="labelEarningsCode" Content="Earnings Code" FontWeight="Bold" Foreground="#7F8C8D" 
+                   Grid.Column="0" Grid.Row="4" />
+            <ComboBox x:Name="pickerEarningsCode" DisplayMemberPath="EarningsDeductionDesc" SelectedValuePath="EarningsCode" 
+                      Width="250" Height="22" TabIndex="9" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="4"
+                      SelectionChanged="pickerActivityCode_SelectionChanged" />
+            <Label x:Name="labelMeterReading" Content="Meter Reading" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="5" />
+            <TextBox x:Name="editorMeterReading" Height="22" TabIndex="10" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Width="120"/>
+            <Label x:Name="labelWorkPerformed" Content="Work Performed" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="6" />
+            <TextBox x:Name="editorWorkPerformed" Grid.Column="1" Grid.Row="6" TabIndex="11" HorizontalAlignment="Left" Width="250"
+                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" VerticalAlignment="Stretch" MinHeight="80"
+                     AcceptsReturn="True" AcceptsTab="False" TextChanged="EditorWorkPerformed_TextChanged"/>
+            <StackPanel x:Name="panelButtons" Grid.Column="1" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="buttonClockout" Background="#2ECC71" BorderBrush="#2ECC71" HorizontalAlignment="Stretch" Height="40"
+                    Click="ButtonClockOut_Clicked">
+                    <TextBlock x:Name="clockoutText" Text="CLOCK OUT" Foreground="White" FontWeight="Bold" Width="90" TextAlignment="Center"/>
+                </Button>
+                <Label x:Name="labelSpaceB" Content="" />
+                <Button x:Name="buttonCancel" Background="#E74C3C" BorderBrush="#E74C3C" HorizontalAlignment="Stretch" Height="40"
+                    Click="buttonCancel_Clicked">
+                    <TextBlock x:Name="cancelText" Text="CANCEL" Foreground="White" FontWeight="Bold" Width="90" TextAlignment="Center" />
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -6,6 +6,15 @@ using TechDashboard.Data;
 
 namespace TechDashboard.Models
 {
+   
+    /**************************************************************************************************
+    * Page Name    App_Customer.cs
+    * Description: Customer Model
+    *-------------------------------------------------------------------------------------------------
+    *   Date       By      Description
+    * ---------- --------- ---------------------------------------------------------------------------
+    * 01/23/2017   DCH     Do no inlcude division if AR_Options.Divisions parameter is set to "N"
+    **************************************************************************************************/
     public class App_Customer 
     {
         private string _arDivisionNo;
@@ -137,7 +146,12 @@ namespace TechDashboard.Models
 
         public static string FormatCustomerNumber(string arDivisionNumber, string customerNumber)
         {
-            return arDivisionNumber + "-" + customerNumber;
+            // Do no inlcude division if AR_Options.Divisions parameter is set to "N"
+            string sDivisions = "Y";
+            List<AR_Options> lsArOpts = App.Database.GetAR_OptionsFromDB();
+            if (lsArOpts.Count > 0) { sDivisions = lsArOpts[0].Divisions; }
+            if (sDivisions == "Y") { return arDivisionNumber + "-" + customerNumber; }
+            else { return customerNumber; }
         }
 
         /// <summary>

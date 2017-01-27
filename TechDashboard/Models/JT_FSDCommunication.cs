@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_FSDCommunication.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class JT_FSDCommunication
     {
         /// <summary>
@@ -28,6 +32,6 @@ namespace TechDashboard.Models
         /// </summary>
         public string Comment { get; set; }
 
-        // PUKE -- how to implement date/time created here?
+        // TODO -- how to implement date/time created here?
     }
 }

@@ -9,6 +9,11 @@ using TechDashboard.Tools;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_Expenses.cs
+     * 12/05/2016 DCH Preventive Maintenance spelled wrong, so it wasn't being retrieved.
+     *********************************************************************************************************/
+
     public partial class TechDashboardDatabase
     {
 
@@ -53,19 +58,28 @@ namespace TechDashboard.Data
             }
         }
 
+        // dch rkl 10/14/2016 include description in expense categories
+        public List<JT_MiscellaneousCodes> GetExpenseCategoriesWithDesc()
+        {
+            lock (_locker)
+            {
+                return GetMiscellaneousCodesFromDB("*E");
+            }
+        }
+
         public List<string> GetExpenseChargeCodes()
         {
             List<string> chargeCodes = null;
             char[] delimeters = new char[] { ';' };
             string code = null;
 
-            // puke
+            // TODO
             lock (_locker)
             {
                 var addtlDescNums =
                     from codes in GetMiscellaneousCodesFromDB("*E")
                     select codes.AddtlDescNum;
-
+                
                 if (addtlDescNums != null)
                 {
                     chargeCodes = new List<string>();
@@ -79,6 +93,34 @@ namespace TechDashboard.Data
                         }
                         chargeCodes.Add(code);
                     }
+                }
+
+                //add from CI_Items
+                var addlCodes = _database.Table<CI_Item>().Where(x => x.ItemType == "5" && x.UseInSO == "Y").ToList();
+
+                foreach (var itemCode in addlCodes)
+                {
+                    chargeCodes.Add(itemCode.ItemCode.Substring(1));
+                }
+            }
+
+            return chargeCodes;
+        }
+
+
+        // dch rkl 10/14/2016 include description in charge codes
+        public List<string> GetExpenseChargeCodesWithDesc()
+        {
+            List<string> chargeCodes = new List<string>();
+
+            lock (_locker)
+            {
+                //add from CI_Items
+                var addlCodes = _database.Table<CI_Item>().Where(x => x.ItemType == "5" && x.UseInSO == "Y").ToList();
+
+                foreach (var itemCode in addlCodes)
+                {
+                    chargeCodes.Add(String.Format("{0} - {1}",itemCode.ItemCode.Substring(1), itemCode.ItemCodeDesc));
                 }
             }
 
@@ -140,7 +182,7 @@ namespace TechDashboard.Data
             }
         }
 
-        public List<App_Expense> GetExpensesForWorkTicketPUKE(App_WorkTicket workTicket)
+        public List<App_Expense> GetExpensesForWorkTicket2(App_WorkTicket workTicket)
         {
             
             List<App_Expense> expensesList = null;
@@ -218,7 +260,11 @@ namespace TechDashboard.Data
             txnImportDetail.UnitCost = expense.UnitCost;
             txnImportDetail.ReimburseEmployee = (expense.IsReimbursable ? "Y" : "N");
             txnImportDetail.UnitPrice = expense.UnitPrice;
-            txnImportDetail.BillingDescription = expense.BillingDescription;
+
+            // dch rkl 12/09/2016 per Chris, use ItemCodeDesc
+            //txnImportDetail.BillingDescription = expense.BillingDescription;
+            txnImportDetail.ItemCodeDesc = expense.BillingDescription;
+
             txnImportDetail.ChargePart = (expense.IsChargeableToCustomer ? "Y" : "N");
 
             lock (_locker)
@@ -236,9 +282,25 @@ namespace TechDashboard.Data
             }
         }
 
+        // dch rkl 10/14/2016 Delete Expense Item
+        public void DeleteExpense(App_Expense expense)
+        {
+            JT_TransactionImportDetail detail = new JT_TransactionImportDetail();
+
+            lock (_locker)
+            {
+                detail =
+                    _database.Table<JT_TransactionImportDetail>().Where(
+                        tid => (tid.ID == expense.ID)
+                    ).FirstOrDefault();
+
+                _database.Delete(detail);
+            }
+        }
+
         #endregion
 
-        public App_WorkTicket GetWorkTicketPUKE(string formattedWorkTicketNumber)
+        public App_WorkTicket GetWorkTicket2(string formattedWorkTicketNumber)
         {
             string[] brokenTicketNumber = App_WorkTicket.BreakFormattedTicketNumber(formattedWorkTicketNumber);
             string salesOrderNumber = brokenTicketNumber[0];
@@ -260,6 +322,50 @@ namespace TechDashboard.Data
             return workTicket;
         }
 
+        public List<JT_WorkTicket> GetWorkTickets(string RepairItemCode, string MfgSerialNo, string salesOrderNo)
+        {
+            List<JT_WorkTicket> workTickets = new List<JT_WorkTicket>();
+
+            IEnumerable<JT_WorkTicket> dbWorkTickets = _database.Table<JT_WorkTicket>()
+                .Where(x => x.DtlRepairItemCode == RepairItemCode && x.DtlMfgSerialNo == MfgSerialNo && x.SalesOrderNo == salesOrderNo);
+
+            IEnumerable<JT_WorkTicketHistory> dbWorkTicketsHistory = _database.Table<JT_WorkTicketHistory>()
+                .Where(x => x.DtlRepairItemCode == RepairItemCode && x.DtlMfgSerialNo == MfgSerialNo && x.SalesOrderNo == salesOrderNo);
+
+            foreach (var item in dbWorkTickets)
+            {
+                workTickets.Add(item);
+            }
+            foreach (var item in dbWorkTicketsHistory)
+            {
+                workTickets.Add(new JT_WorkTicket
+                {
+                    ActivityCode = item.ActivityCode,
+                    Description = item.Description,
+                    DtlCoverageExceptionCode = item.DtlCoverageExceptionCode,
+                    DtlCoveredOnContract = item.DtlCoveredOnContract,
+                    DtlInternalSerialNo = item.DtlInternalSerialNo,
+                    DtlMfgSerialNo = item.DtlMfgSerialNo,
+
+                    // dch rkl 11/30/2016 Field was spelled incorrectly
+                    //DtlPreventitiveMaintenance = item.DtlPreventitiveMaintenance,
+                    DtlPreventiveMaintenance = item.DtlPreventiveMaintenance,
+
+                    DtlProblemCode = item.DtlProblemCode,
+                    DtlRepairItemCode = item.DtlRepairItemCode,
+                    DtlWarrantyRepair = item.DtlWarrantyRepair,
+                    HdrContactCode = item.HdrContactCode,
+                    HdrServiceContractCode = item.HdrServiceContractCode,
+                    HdrTemplateNo = item.HdrTemplateNo,
+                    HdrWtClass = item.HdrWtClass,
+                    SalesOrderNo = item.SalesOrderNo,
+                    StatusCode = item.StatusCode,
+                    WTNumber = item.WTNumber,
+                    WTStep = item.WTStep
+                });
+            }
+            return workTickets;
+        }
         public List<JT_WorkTicket> GetWorkTickets(string RepairItemCode, string MfgSerialNo)
         {
             List<JT_WorkTicket> workTickets = new List<JT_WorkTicket>();
@@ -284,7 +390,9 @@ namespace TechDashboard.Data
                     DtlCoveredOnContract = item.DtlCoveredOnContract,
                     DtlInternalSerialNo = item.DtlInternalSerialNo,
                     DtlMfgSerialNo = item.DtlMfgSerialNo,
-                    DtlPreventitiveMaintenance = item.DtlPreventitiveMaintenance,
+                    // dch rkl 11/30/2016 Field was spelled incorrectly
+                    //DtlPreventitiveMaintenance = item.DtlPreventitiveMaintenance,
+                    DtlPreventiveMaintenance = item.DtlPreventiveMaintenance,
                     DtlProblemCode = item.DtlProblemCode,
                     DtlRepairItemCode = item.DtlRepairItemCode,
                     DtlWarrantyRepair = item.DtlWarrantyRepair,

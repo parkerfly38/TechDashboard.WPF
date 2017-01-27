@@ -15,6 +15,17 @@ using System.Windows.Shapes;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    ExpenseListPage
+ * Description: Application Settings
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/12/2016   DCH     Change the description to a label instead of a textbox, since this is not
+ *                      an input/edit screen
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -51,7 +62,7 @@ namespace TechDashboard.WPF
             _labelTitle = new Label();
             _labelTitle.Content = "EXPENSES";
             _labelTitle.FontWeight = FontWeights.Bold;
-            _labelTitle.FontSize = 22;
+            _labelTitle.FontSize = 18;
             _labelTitle.Foreground = new SolidColorBrush(Colors.White);
             _labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
             _labelTitle.VerticalAlignment = VerticalAlignment.Center;
@@ -84,12 +95,6 @@ namespace TechDashboard.WPF
             }
 
             // Create our screen objects
-            //  Create a label for the technician list
-            //         _labelTitle = new Xamarin.Forms.Label();
-            //         _labelTitle.Text = "EXPENSES:";
-            //         _labelTitle.FontSize = 20;
-            //_labelTitle.FontFamily = Device.OnPlatform("OpenSans-Bold", null, null);
-            //_labelTitle.TextColor = asbestos;
 
             Button buttonAddExpense = new Button();
 
@@ -104,6 +109,10 @@ namespace TechDashboard.WPF
             buttonAddExpense.Margin = new Thickness(10);
             buttonAddExpense.Content = addExpenseText;
             buttonAddExpense.Click += ButtonAddEditExpense_Clicked;
+
+            // dch rkl 10/26/2016
+            buttonAddExpense.Margin = new Thickness(30, 5, 30, 0);
+            buttonAddExpense.Height = 40;
 
             // Create a template to display each technician in the list
             //var dataTemplateExpense = new DataTemplate(typeof(ExpenseDataCell));
@@ -135,7 +144,7 @@ namespace TechDashboard.WPF
         {
             App_Expense expense = (App_Expense)_listViewExpenses.SelectedItem;
 
-            _listViewExpenses.SelectedItem = null;
+            //_listViewExpenses.SelectedItem = null;
 
             ContentControl contentArea = (ContentControl)this.Parent;
             contentArea.Content = new ExpensesEditPage(expense);
@@ -167,7 +176,7 @@ namespace TechDashboard.WPF
             if (_pickerScheduledAppointment.SelectedIndex < 0)
             {
                 //await DisplayAlert("Select Work Ticket", "Please select a work ticket for your expenses.", "OK");
-                var result = MessageBox.Show("Please select a work ticket for your expenses.", "Select Work Ticket", MessageBoxButton.OK);
+                var result = MessageBox.Show("Please select a service ticket for your expenses.", "Select Service Ticket", MessageBoxButton.OK);
                 return;
             }
             // Let's add a new expense item

@@ -5,8 +5,75 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TechDashboard.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Name="gridMain">
-            
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid x:Name="gridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="titleLayout" Background="#3498db" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="_labelTitle" Content="CUSTOMER DETAILS" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Grid>
+
+        <Label x:Name="labelCustomerNumberTitle" Content="Customer No" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="1" />
+        <Label x:Name="labelCustomerNumber" Grid.Column="1" Grid.Row="1" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" FontWeight="Bold" IsEnabled="false" />
+
+        <Label x:Name="labelCustomerNameTitle" Content="Customer Name" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="2" />
+        <Label x:Name="labelCustomerName" Grid.Column="1" Grid.Row="2" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelAddressTitle" Content="Address" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="3" />
+        <Label x:Name="labelAddressLine1" Grid.Column="1" Grid.Row="3" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelAddressLine2" Grid.Column="1" Grid.Row="4" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelAddressLine3" Grid.Column="1" Grid.Row="5" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelCityStateZipTitle" Content="City/State/Zip" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="6" />
+        <Label x:Name="labelCityStateZip" Grid.Column="1" Grid.Row="6" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelPhoneTitle" Content="Phone" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="7" />
+        <Label x:Name="labelPhoneNumber" Grid.Column="1" Grid.Row="7" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <Label x:Name="labelContactTitle" Content="Contact" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="8" />
+        <Label x:Name="labelContact" Grid.Column="1" Grid.Row="8" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+        <StackPanel x:Name="panelButtons" Grid.Column="1" Grid.Row="9" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button x:Name="buttonShowMap" Background="#2ECC71" BorderBrush="#2ECC71" HorizontalAlignment="Stretch" Height="40" Width="200"
+                    Click="ButtonShowMap_Clicked" TabIndex="10">
+                <TextBlock x:Name="buttonShowMapkText" Text="MAP" Foreground="White" FontWeight="Bold" Width="80" TextAlignment="Center"/>
+            </Button>
+            <Label x:Name="labelSpaceA" Content="" />
+            <Button x:Name="buttonBack" Background="#E74C3C" BorderBrush="#E74C3C" HorizontalAlignment="Stretch" Height="40" Width="200"
+                    Click="BtnBack_Click" TabIndex="12">
+                <TextBlock x:Name="buttonBackText" Text="BACK" Foreground="White" FontWeight="Bold" Width="80" TextAlignment="Center" />
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -6,6 +6,10 @@ using TechDashboard.Data;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_Technician.cs
+     * 12/02/2016 DCH Add TODO, Remove unused code
+     *********************************************************************************************************/
     public class App_Technician
     {
         protected string _technicianDeptNo;
@@ -69,28 +73,6 @@ namespace TechDashboard.Models
             }
         }
 
-        //public App_Technician(string formattedTechnicianNumber)
-        //{
-        //    try
-        //    {
-        //        string[] brokenTechnicianNumber = BreakFormattedTechnicianNumber(formattedTechnicianNumber);
-        //        JT_Technician technician = database.GetTechnician(brokenTechnicianNumber[0], brokenTechnicianNumber[1]);
-
-        //        _technicianDeptNo = technician.TechnicianDeptNo;
-        //        _technicianNo = technician.TechnicianNo;
-        //        _lastName = technician.LastName;
-        //        _firstName = technician.FirstName;
-        //        _defaultWarehouse = technician.DefaultWarehouse;
-        //        _textMessagingAddress = technician.TextMessagingAddress;
-        //        _mobilePhoneNumber = technician.MobilePhoneNumber;
-        //    }
-        //    catch
-        //    {
-        //        // puke
-        //        // throw some sort of error
-        //    }
-        //}
-
         public App_Technician(JT_Technician technician)
         {
             try
@@ -106,7 +88,7 @@ namespace TechDashboard.Models
             }
             catch
             {
-                // puke
+                // TODO
                 // throw some sort of error
             }
         }

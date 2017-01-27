@@ -15,6 +15,19 @@ using System.Windows.Shapes;
 using TechDashboard.ViewModels;
 using TechDashboard.Models;
 
+/**************************************************************************************************
+ * Page Name    ScheduleDetailPage
+ * Description: Schedule Detail Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 10/31/2016   DCH     The Scheduled Start and End Time and Actual Start and End Time were not all
+ *                      being displayed.  Make sure duration is calculated for both scheduled and actual.
+ * 11/22/2016   DCH     Make sure start and end time are not null, to prevent error
+ * 01/12/2017   DCH     The actual end time should default to the current date/time if it is blank.
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -24,6 +37,13 @@ namespace TechDashboard.WPF
     {
         ScheduleDetailPageViewModel _vm;
         App_ScheduledAppointment _scheduledAppointment;
+
+        // dch rkl 10/31/2016 scheduled and actual start times
+        string schedStartTime = "";
+        string schedEndTime = "";
+        string actStartTime = "";
+        string actEndTime = "";
+
         public ScheduleDetailPage(App_ScheduledAppointment scheduledAppointment)
         {
             _vm = new ScheduleDetailPageViewModel(scheduledAppointment);
@@ -41,7 +61,7 @@ namespace TechDashboard.WPF
             Label labelModalTitle = new Label()
             {
                 //FontAttributes = FontAttributes.Bold,
-                FontSize = 22,
+                FontSize = 18,
                 Content = "SCHEDULE DETAILS",
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Colors.White),
@@ -77,7 +97,7 @@ namespace TechDashboard.WPF
                 //FontAttributes = FontAttributes.Bold,
                 Foreground = asbestos,
                 FontWeight = FontWeights.Bold,
-                Content = "SCHEDULED"
+                Content = "Scheduled"
             };
             grid.Children.Add(labelScheduledTitle);
             Grid.SetColumn(labelScheduledTitle, 1);
@@ -88,14 +108,14 @@ namespace TechDashboard.WPF
                 //FontAttributes = FontAttributes.Bold,
                 Foreground = asbestos,
                 FontWeight = FontWeights.Bold,
-                Content = "ACTUAL"
+                Content = "Actual"
             };
             grid.Children.Add(labelActualTitle);
             Grid.SetColumn(labelActualTitle, 2);
             Grid.SetRow(labelActualTitle, 0);
 
             Label labelDateTitle = new Label();
-            labelDateTitle.Content = "DATE";
+            labelDateTitle.Content = "Date";
             //labelDateTitle.FontAttributes = FontAttributes.Bold;
             labelDateTitle.FontWeight = FontWeights.Bold;
             labelDateTitle.Foreground = asbestos;
@@ -104,7 +124,7 @@ namespace TechDashboard.WPF
             Grid.SetRow(labelDateTitle, 1);
 
             Label labelStartTimeTitle = new Label();
-            labelStartTimeTitle.Content = "START TIME";
+            labelStartTimeTitle.Content = "Start Time";
             //labelStartTimeTitle.FontAttributes = FontAttributes.Bold;
             labelStartTimeTitle.Foreground = asbestos;
             labelStartTimeTitle.FontWeight = FontWeights.Bold;
@@ -113,7 +133,7 @@ namespace TechDashboard.WPF
             Grid.SetRow(labelStartTimeTitle, 2);
 
             Label labelEndTimetitle = new Label();
-            labelEndTimetitle.Content = "END TIME";
+            labelEndTimetitle.Content = "End Time";
             //labelEndTimetitle.FontAttributes = FontAttributes.Bold;
             labelEndTimetitle.Foreground = asbestos;
             labelEndTimetitle.FontWeight = FontWeights.Bold;
@@ -122,7 +142,7 @@ namespace TechDashboard.WPF
             Grid.SetRow(labelEndTimetitle, 3);
 
             Label labelDurationTitle = new Label();
-            labelDurationTitle.Content = "DURATION";
+            labelDurationTitle.Content = "Duration";
             labelDurationTitle.Foreground = asbestos;
             labelDurationTitle.FontWeight = FontWeights.Bold;
             grid.Children.Add(labelDurationTitle);
@@ -140,57 +160,169 @@ namespace TechDashboard.WPF
 
             Label labelScheduledStartTime = new Label()
             {
-                Content = _vm.ScheduleDetail.StartTime,
+                // dch rkl 10/12/2016 show formatted time
+                //Content = _vm.ScheduleDetail.StartTime,
+                Content = _vm.ScheduleDetail.StartTimeFormatted,
                 Foreground = asbestos
             };
             grid.Children.Add(labelScheduledStartTime);
             Grid.SetColumn(labelScheduledStartTime, 1);
             Grid.SetRow(labelScheduledStartTime, 2);
 
+            schedStartTime = _vm.ScheduleDetail.StartTime;      // dch rkl 10/31/2016
+
             Label labelScheduledEndTime = new Label()
             {
-                Content = _vm.ScheduleDetail.EndTime,
+                // dch rkl 10/12/2016 show formatted time
+                //Content = _vm.ScheduleDetail.EndTime,
+                Content = _vm.ScheduleDetail.EndTimeFormatted,
                 Foreground = asbestos
             };
             grid.Children.Add(labelScheduledEndTime);
             Grid.SetColumn(labelScheduledEndTime, 1);
             Grid.SetRow(labelScheduledEndTime, 3);
 
+            schedEndTime = _vm.ScheduleDetail.EndTime;      // dch rkl 10/31/2016
+
             Label labelActualDate = new Label()
             {
-                Content = _vm.TimeEntryDetail.TransactionDate.ToShortDateString(),
                 Foreground = asbestos
             };
+            if (_vm.TimeEntryDetail != null)
+                labelActualDate.Content = _vm.TimeEntryDetail.TransactionDate.ToShortDateString();
             grid.Children.Add(labelActualDate);
             Grid.SetColumn(labelActualDate, 2);
             Grid.SetRow(labelActualDate, 1);
+            bool bStartTimeSet = false;     // dch rkl 10/14/2016 Get Start Time from the Technician Record
             if (_vm.ImportDetail != null)
             {
                 if (_vm.ImportDetail.StartTime != null)
                 {
                     Label labelActualStartTime = new Label()
                     {
-                        Content = _vm.TimeEntryDetail.StartTime,
+                        //Content = _vm.TimeEntryDetail.StartTime,      dch rkl 10/26/2016 show formatted time
+                        Content = FormattedTime(_vm.TimeEntryDetail.StartTime),
                         Foreground = asbestos
                     };
+                    actStartTime = _vm.TimeEntryDetail.StartTime;      // dch rkl 10/31/2016
                     grid.Children.Add(labelActualStartTime);
                     Grid.SetColumn(labelActualStartTime, 2);
                     Grid.SetRow(labelActualStartTime, 2);
+                    bStartTimeSet = true;    // dch rkl 10/14/2016 Get Start Time from the Technician Record
                 }
 
                 if (_vm.ImportDetail.EndTime != null)
                 {
                     Label labelActualEndTime = new Label()
                     {
-                        Content = _vm.TimeEntryDetail.EndTime,
+                        //  Content = _vm.TimeEntryDetail.EndTime,      dch rkl 10/26/2016 show formatted time
+                        Content = FormattedTime(_vm.TimeEntryDetail.EndTime),
                         Foreground = asbestos
                     };
                     grid.Children.Add(labelActualEndTime);
                     Grid.SetColumn(labelActualEndTime, 2);
                     Grid.SetRow(labelActualEndTime, 3);
+
+                    actEndTime = _vm.TimeEntryDetail.EndTime;      // dch rkl 10/31/2016
                 }
             }
+            // dch rkl 01/12/2017 If Actual End Time is blank, use current date BEGIN
+            else
+            {
+                Label labelActualEndTime = new Label()
+                {
+                    Content = FormattedTime(DateTime.Now.ToString("hh:mm tt")),
+                    Foreground = asbestos
+                };
+                grid.Children.Add(labelActualEndTime);
+                Grid.SetColumn(labelActualEndTime, 2);
+                Grid.SetRow(labelActualEndTime, 3);
+
+                actEndTime = DateTime.Now.ToString("hhmm");
+            }
+            // dch rkl 01/12/2017 If Actual End Time is blank, use current date END
+
+            // dch rkl 10/14/2016 Get Start Time from the Technician Record BEGIN
+            if (bStartTimeSet == false)
+            {
+                JT_Technician tech = App.Database.GetCurrentTechnicianFromDb();
+                if (tech.CurrentStartTime != null)
+                {
+                    Label labelActualStartTime = new Label()
+                    {
+                        Content = FormattedTime(tech.CurrentStartTime),
+                        Foreground = asbestos
+                    };
+                    grid.Children.Add(labelActualStartTime);
+                    Grid.SetColumn(labelActualStartTime, 2);
+                    Grid.SetRow(labelActualStartTime, 2);
+
+                    actStartTime = tech.CurrentStartTime;      // dch rkl 10/31/2016
+                }
+            }
+            // dch rkl 10/14/2016 Get Start Time from the Technician Record END
+
             //compute duration, if available
+            // dch rkl 10/31/2016 Calculate Duration for Scheduled and Actual
+            // Scheduled
+            DateTime dtSST;
+            DateTime dtSET;
+            if (schedStartTime.Length > 0)
+            {
+                schedStartTime = schedStartTime.Substring(0, 2) + ":" + schedStartTime.Substring(2, 2);
+            }
+            if (schedEndTime.Length > 0)
+            {
+                schedEndTime = schedEndTime.Substring(0, 2) + ":" + schedEndTime.Substring(2, 2);
+            }
+            if (DateTime.TryParse(schedStartTime, out dtSST) && DateTime.TryParse(schedEndTime, out dtSET))
+            {
+                TimeSpan tsSchDur = dtSET.Subtract(dtSST);
+                Label labelSchedDur = new Label()
+                {
+                    Content = Math.Round(tsSchDur.TotalHours, 2, MidpointRounding.AwayFromZero).ToString(),
+                    Foreground = asbestos
+                };
+                grid.Children.Add(labelSchedDur);
+                Grid.SetColumn(labelSchedDur, 1);
+                Grid.SetRow(labelSchedDur, 4);
+            }
+
+            // Actual
+            DateTime dtAST;
+            DateTime dtAET;
+            if (actStartTime != null && actStartTime.Length > 0)
+            {
+                actStartTime = actStartTime.Substring(0, 2) + ":" + actStartTime.Substring(2, 2);
+            }
+            // dch rkl 11/22/2016 make sure actEndTime is not null
+            if (actEndTime != null && actEndTime.Length > 0)
+            {
+                actEndTime = actEndTime.Substring(0, 2) + ":" + actEndTime.Substring(2, 2);
+            }
+            else
+            {
+                if (App.Database.GetApplicationSettings().TwentyFourHourTime)
+                {
+                    actEndTime = DateTime.Now.ToString("HH:mm");
+                }
+                else
+                {
+                    actEndTime = DateTime.Now.ToString("hh:mm tt");
+                }
+            }
+            if (DateTime.TryParse(actStartTime, out dtAST) && DateTime.TryParse(actEndTime, out dtAET))
+            {
+                TimeSpan tsActDur = dtAET.Subtract(dtAST);
+                Label labelActDur = new Label()
+                {
+                    Content = Math.Round(tsActDur.TotalHours,2,MidpointRounding.AwayFromZero).ToString(),
+                    Foreground = asbestos
+                };
+                grid.Children.Add(labelActDur);
+                Grid.SetColumn(labelActDur, 2);
+                Grid.SetRow(labelActDur, 4);
+            }
 
             stackLayout.Children.Add(grid);
 
@@ -201,7 +333,7 @@ namespace TechDashboard.WPF
                 FontWeight = FontWeights.Bold,
                 Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ecc71")),
                 VerticalAlignment = VerticalAlignment.Center,
-                Height = 50
+                Height = 40         // dch rkl 11/22/2016 change height
             };
             buttonCloseSchedule.Click += ButtonCloseSchedule_Clicked;
             stackLayout.Children.Add(buttonCloseSchedule);
@@ -213,6 +345,50 @@ namespace TechDashboard.WPF
         {
             ContentControl contentArea = (ContentControl)this.Parent;
             contentArea.Content = new TicketDetailsPage(_scheduledAppointment);
+        }
+
+
+        // dch rkl 10/14/2016 format the time - Note: This logic should be added to the JT_Technician model
+        private string FormattedTime(string sTimeIn)
+        {
+            if (sTimeIn == null) { sTimeIn = ""; }
+
+            string sTimeOut = sTimeIn;
+
+            string sHour = "";
+            string sMin = "";
+            string sAMorPM = "";
+            int iHour = 0;
+
+            if (sTimeIn.Length == 4)
+            {
+                sHour = sTimeIn.Substring(0, 2);
+                sMin = sTimeIn.Substring(2, 2);
+            }
+            else if (sTimeIn.Length == 3)
+            {
+                sHour = "0" + sTimeIn.Substring(0, 1);
+                sMin = sTimeIn.Substring(1, 2);
+            }
+
+            int.TryParse(sHour, out iHour);
+            if (iHour > 0)
+            {
+                if (iHour < 12) { sAMorPM = "AM"; }
+                else { sAMorPM = "PM"; }
+
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+                if (appSettings.TwentyFourHourTime == false && iHour > 12)
+                {
+                    iHour = iHour - 12;
+                    sHour = iHour.ToString();
+                    if (sHour.Length == 1) { sHour = "0" + sHour; }
+                }
+
+                sTimeOut = string.Format("{0}:{1} {2}", sHour, sMin, sAMorPM);
+            }
+
+            return sTimeOut;
         }
 
     }

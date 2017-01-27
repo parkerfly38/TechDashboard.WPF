@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace TechDashboard.Models
 {
+
+    /*********************************************************************************************************
+     * JT_TemplateParts.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class JT_TemplateParts
     {
-        // PUKE - this table does not exist in the jobops2015dev database
+        // TODO - this table does not exist in the jobops2015dev database
 
         /// <summary>
         /// Template Number -

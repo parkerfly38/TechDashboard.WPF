@@ -8,6 +8,10 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_Schedule.cs
+     * 12/01/2016 DCH Correct misspelling of GetApplicationSettings
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region Technician Schedule Detail
@@ -39,7 +43,7 @@ namespace TechDashboard.Data
 
             // now that we have the schedule details, remove any that don't match our date range
             // First, get the number of days before and after today that will be allowed.
-            App_Settings appSettings = GetApplicatioinSettings();
+            App_Settings appSettings = GetApplicationSettings();
 
             // Find the "bad" schedule details -- date less than allowed lower limint and 
             //  greater than allowed upper limit
@@ -228,6 +232,14 @@ namespace TechDashboard.Data
                     return new App_ScheduledAppointment(currentDetail, salesOrderHeader);
                 }
             }
+        }
+
+        public App_ScheduledAppointment GetScheduledAppointment()
+        {
+            JT_TechnicianScheduleDetail scheduledDetail = GetTechnicianScheduleDetailFromDB().Where(x => x.IsCurrent).FirstOrDefault();
+            SO_SalesOrderHeader soHeader = GetSalesOrderHeader(scheduledDetail);
+
+            return new App_ScheduledAppointment(scheduledDetail, soHeader);
         }
 
         public List<App_ScheduledAppointment> GetScheduledAppointments()

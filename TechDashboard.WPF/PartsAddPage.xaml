@@ -5,17 +5,181 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TechDashboard.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="700">
     <UserControl.Resources>
-        <DataTemplate x:Key="PartsListDataTemplate">
+        <!--<DataTemplate x:Key="PartsListDataTemplate">
             <StackPanel Orientation="Horizontal">
                 <Label FontSize="14" Foreground="#FF7F8C8D" FontWeight="Bold" Content="{Binding ItemCode}" />
                 <Label FontSize="14" Foreground="#FF7F8C8D" Content="{Binding ItemCodeDesc}" />
                 <Label FontSize="14" Foreground="#FF7F8C8D" Content ="{Binding WhseOnHandAvail}" />
             </StackPanel>
-        </DataTemplate>
+        </DataTemplate>-->
+        <Style x:Key="CellRightAlign">
+            <Setter Property="Control.HorizontalAlignment" Value="Right" />
+        </Style>        
     </UserControl.Resources>
-    <Grid x:Name="gridMain">
-            
+    <Grid x:Name="gridMain" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="600"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="titleLayout" Background="#3498db" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Height="80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelTitle" Content="SELECT PART" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="gridDetails" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />                
+                <RowDefinition Height="40" />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="searchBarText" Width="200" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"  
+                     Height="30" VerticalAlignment="Top" HorizontalAlignment="Stretch"  />
+            <Label x:Name="lblSpaceS" Grid.Row="1" Grid.Column="2" />
+            <Button x:Name="buttonSearch" Grid.Row="1" Grid.Column="3" IsTabStop="false" VerticalAlignment="Top" Background="#7F8C8D" Foreground="White" 
+                BorderBrush="#7F8C8D" FontWeight="Bold" Content="SEARCH" HorizontalAlignment="Left" Click="ButtonSearch_Click" Height="30" Width="80" 
+                    FontSize="14"/>
+
+            <Button x:Name="buttonCancel" Grid.Row="3" Grid.Column="1" IsTabStop="false" VerticalAlignment="Top" Background="Red" 
+                        Foreground="White" BorderBrush="#FF2ECC71" Content="CANCEL" FontWeight="Bold" Click="buttonCancel_Clicked" 
+                        Height="40" Width="250" HorizontalAlignment="Left" FontSize="16"/>
+
+        </Grid>
+        <DataGrid x:Name="gridParts" Grid.Row="2" Grid.Column="1" AutoGenerateColumns="False" AlternatingRowBackground="White" 
+                  HeadersVisibility="Column" GridLinesVisibility="All" KeyboardNavigation.TabNavigation="Cycle"
+                  VerticalAlignment="Top" Width="600">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush x:Name="BaseColor" Color="#ECF0F1"></SolidColorBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="#3498DB" />
+                            <Setter Property="BorderThickness" Value="2" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    </Style.Resources>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Item Code" Width="130" IsReadOnly="True" Binding="{Binding ItemCode}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Item Descr" Width="300" IsReadOnly="True" Binding="{Binding ItemCodeDesc}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Whse" Width="40" IsReadOnly="True" Binding="{Binding WarehouseCode}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="On Hand" Width="65" IsReadOnly="True" Binding="{Binding QuantityOnHand, StringFormat=N0}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="NoWrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Available" Width="65" IsReadOnly="True" Binding="{Binding QuantityAvailable, StringFormat=N0}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="NoWrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>        
     </Grid>
 </UserControl>

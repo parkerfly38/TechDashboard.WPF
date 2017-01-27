@@ -15,6 +15,10 @@ using TechDashboard.Services;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * TicketListPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
     public class TicketListPageViewModel : INotifyPropertyChanged
     {
         //public ObservableCollection<Grouping<string, JT_Technician>> TechnicianGroup;
@@ -23,9 +27,19 @@ namespace TechDashboard.ViewModels
 
         public TicketListPageViewModel()
         {
-            var listOfTickets = App.Database.GetWorkTicketsFromDB();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                var listOfTickets = App.Database.GetWorkTicketsFromDB();
 
-            TicketList = new ObservableCollection<JT_WorkTicket>(listOfTickets.ToList());
+                TicketList = new ObservableCollection<JT_WorkTicket>(listOfTickets.ToList());
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TicketListPageViewModel()");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

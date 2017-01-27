@@ -4,13 +4,17 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_CurrentWorkTicket.cs
+     * 12/01/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class App_CurrentWorkTicket 
     {
         JT_WorkTicket _workTicket;
         JT_WorkTicketText _workTicketText;
         SO_SalesOrderHeader _salesOrderHeader;
         AR_Customer _customer;
-        // puke history
+        // TODO history
         //List<JT_ServiceEquipmentParts> _partsList;
         CI_Item _repairItem;
         JT_DailyTimeEntry _timeEntry;

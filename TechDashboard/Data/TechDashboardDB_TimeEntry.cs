@@ -5,6 +5,11 @@ using TechDashboard.Models;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDB_TimeEntry.cs
+     * 12/01/2016 DCH Add TODO
+     * 01/23/2017 DCH When clocking out, make sure the service agreement gets captured.
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         #region Daily Time Entry
@@ -15,7 +20,7 @@ namespace TechDashboard.Data
         {
             JT_Technician currentTechnician = GetCurrentTechnicianFromDb();
 
-            FillLocalTable<JT_DailyTimeEntry>("where", "(DepartmentNo eq '" + currentTechnician.TechnicianDeptNo + "') and (EmployeeNo eq '" + currentTechnician.TechnicianNo + "')");  // puke filter
+            FillLocalTable<JT_DailyTimeEntry>("where", "(DepartmentNo eq '" + currentTechnician.TechnicianDeptNo + "') and (EmployeeNo eq '" + currentTechnician.TechnicianNo + "')");  // TODO filter
         }
 
         #endregion
@@ -51,6 +56,7 @@ namespace TechDashboard.Data
             erpTech.CurrentSalesOrderNo = scheduledAppointment.SalesOrderNumber;
             erpTech.CurrentWTNumber = scheduledAppointment.WorkTicketNumber;
             erpTech.CurrentWTStep = scheduledAppointment.WorkTicketStep;
+            erpTech.CurrentStatus = technicianStatus.StatusCode;            // dch rkl 11/03/2016 Save Current Status code to JT_Technician table
             rows = _database.Update(erpTech);
 
             // create the JT_TransactionImportDetail record
@@ -60,14 +66,19 @@ namespace TechDashboard.Data
             importDetail.WTNumber = scheduledAppointment.WorkTicketNumber;
             importDetail.WTStep = scheduledAppointment.WorkTicketStep;
             importDetail.StatusCode = serviceTicketStatusCode.MiscellaneousCode;
-            //importDetail.statusDate PUKE>>> not in table spec!
-            importDetail.TransactionDate = startDateTime.ToShortDateString(); 
-            importDetail.StatusTime = startDateTime.ToSage100TimeString();
+            //importDetail.statusDate TODO>>> not in table spec!
+            importDetail.TransactionDate = startDateTime.ToShortDateString();
+            importDetail.TransactionDateAsDateTime = startDateTime;
+
+            // dch rkl 12/09/2016 per Chris, store start time in start time
+            //importDetail.StatusTime = startDateTime.ToSage100TimeString();
+            importDetail.StartTime = startDateTime.ToSage100TimeString();
+
             //importDetail.StatusComment = ""; // not used at this time but might be in the future
             rows = _database.Insert(importDetail);
 
 
-            // puke... do we need this anymore now that we are tracking in/out
+            // TODO... do we need this anymore now that we are tracking in/out
             //  on technician record?
             JT_DailyTimeEntry newTimeEntry = new JT_DailyTimeEntry();
             newTimeEntry.DepartmentNo = technician.TechnicianDeptNo;
@@ -161,7 +172,7 @@ namespace TechDashboard.Data
         public void ClockOut(App_Technician technician, App_WorkTicket workTicket,
                              DateTime stopDateTime, JT_TechnicianStatus technicianStatus, JT_MiscellaneousCodes serviceTicketStatusCode,
                              string activityCode, string deptWorked, JT_EarningsCode earningsCode, double hoursBilled, double meterReading,
-                             string workPerformedText)
+                             string workPerformedText, string svcAgmtContractCode)
         {
             int rows = 0;
             DateTime startDateTime;
@@ -171,8 +182,8 @@ namespace TechDashboard.Data
                 // Clear out fields for JT_Technician record
                 JT_Technician erpTech = GetTechnician(technician.TechnicianDeptNo, technician.TechnicianNo);
 
-                // puke... record starting date/time in local variable
-                startDateTime = erpTech.CurrentStartDate; // puke... add time
+                // Record starting date/time in local variable
+                startDateTime = erpTech.CurrentStartDate; // Add time
                 startDateTime = startDateTime.Add(erpTech.CurrentStartTime.ToSage100TimeSpan());
 
                 if(hoursBilled <= 0)
@@ -193,6 +204,9 @@ namespace TechDashboard.Data
                 erpTech.CurrentSalesOrderNo = null;
                 erpTech.CurrentWTNumber = null;
                 erpTech.CurrentWTStep = null;
+                erpTech.CurrentStatus = technicianStatus.StatusCode;            // dch rkl 11/03/2016 Save Current Status code to JT_Technician table
+                rows = _database.Update(erpTech);
+
                 rows = _database.Update(erpTech);
                 
 
@@ -203,9 +217,15 @@ namespace TechDashboard.Data
                 importDetail.WTNumber = workTicket.WTNumber;
                 importDetail.WTStep = workTicket.WTStep;
                 importDetail.StatusCode = serviceTicketStatusCode.MiscellaneousCode;
-                //importDetail.statusDate PUKE>>> not in table spec!
-                importDetail.StatusTime = stopDateTime.ToSage100TimeString();
-                //importDetail.StatusComment = "PUKE"; // not used at this time but might be in the future
+                //importDetail.statusDate TODO>>> not in table spec!
+
+                // dch rkl 12/09/2016 per Chris, store start time in start time
+                //importDetail.StatusTime = stopDateTime.ToSage100TimeString();
+                importDetail.StartTime = stopDateTime.ToSage100TimeString();
+
+                importDetail.TransactionDate = stopDateTime.ToSage100DateString();
+                importDetail.TransactionDateAsDateTime = stopDateTime;
+                //importDetail.StatusComment = "TODO"; // not used at this time but might be in the future
                 rows = _database.Insert(importDetail);
 
                 // insert another JT_TransactionImportDetail record to record the labor
@@ -219,12 +239,99 @@ namespace TechDashboard.Data
                 importDetail.ActivityCode = activityCode;
                 importDetail.DeptWorkedIn = deptWorked;
                 importDetail.EarningsCode = earningsCode.EarningsCode;
-                importDetail.TransactionDate = stopDateTime.ToShortDateString();
+                //importDetail.TransactionDate = stopDateTime.ToSage100DateString();
+                importDetail.TransactionDate = startDateTime.ToSage100DateString();
+                importDetail.TransactionDateAsDateTime = startDateTime;
                 importDetail.StartTime = startDateTime.ToSage100TimeString();
                 importDetail.EndTime = stopDateTime.ToSage100TimeString();
                 importDetail.HoursWorked = hoursBilled; // (stopDateTime - startDateTime).TotalHours;
                 importDetail.MeterReading = meterReading;
                 importDetail.WorkPerformed = workPerformedText;
+                importDetail.SvcAgrmContractCode = svcAgmtContractCode;             // dch rkl 01/23/2017 Include Service Agreement Code
+                rows = _database.Insert(importDetail);
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the given technician as being clocked-out of a ticket represented by the
+        /// specified work ticket object.  The time and status codes provided
+        /// will also be used to update the technician data.
+        /// dch rkl 01/23/2017 This version of ClockOut includes parameters for when the hours are entered, not the start/stop date and time.
+        /// </summary>
+        /// <param name="technician">Technician to clock out</param>
+        /// <param name="workTicket">Work ticket clocking out of</param>
+        /// <param name="stopDateTime">Stop date/time</param>
+        /// <param name="technicianStatus">Technician status object for the new, clocked-out status</param>
+        /// <param name="serviceTicketStatusCode">Work ticket status for the new, clocked-out status</param>
+        /// <param name="activityCode">Activity code to report</param>
+        /// <param name="deptWorked">Department in which work was performed</param>
+        /// <param name="earningsCode">Earnings code to report</param>
+        /// <param name="meterReading">Meter reading (if any) to report</param>
+        /// <param name="workPerformedText">Text/notes</param>
+        public void ClockOut(App_Technician technician, App_WorkTicket workTicket,
+                             JT_TechnicianStatus technicianStatus, JT_MiscellaneousCodes serviceTicketStatusCode,
+                             string activityCode, string deptWorked, JT_EarningsCode earningsCode, double hoursBilled, double meterReading,
+                             string workPerformedText, double hoursWorked, string svcAgmtContractCode)
+        {
+            int rows = 0;
+
+            lock (_locker)
+            {
+                // Clear out fields for JT_Technician record
+                JT_Technician erpTech = GetTechnician(technician.TechnicianDeptNo, technician.TechnicianNo);
+
+                // update time entry first
+                DateTime dtStartTime = DateTime.Now;
+                JT_DailyTimeEntry currentTimeEntry = GetClockedInTimeEntry(technician);
+                if (currentTimeEntry != null)
+                {
+                    if (DateTime.TryParse(currentTimeEntry.StartTime, out dtStartTime))
+                    {
+                        DateTime dtStopTime = dtStartTime.AddHours(hoursWorked);
+                        currentTimeEntry.EndTime = dtStopTime.ToSage100TimeString();
+                        _database.Update(currentTimeEntry);
+                    }
+                }
+
+                erpTech.CurrentStartDate = new DateTime();
+                erpTech.CurrentStartTime = null;
+                erpTech.CurrentSalesOrderNo = null;
+                erpTech.CurrentWTNumber = null;
+                erpTech.CurrentWTStep = null;
+                erpTech.CurrentStatus = technicianStatus.StatusCode;            // dch rkl 11/03/2016 Save Current Status code to JT_Technician table
+                rows = _database.Update(erpTech);
+
+                // insert the JT_TransactionImportDetail record
+                JT_TransactionImportDetail importDetail = new JT_TransactionImportDetail();
+                importDetail.RecordType = "S";
+                importDetail.SalesOrderNo = workTicket.SalesOrderNo;
+                importDetail.WTNumber = workTicket.WTNumber;
+                importDetail.WTStep = workTicket.WTStep;
+                importDetail.StatusCode = serviceTicketStatusCode.MiscellaneousCode;
+
+                importDetail.TransactionDate = dtStartTime.ToSage100DateString();
+                importDetail.TransactionDateAsDateTime = dtStartTime;
+                importDetail.HoursWorked = hoursWorked;     
+                rows = _database.Insert(importDetail);
+
+                // insert another JT_TransactionImportDetail record to record the labor
+                importDetail = new JT_TransactionImportDetail();
+                importDetail.RecordType = "L";
+                importDetail.SalesOrderNo = workTicket.SalesOrderNo;
+                importDetail.WTNumber = workTicket.WTNumber;
+                importDetail.WTStep = workTicket.WTStep;
+                importDetail.EmployeeDeptNo = technician.TechnicianDeptNo;
+                importDetail.EmployeeNo = technician.TechnicianNo;
+                importDetail.ActivityCode = activityCode;
+                importDetail.DeptWorkedIn = deptWorked;
+                importDetail.EarningsCode = earningsCode.EarningsCode;
+                importDetail.TransactionDate = dtStartTime.ToSage100DateString();
+                importDetail.TransactionDateAsDateTime = dtStartTime;
+                importDetail.HoursWorked = hoursWorked; 
+                importDetail.MeterReading = meterReading;
+                importDetail.WorkPerformed = workPerformedText;
+                importDetail.SvcAgrmContractCode = svcAgmtContractCode;             // dch rkl 01/23/2017 Include Service Agreement Code
                 rows = _database.Insert(importDetail);
             }
         }

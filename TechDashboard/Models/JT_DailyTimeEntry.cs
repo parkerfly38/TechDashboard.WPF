@@ -8,13 +8,17 @@ using SQLite;
 
 namespace TechDashboard.Models 
 {
+    /*********************************************************************************************************
+     * JT_DailyTimeEntry.cs
+     * 12/02/2016 DCH Add TODO, Correct spelling of GetApplicationSettings
+     *********************************************************************************************************/
     public class JT_DailyTimeEntry
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
         /// <summary>
-        /// puke
+        /// TODO
         /// </summary>
         public bool IsModified { get; set; }
 
@@ -51,16 +55,77 @@ namespace TechDashboard.Models
         /// <summary>
         /// Start Time - varchar(4)
         /// </summary>
-        public string StartTime { get; set; }  // puke - separate date/time?
+        public string StartTime { get; set; }  
+
+        // dch rkl 10/26/2016
+        public string FormattedStartTime
+        {
+            get
+            {
+                return FormattedTime(StartTime);
+            }
+        }
 
         /// <summary>
         /// End Time - varchar(4)
         /// </summary>
         public string EndTime { get; set; }
 
+        // dch rkl 10/26/2016
+        public string FormattedEndTime
+        {
+            get
+            {
+                return FormattedTime(EndTime);
+            }
+        }
+
         /// <summary>
         /// Earnings Code - varchar
         /// </summary>
         public string EarningsCode { get; set; }
+
+        // dch rkl 10/26/2016 format the time - Note: This logic should be added to the JT_Technician model
+        private string FormattedTime(string sTimeIn)
+        {
+            if (sTimeIn == null) { sTimeIn = ""; }
+
+            string sTimeOut = sTimeIn;
+
+            string sHour = "";
+            string sMin = "";
+            string sAMorPM = "";
+            int iHour = 0;
+
+            if (sTimeIn.Length == 4)
+            {
+                sHour = sTimeIn.Substring(0, 2);
+                sMin = sTimeIn.Substring(2, 2);
+            }
+            else if (sTimeIn.Length == 3)
+            {
+                sHour = "0" + sTimeIn.Substring(0, 1);
+                sMin = sTimeIn.Substring(1, 2);
+            }
+
+            int.TryParse(sHour, out iHour);
+            if (iHour > 0)
+            {
+                if (iHour < 12) { sAMorPM = "AM"; }
+                else { sAMorPM = "PM"; }
+
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+                if (appSettings.TwentyFourHourTime == false && iHour > 12)
+                {
+                    iHour = iHour - 12;
+                    sHour = iHour.ToString();
+                    if (sHour.Length == 1) { sHour = "0" + sHour; }
+                }
+
+                sTimeOut = string.Format("{0}:{1} {2}", sHour, sMin, sAMorPM);
+            }
+
+            return sTimeOut;
+        }
     }
 }

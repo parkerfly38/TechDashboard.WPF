@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +14,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TechDashboard.Models;
+using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    MainWindow
+ * Description: Main Window
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Pass the current main window object to settings page, which allows "cancel"
+ *                      from settings page without saving.
+ * 12/01/2016   DCH     Correct misspelling of GetApplicationSettings
+ * 01/16/2017   DCH     Make sure the main window isn't a tab stop, and doesn't get selected.
+ * 01/20/2017   DCH     Do not allow logoff if there is no data connection.
+ * 01/20/2017   DCH     If logging off, and Transactions are Pending to Sync, force them to sync first
+ **************************************************************************************************/
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -30,17 +46,57 @@ namespace TechDashboard.WPF
             btnMiscTime.Click += BtnMiscTime_Click;
             btnSync.Click += BtnSync_Click;
             btnTechnician.Click += BtnTechnician_Click;
-            btnSMS.Click += BtnSMS_Click;
+            //btnSMS.Click += BtnSMS_Click;
             btnExit.Click += BtnExit_Click;
 
-            App_Settings appSettings = App.Database.GetApplicatioinSettings();
+            App_Settings appSettings = App.Database.GetApplicationSettings();
+
+            // dch rkl 12/08/2016 Get Application Version and Compare to Current DB Version
+            // If the versions do not match, they need to do a sync and refresh of their data
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string Buildversion = fvi.FileVersion;
+            string dbVersion = appSettings.DbVersion.Substring(0, 3);
+            if (Buildversion != dbVersion)
+            {
+                bool bHasDataConnection = App.Database.HasDataConnection();
+                if (bHasDataConnection == false)
+                {
+                    string sMsg = string.Format("WARNING: Your local database version is {0}, and your \napplication version is {1}. An internet connection is required \nto refresh your database schema, and is not currently present. Please log into the application when an internet connection \nis available so the sync and upgrade can be completed.", dbVersion, Buildversion);
+                    var result = MessageBox.Show(sMsg, "Database Update Required", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                    Application.Current.Shutdown();
+                    return;
+                }
+                else
+                {
+                    string sMsg = string.Format("WARNING: Your local database version is {0}, and your \napplication version is {1}. A database Sync is required at this time. \nClick OK to continue with the upgrade, or Cancel to exit.\n \nIf OK is selected, any pending transactions will be sent to JobOps prior to sync.", dbVersion, Buildversion);
+                    var result = MessageBox.Show(sMsg, "Database Update Required", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                    if (result == MessageBoxResult.Cancel)
+                    {
+                        Application.Current.Shutdown();
+                        return;
+                    }
+                    else
+                    {
+                        // Send any JT_TransactionImportDetail records back to JobOps
+                        TransactionSync();
+
+                        // Update local Data
+                        App.Database.CreateGlobalTables();
+
+                        appSettings.DbVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                        App.Database.SaveAppSettings(appSettings);
+                    }
+                }
+            }
+
             if (appSettings.LoggedInTechnicianNo != null)
             {
                 if (appSettings.LoggedInTechnicianNo.Length > 0 && appSettings.LoggedInTechnicianDeptNo.Length > 0)
                 {
                     JT_Technician technician = App.Database.GetTechnician(appSettings.LoggedInTechnicianDeptNo, appSettings.LoggedInTechnicianNo);
                     App.Database.SaveTechnicianAsCurrent(technician);
-                    if(App.Database.HasDataConnection())
+                    if (App.Database.HasDataConnection())
                         App.Database.CreateDependentTables(technician);
                     contentArea.Content = new SchedulePage();
                 } else
@@ -51,6 +107,7 @@ namespace TechDashboard.WPF
             else {
                 contentArea.Content = new TechnicianListPage();
             }
+            contentArea.IsTabStop = false;      // dch rkl 01/16/2017 Make sure the main window isn't a tab stop, and doesn't get selected.
             AddHandler(TechnicianListPage.SignedInEvent, new RoutedEventHandler(SignedInEventHandlerMethod));
             AddHandler(SchedulePage.SelectedTicketEvent, new RoutedEventHandler(SelectedTicketEventHandlerMethod));
             this.Closed += MainWindow_Closed;
@@ -61,8 +118,76 @@ namespace TechDashboard.WPF
                 btnHistory.Visibility = Visibility.Collapsed;
                 btnMiscTime.Visibility = Visibility.Collapsed;
                 btnExpenses.Visibility = Visibility.Collapsed;
-                btnSMS.Visibility = Visibility.Collapsed;
+                //btnSMS.Visibility = Visibility.Collapsed;
                 btnSync.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        // dch rkl 12/08/2016 Sync Data Function for JT_TransactionImportDetail
+        private void TransactionSync()
+        {
+            Cursor prev = Mouse.OverrideCursor;
+            this.Cursor = Cursors.Wait;
+
+            try
+            {
+                TechDashboard.Data.RestClient restClient = new Data.RestClient(App.Database.GetApplicationSettings().IsUsingHttps, App.Database.GetApplicationSettings().RestServiceUrl);
+
+                List<JT_TransactionImportDetail> transactionImportDetails = App.Database.GetCurrentExport();
+
+                foreach (JT_TransactionImportDetail transaction in transactionImportDetails)
+                {
+                    // If Lot/Serial Nbr Data, sync back to JobOps with multiple rows
+                    bool updateWorked = true;
+                    if (transaction.LotSerialNo == null || transaction.LotSerialNo.Trim().Length == 0)
+                    {
+                        // dch rkl 12/09/2016 This now returns a results object
+                        //updateWorked = restClient.InsertTransactionImportDetailRecordSync(transaction);
+                        updateWorked = restClient.InsertTransactionImportDetailRecordSync(transaction).Success;
+                    }
+                    else
+                    {
+                        // Split into LotSerNo/Qty strings
+                        string[] lotSerQty = transaction.LotSerialNo.Split('|');
+                        double qty = 0;
+
+                        foreach (string lsq in lotSerQty)
+                        {
+                            // Split each LotSerNo/Qty string into LotSerNo and Qty
+                            string[] sqty = lsq.Split('~');
+                            if (sqty.GetUpperBound(0) > 0)
+                            {
+                                double.TryParse(sqty[1], out qty);
+                                if (qty > 0)
+                                {
+                                    transaction.QuantityUsed = qty;
+                                    transaction.LotSerialNo = sqty[0];
+                                    // dch rkl 12/09/2016 This now returns a results object
+                                    //bool updateWorkedLS = restClient.InsertTransactionImportDetailRecordSync(transaction);
+                                    bool updateWorkedLS = restClient.InsertTransactionImportDetailRecordSync(transaction).Success;
+                                    if (updateWorkedLS == false)
+                                    {
+                                        updateWorked = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (updateWorked)
+                    {
+                        App.Database.DeleteExportRow(transaction);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                this.Cursor = prev;
             }
         }
 
@@ -73,12 +198,44 @@ namespace TechDashboard.WPF
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
+            // dch rkl 01/20/2017 Do not allow logoff if there is no data connection
+            bool bDoLogoff = true;
+            bool bHasDataConnection = App.Database.HasDataConnection();
+            if (bHasDataConnection == false)
+            {
+                string sMsg = "WARNING: No data connection exists; logoff cannot be done at this time.";
+                MessageBoxResult result = MessageBox.Show(sMsg, "Cannot Log Off", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                bDoLogoff = false;
+            }
+
+            else
+            {
+                // dch rkl 01/20/2017 If Transactions are Pending to Sync, force them to sync first
+                List<JT_TransactionImportDetail> transactionImportDetails = App.Database.GetCurrentExport();
+                if (transactionImportDetails.Count > 0)
+                {
+                    string sMsg = "WARNING: Pending transactions exist, and\n a sync is required before logging off.\n\nClick OK to proceed with Sync, or \nCancel to cancel logoff.";
+                    MessageBoxResult result = MessageBox.Show(sMsg, "Sync is Required", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        TransactionSync();
+                    }
+                    else
+                    {
+                        bDoLogoff = false;
+                    }
+                }
+            }
+
             //Application.Current.Shutdown();
-            App_Settings appSettings = App.Database.GetApplicatioinSettings();
-            appSettings.LoggedInTechnicianDeptNo = "";
-            appSettings.LoggedInTechnicianNo = "";
-            App.Database.SaveAppSettings(appSettings);
-            contentArea.Content = new TechnicianListPage();
+            if (bDoLogoff)
+            {
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+                appSettings.LoggedInTechnicianDeptNo = "";
+                appSettings.LoggedInTechnicianNo = "";
+                App.Database.SaveAppSettings(appSettings);
+                contentArea.Content = new TechnicianListPage();
+            }
         }
 
         private void BtnSMS_Click(object sender, RoutedEventArgs e)
@@ -131,7 +288,10 @@ namespace TechDashboard.WPF
 
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsPage settingsPage = new SettingsPage();
+            // dch rkl 10/26/2016 pass parent
+            //SettingsPage settingsPage = new SettingsPage();
+            SettingsPage settingsPage = new SettingsPage(this);
+
             settingsPage.Show();
             this.Hide();
         }

@@ -4,6 +4,10 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_Item.cs
+     * 12/02/2016 DCH Add LastTotalUnitCost and AverageUnitCost
+     *********************************************************************************************************/
     public class App_Item
     {
         protected CI_Item _item;
@@ -63,7 +67,34 @@ namespace TechDashboard.Models
         /// </summary>
         public decimal StandardUnitCost
         {
-            get { return _item.StandardUnitCost; }
+            get
+            {
+                return _item.StandardUnitCost;
+            }
+        }
+
+        /// <summary>
+        /// Last Total Unit Cost - numeric(16, 6)
+        /// dch rkl 12/02/2016
+        /// </summary>
+        public decimal LastTotalUnitCost
+        {
+            get
+            {
+                return _item.LastTotalUnitCost;
+            }
+        }
+
+        /// <summary>
+        /// Average Unit Cost - numeric(16, 6)
+        /// dch rkl 12/02/2016
+        /// </summary>
+        public decimal AverageUnitCost
+        {
+            get
+            {
+                return _item.AverageUnitCost;
+            }
         }
 
         /// <summary>

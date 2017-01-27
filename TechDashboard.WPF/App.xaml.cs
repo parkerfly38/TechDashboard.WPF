@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TechDashboard.Data;
 using TechDashboard.Models;
+using TechDashboard.ViewModels;
 
 namespace TechDashboard.WPF
 {
+    /*********************************************************************************************************
+     * TechnicianListPageViewModel.cs
+     * 12/01/2016 DCH Correct Misspelling of GetApplicationSettings
+     *********************************************************************************************************/
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -34,24 +41,30 @@ namespace TechDashboard.WPF
                 return _database;
             }
         }
-        protected async override void OnStartup(StartupEventArgs e)
+
+        protected override void OnStartup(StartupEventArgs e)
+        //protected async override void OnStartup(StartupEventArgs e)
         {
             SplashScreen splashScreen = new SplashScreen("/Resources/td_sq.png");
             splashScreen.Show(true);
-            bool hasValidSetup = await Database.HasValidSetup();
+            //bool hasValidSetup = await Database.HasValidSetup();
+            bool hasValidSetup = Database.HasValidSetup();
             if (!hasValidSetup)
             {
-                // now we also need to verify that it's not just missing a data connection
-                // in which case we'll avoid this startup ui, because we're not going to need/want to destroy our global tables
-                if (Database.HasDataConnection())
-                {
-                    this.StartupUri = new Uri("/SettingsPage.xaml", UriKind.Relative);
-                }
+                    // now we also need to verify that it's not just missing a data connection
+                    // in which case we'll avoid this startup ui, because we're not going to need/want to destroy our global tables
+                    if (App.Database.GetApplicationSettings().RestServiceUrl == null || Database.HasDataConnection())
+                    {
+                        this.StartupUri = new Uri("/SettingsPage.xaml", UriKind.Relative);
+                    }
+                
             }
             else {
-                string loggedintechnicianno = (Database.GetApplicatioinSettings().LoggedInTechnicianNo != null) ? Database.GetApplicatioinSettings().LoggedInTechnicianNo : "";
+                string loggedintechnicianno = (Database.GetApplicationSettings().LoggedInTechnicianNo != null) ? Database.GetApplicationSettings().LoggedInTechnicianNo : "";
 
-                if (loggedintechnicianno.Length <= 0 && Database.HasDataConnection())
+                bool bHasDataConnection = Database.HasDataConnection();
+                if (loggedintechnicianno.Length <= 0 && bHasDataConnection)
+                    //if (loggedintechnicianno.Length <= 0 && Database.HasDataConnection())
                     Database.CreateGlobalTables();
             }
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -73,7 +86,7 @@ namespace TechDashboard.WPF
             appLog.log_message = exception.Message;
             appLog.log_machine_name = System.Environment.MachineName;
             appLog.log_user_name = "WPF TechDashboard";
-            appLog.log_call_site = App.Database.GetApplicatioinSettings().SDataUrl;     // we're going to use their SDATA root
+            appLog.log_call_site = App.Database.GetApplicationSettings().SDataUrl;     // we're going to use their SDATA root
             appLog.log_thread = "";
             appLog.log_stacktrace = exception.StackTrace;
 

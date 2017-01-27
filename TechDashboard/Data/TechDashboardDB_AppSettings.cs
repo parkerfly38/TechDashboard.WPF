@@ -13,34 +13,54 @@ using System.Reflection;
 
 namespace TechDashboard.Data
 {
+    /*********************************************************************************************************
+     * TechDashboardDatabase.cs
+     * 12/05/2016 DCH Added Try/Catch to catch and display error
+     *********************************************************************************************************/
     public partial class TechDashboardDatabase
     {
         public bool HasDataConnection()
         {
-            try
-            {
-                using (var client = new System.Net.WebClient())
-                {
-                    using (var stream = client.OpenRead("http://www.google.com"))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            RestClient restClient = new RestClient(GetApplicationSettings());
+            bool connection = restClient.TestConnectionSync();
+
+            return connection;
+
+            //try
+            //{
+            //    using (var client = new System.Net.WebClient())
+            //    {
+            //        using (var stream = client.OpenRead("http://www.google.com"))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
 
-        public async Task<bool> HasValidSetup()
+        public CI_Options GetCIOptions()
+        {
+            CI_Options ciOptions = new CI_Options();
+            lock (_locker)
+            {
+                ciOptions = _database.Table<CI_Options>().FirstOrDefault();
+            }
+            return ciOptions;
+        }
+
+        public bool HasValidSetup()
+        //public async Task<bool> HasValidSetup()
         {
             bool hasValidSetup = false;
             App_Settings appSettings = null;
 
             lock (_locker)
             {
-                appSettings = GetApplicatioinSettings();
+                appSettings = GetApplicationSettings();
             }
             //get version
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -59,7 +79,8 @@ namespace TechDashboard.Data
                     {
                         case ConnectionType.Rest:
                             hasValidSetup =
-                                await IsValidRestServiceConnection(appSettings.IsUsingHttps, appSettings.RestServiceUrl);
+                                IsValidRestServiceConnection(appSettings.IsUsingHttps, appSettings.RestServiceUrl);
+                            //await IsValidRestServiceConnection(appSettings.IsUsingHttps, appSettings.RestServiceUrl);
                             break;
                         case ConnectionType.SData:
                             hasValidSetup =
@@ -80,6 +101,10 @@ namespace TechDashboard.Data
 
                     System.Diagnostics.Debug.WriteLine("Exception caught in HasValidSetup() method.");
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+
+                    // dch rkl 12/07/2016 Log Error
+                    ErrorReporting errorReporting = new ErrorReporting();
+                    errorReporting.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.HasValidSetup");
                 }
             } else
             {
@@ -95,28 +120,64 @@ namespace TechDashboard.Data
             return hasValidSetup;
         }
         
-        public App_Settings GetApplicatioinSettings()
+        public App_Settings GetApplicationSettings()
         {
+            // dch rkl 12/06/2016 Add Try/Catch to display exceptions
+            App_Settings appSettings = new Models.App_Settings();
+            //App_Settings appSettings = null;
 
-            App_Settings appSettings = null;
-
-            lock (_locker)
+            try
             {
-                if(_database.TableMappings.Where(tm => tm.TableName == "App_Settings").FirstOrDefault() == null)
-                {
-                    _database.CreateTable<App_Settings>();
-                    _database.Insert(new App_Settings());
-                }
 
-                try
+                lock (_locker)
                 {
-                    appSettings = _database.Table<App_Settings>().FirstOrDefault();
+                    // dch rkl 12/07/2016 This is not working.  The TableMappings count is always zero, so it keeps creating a new app settings record each time. BEGIN
+                    //if (_database.TableMappings.Where(tm => tm.TableName == "App_Settings").FirstOrDefault() == null)
+                    //{
+                    //    _database.CreateTable<App_Settings>();
+                    //    _database.Insert(new App_Settings());
+                    //}
+                    // dch rkl 12/07/2016 This is not working.  The TableMappings count is always zero, so it keeps creating a new app settings record each time. END
+
+                    try
+                    {
+                        appSettings = _database.Table<App_Settings>().FirstOrDefault();
+                    }
+                    catch (Exception ex)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("Exception caught when querying for application settings.");
+                        //System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+
+                    // dch rkl 12/07/2016 If no app settings found, add a blank record now BEGIN
+                    if (appSettings == null || appSettings.ID == 0)
+                    {
+                        try
+                        {
+                            _database.CreateTable<App_Settings>();
+                            _database.Insert(new App_Settings());
+                            appSettings = _database.Table<App_Settings>().FirstOrDefault();
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorReporting oErrRpt = new Data.ErrorReporting();
+                            // dch rkl 12/07/2016 add the call/sub/proc to log
+                            //oErrRpt.sendException(ex);
+                            oErrRpt.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.cs/GetApplicationSettings");
+                        }
+                    }
+                    // dch rkl 12/07/2016 If no app settings found, add a blank record now END
                 }
-                catch(Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("Exception caught when querying for application settings.");
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.GetApplicationSettings");
+
+                throw new Exception(String.Format(
+                    "Error occurred in TechDashboardDB_AppSettings.GetApplicationSettings.  Contact your administrator.  /nMessageDetails: {0}", 
+                    ex.ToString()));
             }
 
             return appSettings;
@@ -130,7 +191,7 @@ namespace TechDashboard.Data
             {
                 try
                 {
-                    isAvailable = (GetApplicatioinSettings() != null);
+                    isAvailable = (GetApplicationSettings() != null);
                 }
                 catch (Exception ex)
                 {
@@ -138,6 +199,11 @@ namespace TechDashboard.Data
 
                     System.Diagnostics.Debug.WriteLine("Could not retrieve Application Settings record.");
                     System.Diagnostics.Debug.WriteLine(ex.Message);
+
+                    // dch rkl 12/07/2016 Log Error
+                    ErrorReporting errorReporting = new ErrorReporting();
+                    errorReporting.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.AreSettingsAvailable");
+
                 }
             }
 
@@ -164,15 +230,22 @@ namespace TechDashboard.Data
                 {
                     System.Diagnostics.Debug.WriteLine("Exception was caught!");
                     System.Diagnostics.Debug.WriteLine(ex.Message);
-                }                
+
+                    // dch rkl 12/07/2016 Log Error
+                    ErrorReporting errorReporting = new ErrorReporting();
+                    errorReporting.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.IsValidSDataConnection");
+
+                }
             }
 
             return ((technicians != null) && (technicians.Count > 0));
         }
 
-        protected async Task<bool> IsValidRestServiceConnection(bool isUsingHttps, string restUrl)
+        protected bool IsValidRestServiceConnection(bool isUsingHttps, string restUrl)
+        //protected async Task<bool> IsValidRestServiceConnection(bool isUsingHttps, string restUrl)
         {
-            List<bool> result = null;
+            bool bSuccess = false;
+            //List<bool> result = null;
 
             System.Diagnostics.Debug.WriteLine("Testing REST service connection by querying for technicians.");
 
@@ -183,22 +256,31 @@ namespace TechDashboard.Data
             {
                 RestClient restClient = new RestClient(isUsingHttps, restUrl);
 
-                result = await restClient.TestConnection();             
+                //result = await restClient.TestConnection();             
+                bSuccess = restClient.TestConnection();
 
-                System.Diagnostics.Debug.WriteLine("Test call to REST service returned " + result.Count.ToString() + " results.");
+                //System.Diagnostics.Debug.WriteLine("Test call to REST service returned " + result.Count.ToString() + " results.");
+                System.Diagnostics.Debug.WriteLine("Test call to REST service returned " + bSuccess.ToString() + " results.");
+
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Exception was caught!");
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechDashboardDB_AppSettings.IsValidRestServiceConnection");
+
             }
 
-            return ((result.Count > 0) && (result[0]));
+            return bSuccess;
+            //return ((result.Count > 0) && (result[0]));
         }
 
         public string GetDeviceID(string DeviceName)
         {
-            App_Settings appSettings = GetApplicatioinSettings();
+            App_Settings appSettings = GetApplicationSettings();
             RestClient restClient = new RestClient(appSettings);
             return restClient.GetDeviceID(DeviceName);
         }

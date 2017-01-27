@@ -8,13 +8,18 @@ using SQLite;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_WorkTicketText.cs
+     * 11/30/2016 DCH Add TODO
+     *********************************************************************************************************/
+
     public class JT_WorkTicketText
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
         /// <summary>
-        /// puke
+        /// TODO
         /// </summary>
         public bool IsModified { get; set; }
 

@@ -15,6 +15,21 @@ using System.Windows.Shapes;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
 
+/**************************************************************************************************
+ * Page Name    PartsAddPage
+ * Description: Parts Add Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 11/15/2016   DCH     Allow entry of miscellaneous parts - anything beginning with "*"
+ * 11/27/2016   DCH     Make sure scrolling is enabled in list
+ *                      Standardize Button Sizes and Colors
+ *                      Cancel button should return to parts list, not ticket details
+ * 01/20/2017   DCH     Format the parts search grid to match the parts page. Move content to XAML 
+ *                      instead of code-behind.
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -23,10 +38,6 @@ namespace TechDashboard.WPF
     public partial class PartsAddPage : UserControl
     {
         PartsAddPageViewModel _vm;
-        ListView itemsList;
-        TextBox searchBarText;
-        //Button searchBarButton;
-        Label labelTitle;
         App_ScheduledAppointment _scheduledAppointment;
 
         public PartsAddPage(App_WorkTicket workTicket, App_ScheduledAppointment scheduledAppointment)
@@ -36,90 +47,9 @@ namespace TechDashboard.WPF
             _scheduledAppointment = scheduledAppointment;
             InitializeComponent();
 
-            labelTitle = new Label();
-            labelTitle.Content = "SELECT PART";
-            labelTitle.FontWeight = FontWeights.Bold;
-            labelTitle.FontSize = 22;
-            labelTitle.Foreground = new SolidColorBrush(Colors.White);
-            labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            labelTitle.VerticalAlignment = VerticalAlignment.Center;
-
-            Grid titleLayout = new Grid()
-            {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498db")),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Height = 80
-            };
-            titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            titleLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            titleLayout.Children.Add(labelTitle);
-            Grid.SetColumn(labelTitle, 0);
-            Grid.SetRow(labelTitle, 0);
-
-            // create a list to hold our items
-            itemsList = new ListView()
-            {
-                ItemsSource = _vm.ItemList,
-                ItemTemplate = (DataTemplate)this.Resources["PartsListDataTemplate"]
-            };
-            itemsList.MaxHeight = 300;
-            itemsList.SelectionChanged += ItemsList_SelectionChanged; ;
-            searchBarText = new TextBox();
-            searchBarText.HorizontalAlignment = HorizontalAlignment.Stretch;
-            searchBarText.Width = 200;
-            searchBarText.Margin = new Thickness(10);
-            // put a search bar on the page to filter the items list
-            //_searchBarItems = new SearchBar();
-            //_searchBarItems.Placeholder = "Search Item Code or Desc";
-            //_searchBarItems.TextChanged += SearchBarItems_TextChanged;
-            //_searchBarItems.SearchCommand = new Command(() => { _vm.FilterItemList(_searchBarItems.Text); });
-            //searchBarText.TextChanged += SearchBarText_TextChanged;
-            Button buttonSearch = new Button()
-            {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498DB")),
-                Foreground = new SolidColorBrush(Colors.White),
-                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498DB")),
-                Content = "SEARCH",
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(10)
-            };
-            buttonSearch.Click += ButtonSearch_Click;
-
-            // create a "cancel" button to go back
-            Button buttonAddPart = new Button()
-            {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C")),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Margin = new Thickness(30, 10, 30, 10)
-            };
-            TextBlock buttonAddPartText = new TextBlock()
-            {
-                Text = "CANCEL",
-                FontWeight = FontWeights.Bold,
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-            buttonAddPart.Content = buttonAddPartText;
-            buttonAddPart.Click += buttonAddPart_Click;
-
-            // put it all together on the page
-            gridMain.Children.Add(new StackPanel()
-            {
-                Children = {
-                    titleLayout,
-                    new StackPanel()
-                    {
-                        Orientation = Orientation.Horizontal,
-                        Children =
-                        {
-                            searchBarText,
-                            buttonSearch
-                        }
-                    },
-                    itemsList,
-                    buttonAddPart
-                },
-                CanVerticallyScroll = true
-            });
+            gridParts.ItemsSource = _vm.ItemList;
+            gridParts.MouseDoubleClick += gridParts_MouseDoubleClick;
+            gridParts.PreviewKeyDown += gridParts_PreviewKeyDown;       // dch rkl 11/01/2016 Enter to select ticket
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
@@ -130,21 +60,53 @@ namespace TechDashboard.WPF
             }
             else
             {
-                _vm.FilterItemList(searchBarText.Text);
+                // dch rkl 11/15/2016 add miscellaneous part
+                if (searchBarText.Text.Trim().Substring(0,1) == "*")
+                {
+                    CI_Item ciItem = new CI_Item();
+                    ciItem.ItemCode = searchBarText.Text.Trim();
+                    ciItem.ItemCodeDesc = "";
+                    ciItem.StandardUnitOfMeasure = "EACH";
+                    IM_ItemWarehouse imWhse = new IM_ItemWarehouse();
+                    JT_EquipmentAsset jtAsst = new JT_EquipmentAsset();
+                    App_Item appItem = new App_Item(ciItem, imWhse, jtAsst);                        
+                    App_RepairPart part = new App_RepairPart(appItem, _vm.WorkTicket);
+                    ContentControl contentArea = (ContentControl)this.Parent;
+                    contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Add, _scheduledAppointment);
+                }
+                else
+                {
+                    _vm.FilterItemList(searchBarText.Text);
+                }
             }
         }
 
-        private void buttonAddPart_Click(object sender, RoutedEventArgs e)
+        private void buttonCancel_Clicked(object sender, RoutedEventArgs e)
         {
             ContentControl contentArea = (ContentControl)this.Parent;
-            contentArea.Content = new TicketDetailsPage(_scheduledAppointment);
+            // dch rkl 11/27/2016 on Cancel, return to parts list page
+            //contentArea.Content = new TicketDetailsPage(_scheduledAppointment);
+            contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
         }
 
-        private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void gridParts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            App_RepairPart part = new App_RepairPart((App_Item)itemsList.Items[itemsList.SelectedIndex], _vm.WorkTicket);
-            ContentControl contentArea = (ContentControl)this.Parent;
-            contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Add, _scheduledAppointment);
+            if (gridParts.SelectedIndex > -1)
+            {                   
+                App_RepairPart part = new App_RepairPart((App_Item)gridParts.SelectedItem, _vm.WorkTicket);
+                ContentControl contentArea = (ContentControl)this.Parent;
+                contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Add, _scheduledAppointment);
+            }
+        }
+
+        private void gridParts_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (gridParts.SelectedIndex > -1 && e.Key == Key.Enter)
+            {
+                App_RepairPart part = new App_RepairPart((App_Item)gridParts.SelectedItem, _vm.WorkTicket);
+                ContentControl contentArea = (ContentControl)this.Parent;
+                contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Add, _scheduledAppointment);
+            }
         }
     }
 }

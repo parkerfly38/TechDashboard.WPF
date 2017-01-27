@@ -16,6 +16,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -99,13 +100,11 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Rkl.Erp.Sage.Sage100.TableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ExternalReferences\Rkl.Erp.Sage.Sage100.TableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Saleslogix.SData.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ca62383dd1d25f65, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetSDataClient.2.0.1.1556\lib\net40-client\Saleslogix.SData.Client.dll</HintPath>
@@ -132,8 +131,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="Xceed.Wpf.AvalonDock, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.7\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
       <Private>True</Private>
@@ -197,6 +194,12 @@
     </Compile>
     <Compile Include="PartsAddPage.xaml.cs">
       <DependentUpon>PartsAddPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PartsEditExtdDescPage.xaml.cs">
+      <DependentUpon>PartsEditExtdDescPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PartsEditLotSerNoPage.xaml.cs">
+      <DependentUpon>PartsEditLotSerNoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PartsEditPage.xaml.cs">
       <DependentUpon>PartsEditPage.xaml</DependentUpon>
@@ -278,6 +281,14 @@
     <Page Include="PartsAddPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PartsEditExtdDescPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PartsEditLotSerNoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PartsEditPage.xaml">
       <SubType>Designer</SubType>
@@ -368,12 +379,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechDashboard\TechDashboard.csproj">
-      <Project>{2a450a57-6c1e-4fa0-9542-33793a5bf3e7}</Project>
-      <Name>TechDashboard</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\banknotes.png" />
     <Resource Include="Resources\calendar.png" />
     <Resource Include="Resources\clipboard.png" />
@@ -401,6 +406,16 @@
     <Resource Include="Resources\td_sq.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Sage\Sage100\TableObjects\Rkl.Erp.Sage.Sage100.TableObjects.csproj">
+      <Project>{9a77e5ed-4cf7-49b7-a886-3b87720ae191}</Project>
+      <Name>Rkl.Erp.Sage.Sage100.TableObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechDashboard\TechDashboard.csproj">
+      <Project>{2a450a57-6c1e-4fa0-9542-33793a5bf3e7}</Project>
+      <Name>TechDashboard</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCL.raw.0.8.6\build\net45\SQLitePCL.raw.targets" Condition="Exists('..\packages\SQLitePCL.raw.0.8.6\build\net45\SQLitePCL.raw.targets')" />

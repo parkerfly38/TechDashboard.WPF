@@ -9,55 +9,49 @@
     <Grid>
         <DockPanel x:Name="dpMainMenu" HorizontalAlignment="Left" LastChildFill="False" Width="156" Background="#FF3498DB">
             <StackPanel >
-                <Button x:Name="btnTechnician" Width="147" BorderThickness="0" Height="58" Background="{x:Null}">
+                <Button x:Name="btnTechnician" Width="147" BorderThickness="0" Height="58" IsTabStop="False" Background="{x:Null}">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/worker.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">TECHNICIAN</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnSchedule" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnSchedule" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/calendar.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">SCHEDULE</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnMiscTime" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnMiscTime" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/time.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">MISC TIME</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnHistory" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnHistory" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/fullfolder.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">HISTORY</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnExpenses" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnExpenses" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/banknotes.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">EXPENSES</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnSMS" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
-                    <StackPanel Orientation="Horizontal" Width="136">
-                        <Image Source="Resources/message.png" Margin="10" />
-                        <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">SMS</TextBlock>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="btnSync" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnSync" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/sync.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">SYNC</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnSettings" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnSettings" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/cog.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">SETTINGS</TextBlock>
                     </StackPanel>
                 </Button>
-                <Button x:Name="btnExit" Width="147" Background="{x:Null}" BorderThickness="0" Height="58">
+                <Button x:Name="btnExit" Width="147" Background="{x:Null}" BorderThickness="0" Height="58" IsTabStop="False">
                     <StackPanel Orientation="Horizontal" Width="136">
                         <Image Source="Resources/exit.png" Margin="10" />
                         <TextBlock Height="16" Foreground="White" FontWeight="Bold" FontSize="13.333">LOG OUT</TextBlock>
@@ -66,7 +60,7 @@
             </StackPanel>
         </DockPanel>
         <DockPanel Margin="156,0,0,0" Grid.ColumnSpan="2" LastChildFill="True">
-            <ContentControl x:Name="contentArea" Content="" Width="Auto" Background="White"/>
+            <ContentControl x:Name="contentArea" Content="" Width="Auto" Background="White" Focusable="False" IsTabStop="False"/>
         </DockPanel>
 
     </Grid>

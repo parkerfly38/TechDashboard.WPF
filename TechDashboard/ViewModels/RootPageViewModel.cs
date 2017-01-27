@@ -5,9 +5,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using TechDashboard.Models;
+using TechDashboard.Data;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * RootPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
     public class RootPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -50,10 +55,20 @@ namespace TechDashboard.ViewModels
 
         protected void SetDataItems()
         {
-            _workTicket = App.Database.GetCurrentWorkTicket();
-            _salesOrderHeader = App.Database.RetrieveSalesOrderHeaderFromCurrentWorkTicket();
-            _customer = App.Database.GetCustomerFromCurrentWorkTicket();
-            _repairItem = App.Database.RetrieveRepairItemFromCurrentWorkTicket();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _workTicket = App.Database.GetCurrentWorkTicket();
+                _salesOrderHeader = App.Database.RetrieveSalesOrderHeaderFromCurrentWorkTicket();
+                _customer = App.Database.GetCustomerFromCurrentWorkTicket();
+                _repairItem = App.Database.RetrieveRepairItemFromCurrentWorkTicket();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.RootPageViewModel.SetDataItems");
+            }
         }
 
         public void RefreshData()

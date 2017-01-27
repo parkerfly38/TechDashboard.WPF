@@ -27,5 +27,14 @@ namespace TechDashboard.Models
         /// Type of Earnings - varchar(1)
         /// </summary>
         public string TypeOfEarnings { get; set; }
+
+        // dch rkl 01/20/2017
+        public string EarningsCodeAndDesc
+        {
+            get
+            {
+                return EarningsCode + " - " + EarningsDeductionDesc;
+            }
+        }
     }
 }

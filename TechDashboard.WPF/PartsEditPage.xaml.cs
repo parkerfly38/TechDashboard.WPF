@@ -12,8 +12,43 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TechDashboard.Data;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
+
+/**************************************************************************************************
+ * Page Name    PartsEditPage
+ * Description: Parts Edit Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 11/02/2016   DCH     Handle when warehouse does not have any items (null value), for misc items
+ * 11/21/2016   DCH     If part is purchased, do not allow edit of quantity
+ * 11/22/2016   DCH     If chargeable is checked, allow unit price to be updated
+ * 11/23/2016   DCH     If Misc Part, allow entry of Unit Cost and hide warehouse dropdown
+ * 11/27/2016   DCH     Make sure Unit Cost is numeric
+ * 12/01/2016   DCH     Include warehouse description in dropdown.  Warehouse comes from IM_Warehouse,
+ *                      not IM_ItemWarehouse
+ * 12/05/2016   DCH     Include App_RepairPart as shared object in page
+ *                      Track Lot/Serial Number availability 
+ *                      If Qty Shipped is > 0, cannot edit Warehoues or U/M
+ *                      Remove lot selection from screen.  Lot/SerialNo selection is now done on
+ *                      another screen.
+ * 01/13/2017   DCH     Return the ID of the Inserted Part, so it can be used to save Lot/Serial 
+ *                      Number allocation.
+ *                      Make sure the lot/serial number qty available is >= quantity being added
+ *                      before adding the part.
+ * 01/13/2017   DCH     Move all of the page layout to the .xaml page instead of generating it
+ *                      within the code.
+ * 01/13/2017   DCH     If extended description exists, display button to view/edit it
+ * 01/18/2017   DCH     If Is Chargeable = true, set printable to true and disable 
+ * 01/23/2017   DCH     Make the unit of measure a dropdown list instead of a text field.
+ * 01/23/2017   DCH     Allow entry of combo-box item for U/M for Misc Items.
+ * 01/23/2017   DCH     If SO_SalesOrderDetail.JT158_WTBillFlag is set to "R" or "B", do not allow 
+ *                      edit of the part.
+ * 01/25/2017   BK      Allow ItemCodeDesc to be editable
+ **************************************************************************************************/
 
 namespace TechDashboard.WPF
 {
@@ -47,27 +82,11 @@ namespace TechDashboard.WPF
 
         PartsEditPageViewModel _vm;
         App_ScheduledAppointment _scheduledAppointment;
+        App_RepairPart _part;           // dch rkl 12/05/2016
 
         PageMode _pageMode;
-        Label _labelTitle;
 
-        Label _labelPartNumber;
-        Label _labelPartDescription;
-        ComboBox _pickerSerialNumber;
-        ComboBox _pickerWarehouse;
-        Label _labelQuantityAvailable;
-        TextBox _entryQuantity;
-        TextBox _entryUnitOfMeasure;
-        TextBox _entryUnitCost;
-        TextBox _entryUnitPrice;
-        Label _labelExtensionPrice;
-        Button _buttonAddPart;
-        Button _buttonCancel;
-        TextBox _entryComments;
-        CheckBox _switchIsChargeable;
-        CheckBox _switchIsPrintable;
-        CheckBox _switchIsPurchased;
-        CheckBox _switchIsOverhead;
+        List<LotQavl> _lotSerNo;            // dch rkl 12/05/2016
 
         public PartsEditPage(App_WorkTicket workTicket, CI_Item part, PageMode pageMode, App_ScheduledAppointment scheduledAppointment)
         {
@@ -84,15 +103,15 @@ namespace TechDashboard.WPF
             _pageMode = pageMode;
             _vm = new PartsEditPageViewModel(workTicket, part);
             _scheduledAppointment = scheduledAppointment;
+
+            _part = part;       // dch rkl 12/05/2016
+
             InitializeComponent();
 
             SetPageLayout();
         }
         protected void SetPageLayout()
         {
-           //  Create a label for the technician list
-            _labelTitle = new Label();
-
             // Set the page title.
             switch (_pageMode)
             {
@@ -109,159 +128,82 @@ namespace TechDashboard.WPF
 
             gridMain.DataContext = _vm.PartToEdit;
 
-            _labelTitle.FontWeight = FontWeights.Bold;
-            _labelTitle.FontSize = 22;
-            _labelTitle.Foreground = new SolidColorBrush(Colors.White);
-            _labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            _labelTitle.VerticalAlignment = VerticalAlignment.Center;
-
-            Grid titleLayout = new Grid()
-            {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498db")),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Height = 80
-            };
-            titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            titleLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            titleLayout.Children.Add(_labelTitle);
-            Grid.SetColumn(_labelTitle, 0);
-            Grid.SetRow(_labelTitle, 0);
-
             SolidColorBrush asbestos = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7f8C8d"));
 
-            _labelPartNumber = new Label();
+            // Set Bindings
             _labelPartNumber.SetBinding(ContentProperty, "PartItemCode");
-            _labelPartNumber.FontWeight = FontWeights.Bold;
-            _labelPartNumber.Foreground = asbestos;
-            _labelPartNumber.HorizontalAlignment = HorizontalAlignment.Left;
 
-            _labelPartDescription = new Label();
             _labelPartDescription.SetBinding(ContentProperty, "PartItemCodeDescription");
-            _labelPartDescription.FontWeight = FontWeights.Bold;
-            _labelPartDescription.Foreground = asbestos;
-            _labelPartDescription.HorizontalAlignment = HorizontalAlignment.Left;
+            _labelPartDescription.Text = _vm.PartToEdit.PartItemCodeDescription;
 
-            Label labelserial = new Label()
-            {
-                Content = "MFG/LOT SERIAL:",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-            _pickerSerialNumber = new ComboBox();
+            _pickerWarehouse.ItemsSource = _vm.WarehouseList;
+            try { _pickerWarehouse.SelectedValue = _vm.PartToEdit.Warehouse; } catch { }
 
-            foreach (string serialNumber in _vm.GetMfgSerialNumbersForPart())
+            if (_pageMode == PageMode.Edit) { _entryQuantity.Text = _vm.PartToEdit.Quantity.ToString(); }
+            else { _entryQuantity.Text = "1"; }
+
+            // dch rkl 01/23/2017 Change U/M to picklist
+            _pickerUnitOfMeasure.ItemsSource = _vm.UnitOfMeasureList;
+            try { _pickerUnitOfMeasure.SelectedValue = _vm.PartToEdit.UnitOfMeasure; }
+            catch (Exception ex) { }
+            if (_pickerUnitOfMeasure.SelectedIndex == -1 && _vm.PartToEdit.PartItemCode.Trim().Substring(0, 1) == "*" || _vm.PartToEdit.ItemType == "4" || _vm.PartToEdit.ItemType == "5")
             {
-                _pickerSerialNumber.Items.Add(serialNumber);
+                AddItemToUMList(_vm.PartToEdit.UnitOfMeasure);
             }
-            if ((_pickerSerialNumber.Items == null) || (_pickerSerialNumber.Items.Count == 0))
+            //_entryUnitOfMeasure.SetBinding(ContentProperty, "UnitOfMeasure");
+            //_entryUnitOfMeasure.Text = _vm.PartToEdit.UnitOfMeasure;
+            //_entryUnitOfMeasure.Style = (Style)this.Resources["styleUOM"];
+
+            // dch rkl 12/05/2016 if qty shipped > 0, cannot edit warehouse or u/m
+            if (_vm.PartToEdit.QuantityShipped > 0)
             {
-                _pickerSerialNumber.Visibility = Visibility.Hidden;
+                _pickerWarehouse.IsEnabled = false;
+
+                // dch rkl 01/23/2017 Change U/M to picklist
+                //_entryUnitOfMeasure.IsEnabled = false;
+                _pickerUnitOfMeasure.IsEnabled = false;
+            }
+
+            // dch rkl 11/23/2016 If Edit Mode, and a Quantity has been entered, disable U/M
+            if (_pageMode == PageMode.Edit && _vm.PartToEdit.Quantity != 0)
+            {
+                // dch rkl 01/23/2017 Change U/M to picklist
+                //_entryUnitOfMeasure.IsEnabled = false;
+                _pickerUnitOfMeasure.IsEnabled = false;
+            }
+
+            _entryUnitCost.Text = _vm.PartToEdit.UnitCost.ToString("C2");
+
+            // dch rkl 11/23/2016 if misc part, allow entry of unit cost
+            if (_vm.PartToEdit.PartItemCode.Trim().Substring(0,1) == "*" || _vm.PartToEdit.ItemType == "4" || _vm.PartToEdit.ItemType == "5")
+            {
+                _entryUnitCost.IsEnabled = true;
+                // dch rkl 01/23/2017 if miscellaneous, allow entry of U/M
+                _pickerUnitOfMeasure.IsEditable = true;
             }
             else
             {
-                _pickerSerialNumber.Visibility = Visibility.Visible;
-                _pickerSerialNumber.SelectedIndex = 0;
+                _entryUnitCost.IsEnabled = false;
+                // dch rkl 01/23/2017 if miscellaneous, allow entry of U/M
+                _pickerUnitOfMeasure.IsEditable = false;
             }
-            _pickerSerialNumber.HorizontalAlignment = HorizontalAlignment.Left;
-            _pickerSerialNumber.SelectionChanged += _pickerSerialNumber_SelectionChanged;
 
-            Label labelWarehouse = new Label()
+            // dch rkl 01/18/2017 If not chargeable, set Unit Price and Ext Price to zero.
+            if (_vm.PartToEdit.IsChargeable)
             {
-                Content = "WAREHOUSE:",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-            _pickerWarehouse = new ComboBox();
-            _pickerWarehouse.Width = 100;
-            _pickerWarehouse.HorizontalAlignment = HorizontalAlignment.Left;
-
-            _pickerWarehouse.SelectionChanged += _pickerWarehouse_SelectionChanged;
-
-            foreach (string warehouse in _vm.WarehouseList)
-            {
-                _pickerWarehouse.Items.Add(warehouse);
+                _entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
+                if (_pageMode == PageMode.Edit) { _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2"); }
+                else { _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * 1).ToString("C2"); }
             }
-            try { _pickerWarehouse.SelectedIndex = _pickerWarehouse.Items.IndexOf(_vm.PartToEdit.Warehouse); } catch { }
-            //_pickerWarehouse.SelectedIndex = 0;
-
-            Label labelQuantity = new Label()
+            else
             {
-                Content = "QTY:",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
+                _labelExtensionPrice.Content = "0";
+                _entryUnitPrice.Text = "0";
+            }
 
-            _entryQuantity = new TextBox();
-
-
-            _entryQuantity.SetBinding(ContentProperty, "Quantity");
-            _entryQuantity.TextChanged += EntryQuantity_TextChanged;
-
-            _entryQuantity.Foreground = asbestos;
-            _entryQuantity.Text = "1";
-
-            Label labelUOM = new Label()
-            {
-                Content = "U/M",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-
-            _entryUnitOfMeasure = new TextBox();
-            _entryUnitOfMeasure.SetBinding(ContentProperty, "UnitOfMeasure");
-            _entryUnitOfMeasure.Text = _vm.PartToEdit.UnitOfMeasure;
-            _entryUnitOfMeasure.Foreground = asbestos;
-            _entryUnitOfMeasure.Style = (Style)this.Resources["styleUOM"];
-
-            Label labelUnitCost = new Label()
-            {
-                Content = "COST",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-
-            _entryUnitCost = new TextBox();
-            _entryUnitCost.Text = _vm.PartToEdit.UnitCost.ToString();
-            _entryUnitCost.IsEnabled = false;
-            _entryUnitCost.Foreground = asbestos;
-
-            Label labelPrice = new Label()
-            {
-                Content = "PRICE",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-
-            _entryUnitPrice = new TextBox();
-            //_entryUnitPrice.SetBinding(ContentProperty,"UnitPrice");
-            _entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString();
-            _entryUnitPrice.Foreground = asbestos;
-
-            _labelExtensionPrice = new Label();
-            _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString();
-            _labelExtensionPrice.Foreground = asbestos;
-
-            Label labelComments = new Label()
-            {
-                Content = "COMMENTS",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-
-            _entryComments = new TextBox();
-            _entryComments.TextWrapping = TextWrapping.WrapWithOverflow;
             _entryComments.SetBinding(ContentProperty, "Comment");
-            _entryComments.Foreground = asbestos;
             _entryComments.Style = (Style)this.Resources["styleComments"];
-
-            _switchIsChargeable = new CheckBox();
-            
-            
-            _switchIsPrintable = new CheckBox();
-
-            _switchIsPurchased = new CheckBox();
-
-            _switchIsOverhead = new CheckBox();
+            _entryComments.Text = _vm.PartToEdit.Comment;
 
             if (_pageMode == PageMode.Edit)
             {
@@ -271,103 +213,56 @@ namespace TechDashboard.WPF
                 _switchIsOverhead.SetBinding(CheckBox.IsCheckedProperty, "IsOverhead");
             }
 
-            Grid topGrid = new Grid();
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150, GridUnitType.Pixel) });
-            topGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-            topGrid.Children.Add(_labelPartNumber);
-            Grid.SetColumn(_labelPartNumber, 0);
-            Grid.SetRow(_labelPartNumber, 0);
-            topGrid.Children.Add(_labelPartDescription);
-            Grid.SetColumn(_labelPartDescription, 1);
-            Grid.SetRow(_labelPartDescription, 0);
-
-            topGrid.Children.Add(labelserial);
-            Grid.SetColumn(labelserial, 0);
-            Grid.SetRow(labelserial, 1);
-            topGrid.Children.Add(_pickerSerialNumber);
-            Grid.SetColumn(_pickerSerialNumber, 1);
-            Grid.SetRow(_pickerSerialNumber, 1);
-
-            topGrid.Children.Add(labelWarehouse);
-            Grid.SetColumn(labelWarehouse, 0);
-            Grid.SetRow(labelWarehouse, 2);
-            topGrid.Children.Add(_pickerWarehouse);
-            Grid.SetColumn(_pickerWarehouse, 1);
-            Grid.SetRow(_pickerWarehouse, 2);
-
-            Grid amtsGrid = new Grid();
-            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            amtsGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150, GridUnitType.Pixel) });
-            amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
-            amtsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100, GridUnitType.Pixel) });
-
-            amtsGrid.Children.Add(labelQuantity);
-            Grid.SetColumn(labelQuantity, 0);
-            Grid.SetRow(labelQuantity, 0);
-            amtsGrid.Children.Add(_entryQuantity);
-            Grid.SetColumn(_entryQuantity, 1);
-            Grid.SetRow(_entryQuantity, 0);
-            amtsGrid.Children.Add(_entryUnitOfMeasure);
-            Grid.SetColumn(_entryUnitOfMeasure, 2);
-            Grid.SetRow(_entryUnitOfMeasure, 0);
-
-            _labelQuantityAvailable = new Label()
+            // dch rkl 11/21/2016 if part is purchased, do not allow editing of quantity
+            if (_vm.PartToEdit.IsPurchased)
             {
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-            _labelQuantityAvailable.SetBinding(ContentProperty, _vm.QtyAvailable);
-            //amtsGrid.Children.Add(_labelQuantityAvailable);
-            //Grid.SetColumn(_labelQuantityAvailable, 1);
-            //Grid.SetRow(_labelQuantityAvailable, 1);
-            Label labelAvailable = new Label()
+                _entryQuantity.IsEnabled = false;
+            }
+            else
             {
-                Content = "available",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
-            //amtsGrid.Children.Add(labelAvailable);
-            //Grid.SetColumn(labelAvailable, 2);
-            //Grid.SetRow(labelAvailable, 1);
+                _entryQuantity.IsEnabled = true;
+            }
 
-            amtsGrid.Children.Add(labelUnitCost);
-            Grid.SetColumn(labelUnitCost, 0);
-            Grid.SetRow(labelUnitCost, 2);
-            amtsGrid.Children.Add(_entryUnitCost);
-            Grid.SetColumn(_entryUnitCost, 2);
-            Grid.SetRow(_entryUnitCost, 2);
-
-            amtsGrid.Children.Add(labelPrice);
-            Grid.SetColumn(labelPrice, 0);
-            Grid.SetRow(labelPrice, 3);
-            amtsGrid.Children.Add(_entryUnitPrice);
-            Grid.SetColumn(_entryUnitPrice, 1);
-            Grid.SetRow(_entryUnitPrice, 3);
-
-            Label labelExtPrice = new Label()
+            // dch rkl 11/22/2016 if chargeable is checked, allow unit price to be updated.
+            // If chargeable is not checked, unit price cannot be updated.
+            if (_vm.PartToEdit.IsChargeable)
             {
-                Content = "EXT PRICE:",
-                FontWeight = FontWeights.Bold,
-                Foreground = asbestos
-            };
+                _entryUnitPrice.IsEnabled = true;
+            }
+            else
+            {
+                _entryUnitPrice.IsEnabled = false;
+                _entryUnitPrice.Text = "0.00";
+            }
 
-            amtsGrid.Children.Add(labelExtPrice);
-            Grid.SetColumn(labelExtPrice, 0);
-            Grid.SetRow(labelExtPrice, 4);
-            amtsGrid.Children.Add(_labelExtensionPrice);
-            Grid.SetColumn(_labelExtensionPrice, 1);
-            Grid.SetRow(_labelExtensionPrice, 4);
+            // dch rkl 11/23/2016 if misc part, hide warehouse dropdown
+            bool bShowWhse = true;
+            if (_vm.PartToEdit.PartItemCode.Trim().Substring(0, 1) == "*" || _vm.PartToEdit.ItemType == "4" || _vm.PartToEdit.ItemType == "5")
+            {
+                bShowWhse = false;
+            }
+            if (bShowWhse)
+            {
+                _pickerWarehouse.Visibility = Visibility.Visible;
+                labelWarehouse.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                _pickerWarehouse.Visibility = Visibility.Hidden;
+                labelWarehouse.Visibility = Visibility.Hidden;
+            }
 
-            _buttonAddPart = new Button();
-            TextBlock buttonAddPartText = new TextBlock();
+            // dch rkl 01/13/2017 if extended description exists, display button to view/edit it BEGIN
+            if (_vm.ExtendedDescriptionKey > 0 && _vm.ExtendedDescriptionText.Trim().Length > 0)
+            {
+                _buttonExtdDesc.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                _buttonExtdDesc.Visibility = Visibility.Hidden;
+            }
+            // dch rkl 01/13/2017 if extended description exists, display button to view/edit it END
+
             switch (_pageMode)
             {
                 case PageMode.Add:
@@ -377,87 +272,68 @@ namespace TechDashboard.WPF
                     buttonAddPartText.Text = "UPDATE";
                     break;
             }
-            _buttonAddPart.Click += ButtonAddPart_Click;
 
-            buttonAddPartText.FontWeight = FontWeights.Bold;
-            _buttonAddPart.Foreground = new SolidColorBrush(Colors.White);
-            _buttonAddPart.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71"));
-            _buttonAddPart.HorizontalAlignment = HorizontalAlignment.Stretch;
-            _buttonAddPart.Margin = new Thickness(30, 10, 30, 10);
-            _buttonAddPart.Content = buttonAddPartText;
-
-            _buttonCancel = new Button();
-            TextBlock buttonCancelText = new TextBlock();
-            buttonCancelText.Text = "CANCEL";
-            buttonCancelText.Foreground = new SolidColorBrush(Colors.White);
-            buttonCancelText.FontWeight = FontWeights.Bold;
-            _buttonCancel.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
-            _buttonCancel.Click += ButtonCancel_Click;
-            _buttonCancel.HorizontalAlignment = HorizontalAlignment.Stretch;
-            _buttonCancel.Content = buttonCancelText;
-            _buttonCancel.Margin = new Thickness(30, 10, 30, 10);
-
-            gridMain.Children.Add(new StackPanel()
+            if (_pageMode == PageMode.Add)
             {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Children =
+                _buttonDeletePart.Visibility = Visibility.Hidden;
+            } else
+            {
+                _buttonDeletePart.Visibility = Visibility.Visible;
+            }
+
+            // dch rkl 01/23/2017 If SO_SalesOrderDetail.JT158_WTBillFlag is set to "R" or "B", do not allow edit of the part
+            if (_vm.PartToEdit.SoLineKey != null)
+            {
+                int iSOLineKey;
+                int.TryParse(_vm.PartToEdit.SoLineKey, out iSOLineKey);
+                if (iSOLineKey > 0)
                 {
-                    titleLayout,
-                    topGrid,
-                    amtsGrid,
-                    _entryComments,
-                    new StackPanel
+                    List<SO_SalesOrderDetail> lsSODtl = App.Database.GetSalesOrderDetails(_vm.WorkTicket.SalesOrderNo);
+                    SO_SalesOrderDetail soDtl = lsSODtl.FirstOrDefault(s => s.LineKey == _vm.PartToEdit.SoLineKey);
+                    if (soDtl != null && soDtl.JT158_WTBillFlag != null && (soDtl.JT158_WTBillFlag == "R" || soDtl.JT158_WTBillFlag == "B"))
                     {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            new Label { Content = "CHARGE:", FontWeight = FontWeights.Bold, Foreground = asbestos },
-                            _switchIsChargeable
-                        }
-                    },
-                    new StackPanel
-                    {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            new Label { Content = "PRINT:", FontWeight = FontWeights.Bold, Foreground = asbestos },
-                            _switchIsPrintable
-                        }
-                    },
-                    new StackPanel
-                    {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            new Label { Content = "PURCHASE:", FontWeight = FontWeights.Bold, Foreground = asbestos },
-                            _switchIsPurchased
-                        }
-                    },
-                    new StackPanel
-                    {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            new Label { Content = "OVERHEAD:", FontWeight = FontWeights.Bold, Foreground = asbestos },
-                            _switchIsOverhead
-                        }
-                    },
-                    new StackPanel
-                    {
-                        Orientation = Orientation.Horizontal,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Children =
-                        {
-                            _buttonAddPart,
-                            _buttonCancel
-                        }
-                    },
+                        _buttonAddPart.Visibility = Visibility.Hidden;
+                        _buttonDeletePart.Visibility = Visibility.Hidden;
+                    }
                 }
-            });
+            }
+        }
+
+        private void _buttonDeletePart_Click(object sender, RoutedEventArgs e)
+        {
+            // dch rkl 12/01/2016 Picker is now bound to type of IM_Warehouse
+            //_vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+            IM_Warehouse whse = new IM_Warehouse();
+            if (_pickerWarehouse != null && _pickerWarehouse.SelectedIndex > -1)
+            {
+                whse = (IM_Warehouse)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+            }
+            //IM_Warehouse whse = (IM_Warehouse)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+            _vm.PartToEdit.Warehouse = whse.WarehouseCode;
+
+            _vm.PartToEdit.Quantity = Convert.ToDouble(_entryQuantity.Text);
+            //_vm.PartToEdit.SerialNumber = (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex];
+            // dch rkl 10/13/2016 remove $ sign before saving
+            //_vm.PartToEdit.UnitPrice = Convert.ToDouble(_entryUnitPrice.Text);
+            _vm.PartToEdit.UnitPrice = Convert.ToDouble(_entryUnitPrice.Text.Replace("$", ""));
+
+            // dch rkl 01/23/2017 Change U/M to picklist
+            //_vm.PartToEdit.UnitOfMeasure = _entryUnitOfMeasure.Text;
+            if (_pickerUnitOfMeasure != null && _pickerUnitOfMeasure.SelectedIndex > -1)
+            {
+                _vm.PartToEdit.UnitOfMeasure = _pickerUnitOfMeasure.SelectedValue.ToString();
+            }
+
+            _vm.PartToEdit.IsChargeable = (bool)_switchIsChargeable.IsChecked;
+            _vm.PartToEdit.IsPrintable = (bool)_switchIsPrintable.IsChecked;
+            _vm.PartToEdit.IsPurchased = (bool)_switchIsPurchased.IsChecked;
+            _vm.PartToEdit.IsOverhead = (bool)_switchIsOverhead.IsChecked;
+            _vm.PartToEdit.Comment = _entryComments.Text;
+
+            _vm.DeletePart();
+            
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
         }
 
         private void _pickerSerialNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -467,10 +343,29 @@ namespace TechDashboard.WPF
 
         private void _pickerWarehouse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_pickerSerialNumber.SelectedIndex > -1)
+            if (_pickerWarehouse.SelectedIndex > -1)
             {
-                _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                // dch rkl 12/01/2016 Picker is bound to IM_Warehouse BEGIN
+                //_vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                IM_Warehouse whse = (IM_Warehouse)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                _vm.PartToEdit.Warehouse = whse.WarehouseCode;
+                // dch rkl 12/01/2016 Picker is bound to IM_Warehouse END
+
                 //_vm.UpdateQuantityOnHand(_vm.PartToEdit.Warehouse, (string)_pickerSerialNumber.Items[_pickerSerialNumber.SelectedIndex]);
+
+                // dch rkl 11/27/2016 Rebind Lot/Serial for this Warehouse BEGIN
+                //List<Data.LotQavl> lsSrnNo = _vm.GetMfgSerialNumbersForPart();
+                //_pickerSerialNumber.ItemsSource = lsSrnNo;
+                //if ((_pickerSerialNumber.Items == null) || (_pickerSerialNumber.Items.Count == 0))
+                //{
+                //    _pickerSerialNumber.Visibility = Visibility.Hidden;
+                //}
+                //else
+                //{
+                //    _pickerSerialNumber.Visibility = Visibility.Visible;
+                //    _pickerSerialNumber.SelectedIndex = 0;
+                //}
+                // dch rkl 11/27/2016 Rebind Lot/Serial for this Warehouse END
             }
 
         }
@@ -485,38 +380,135 @@ namespace TechDashboard.WPF
            
         }
 
+        // dch rkl 01/13/2017 Display Extended Description
+        private void buttonExtdDesc_Click(object sender, RoutedEventArgs e)
+        {
+            // Show Extended Description Screen
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new PartsEditExtdDescPage(_vm.WorkTicket, _vm.PartToEdit, PartsEditPage.PageMode.Edit,
+                _scheduledAppointment);
+        }
+
         private void ButtonAddPart_Click(object sender, RoutedEventArgs e)
         {
-            if (_entryUnitOfMeasure.Text.Length <= 0)
+            // dch rkl 01/23/2017 Change U/M to picklist
+            string UM = "";
+            if (_pickerUnitOfMeasure != null && _pickerUnitOfMeasure.SelectedIndex > -1)
+            {
+                UM = _pickerUnitOfMeasure.SelectedValue.ToString();
+            }
+
+            if (UM.Length <= 0)
             {
                 MessageBoxResult result = System.Windows.MessageBox.Show("You must select a unit of measure.", "Unit of Measure", MessageBoxButton.OK);
                 if (result == MessageBoxResult.OK)
                     return;
             }
 
-            _vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+            // dch rkl 11/27/2016 Make Sure Value in Unit Cost is Numeric
+            decimal dPrice;
+            if (decimal.TryParse(_entryUnitPrice.Text.Replace("$", ""), out dPrice) == false)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show("Unit Price must be numeric.", "Invalid Unit Price", MessageBoxButton.OK);
+                if (result == MessageBoxResult.OK)
+                    return;
+            }
+
+            // dch rkl 11/27/2016 Make Sure Value in Unit Cost is Numeric
+            decimal dCost;
+            if (decimal.TryParse(_entryUnitCost.Text.Replace("$", ""), out dCost) == false)
+            {
+                MessageBoxResult result = System.Windows.MessageBox.Show("Unit Cost must be numeric.", "Invalid Unit Cost", MessageBoxButton.OK);
+                if (result == MessageBoxResult.OK)
+                    return;
+            }
+
+            // dch rkl 12/06/2016 make sure sufficient inventory is available
+            // dch rkl 12/05/2016 If Lot(5) or Serial (6) Controlled, show Lot/Serial Selection
+            if (_vm.PartToEdit.Valuation == "5" || _vm.PartToEdit.Valuation == "6")
+            {
+                _lotSerNo = _vm.GetMfgSerialNumbersForPart();
+                // dch rkl 01/13/2017 Make Sure Serial Number Count is >= Quantity Being Entered
+                decimal dQty;
+                decimal.TryParse(_entryQuantity.Text, out dQty);
+                //if (_lotSerNo == null || _lotSerNo.Count == 0)
+                if (_lotSerNo == null || _lotSerNo.Count < dQty)
+                {
+                    MessageBoxResult result = System.Windows.MessageBox.Show("Insufficient Inventory Available for this Item/Whse", "Insufficient Inventory", MessageBoxButton.OK);
+                    if (result == MessageBoxResult.OK)
+                        return;
+                }
+            }
+
+            // dch rkl 11/02/2016 make sure _pickerWarehouse has at least one value
+            if (_pickerWarehouse != null && _pickerWarehouse.Items.Count > 0 && _pickerWarehouse.SelectedIndex > -1)
+            {
+                // dch rkl 12/01/2016 Picker is now bound to type of IM_Warehouse
+                //_vm.PartToEdit.Warehouse = (string)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                IM_Warehouse whse = (IM_Warehouse)_pickerWarehouse.Items[_pickerWarehouse.SelectedIndex];
+                _vm.PartToEdit.Warehouse = whse.WarehouseCode;
+            }
+            else
+            {
+                _vm.PartToEdit.Warehouse = "";
+            }
+
             _vm.PartToEdit.Quantity = Convert.ToDouble(_entryQuantity.Text);
-            _vm.PartToEdit.UnitPrice = Convert.ToDouble(_entryUnitPrice.Text);
-            _vm.PartToEdit.UnitOfMeasure = _entryUnitOfMeasure.Text;
+
+            // dch rkl 10/13/2016 remove $ sign before saving
+            //_vm.PartToEdit.UnitPrice = Convert.ToDouble(_entryUnitPrice.Text);
+            _vm.PartToEdit.UnitPrice = Convert.ToDouble(_entryUnitPrice.Text.Replace("$", ""));
+
+            // dch rkl 11/21/2016 Unit Cost is editable for misc items
+            _vm.PartToEdit.UnitCost = Convert.ToDouble(_entryUnitCost.Text.Replace("$", ""));
+
+            // dch rkl 01/23/2017 Change U/M to picklist
+            //_vm.PartToEdit.UnitOfMeasure = _entryUnitOfMeasure.Text;
+            _vm.PartToEdit.UnitOfMeasure = UM;
+
+            _vm.PartToEdit.ItemCodeDesc = _labelPartDescription.Text;
+
             _vm.PartToEdit.IsChargeable = (bool)_switchIsChargeable.IsChecked;
             _vm.PartToEdit.IsPrintable = (bool)_switchIsPrintable.IsChecked;
             _vm.PartToEdit.IsPurchased = (bool)_switchIsPurchased.IsChecked;
             _vm.PartToEdit.IsOverhead = (bool)_switchIsOverhead.IsChecked;
             _vm.PartToEdit.Comment = _entryComments.Text;
 
-            // puke
             switch (_pageMode)
             {
                 case PageMode.Add:
-                    _vm.AddPartToPartsList();
+                    // dch rkl 01/13/2017 Return the ID of the Inserted Part
+                    int iId = _vm.AddPartToPartsList();
+                    _vm.PartToEdit.ID = iId;
+                    //_vm.AddPartToPartsList();
+
                     //await Navigation.PopAsync();
                     break;
                 case PageMode.Edit:
                     _vm.UpdatePartOnPartsList();
                     break;
             }
+
+            // dch rkl 12/05/2016 If Lot(5) or Serial (6) Controlled, show Lot/Serial Selection
+            if (_vm.PartToEdit.Valuation == "5" || _vm.PartToEdit.Valuation == "6")
+            {
+                ShowLotSerNoSelection();
+            }
+            else
+            {
+                // If not lot controlled/
+                ContentControl contentArea = (ContentControl)this.Parent;
+                contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
+            }
+        }
+
+        // dch rkl 12/02/2016 Show Lot/Serial No Screen
+        private void ShowLotSerNoSelection()
+        {
+            // Show Lot/Serial No Selection Screen
             ContentControl contentArea = (ContentControl)this.Parent;
-            contentArea.Content = new PartsListPage(_vm.WorkTicket, _scheduledAppointment);
+            contentArea.Content = new PartsEditLotSerNoPage(_vm.WorkTicket, _vm.PartToEdit, PartsEditPage.PageMode.Edit,
+                _scheduledAppointment);
         }
 
         private void EntryQuantity_TextChanged(object sender, TextChangedEventArgs e)
@@ -532,5 +524,78 @@ namespace TechDashboard.WPF
             }
             _labelExtensionPrice.Content = "$" + (n * _vm.PartToEdit.UnitPrice).ToString();
         }
+
+        // dch rkl 11/21/2016 if part is purchased, do not allow editing of quantity
+        private void _switchIsPurchased_Click(object sender, EventArgs e)
+        {
+            if (_switchIsPurchased.IsChecked == true)
+            {
+                _entryQuantity.IsEnabled = false;
+            }
+            else
+            {
+                _entryQuantity.IsEnabled = true;
+            }
+        }
+
+        // dch rkl 11/22/2016 if chargeable is checked, allow unit price to be updated.
+        // If chargeable is not checked, unit price cannot be updated.
+        private void _switchIsChargeable_Click(object sender, EventArgs e)
+        {
+            if (_vm.PartToEdit.IsChargeable)
+            {
+                _entryUnitPrice.IsEnabled = true;
+
+                // dch rkl 01/18/2017 If Is Chargeable = true, set printable to true and disable 
+                _switchIsPrintable.IsChecked = true;      
+                _switchIsPrintable.IsEnabled = false;
+
+                // dch rkl 01/18/2017 If chargeable, set Unit Price and Ext Price values
+                _entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
+                _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2");
+            }
+            else
+            {
+                _entryUnitPrice.IsEnabled = false;
+                _entryUnitPrice.Text = "0.00";
+
+                // dch rkl 01/18/2017 If Is Chargeable = false, enable printable
+                _switchIsPrintable.IsEnabled = true;
+
+                // dch rkl 01/18/2017 If not chargeable, set Unit Price and Ext Price to zero.
+                _labelExtensionPrice.Content = "0";
+                _entryUnitPrice.Text = "0";
+            }
+        }
+
+        // dch rkl 01/23/2017 Allow entry of combo-box item for Misc Items BEGIN
+        private void LostFocus(object sender, RoutedEventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            if (comboBox.SelectedItem != null)
+                return;
+            var newItem = comboBox.Text;
+            AddItemToUMList(newItem);
+            //CI_UnitOfMeasure um = _vm.UnitOfMeasureList.FirstOrDefault(s => s.UnitOfMeasure == newItem);
+            //if (um == null)
+            //{
+            //    _vm.UnitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = newItem });
+            //    _vm.UnitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
+            //}
+            //comboBox.SelectedValue = newItem;
+        }
+
+        private void AddItemToUMList(string newItem)
+        {
+            CI_UnitOfMeasure um = _vm.UnitOfMeasureList.FirstOrDefault(s => s.UnitOfMeasure == newItem);
+            if (um == null)
+            {
+                _vm.UnitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = newItem });
+                _vm.UnitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
+            }
+            _pickerUnitOfMeasure.SelectedValue = newItem;
+        }
+        // dch rkl 01/23/2017 Allow entry of combo-box item for Misc Items END
+
     }
 }

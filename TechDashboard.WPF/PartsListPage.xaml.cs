@@ -15,6 +15,20 @@ using System.Windows.Shapes;
 using TechDashboard.ViewModels;
 using TechDashboard.Models;
 
+/**************************************************************************************************
+ * Page Name    PartsListPage
+ * Description: Parts List Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 11/02/2016   DCH     Add a scroll viewer to the parts grid, so you can scroll to the bottom of
+ *                      the page to add a part if the grid fills the page.
+ * 11/22/2016   DCH     Move screen layout to designer/XAML.  Format grid to make it more readable.
+ * 12/01/2016   DCH     Add find textbox to search parts already on the ticket.
+ * 12/04/2016   DCH     Add coverage checkboxes, for display
+ **************************************************************************************************/
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -25,96 +39,71 @@ namespace TechDashboard.WPF
         PartsListPageViewModel _vm;
 
         Label _labelTitle;
-        ListView _listViewParts;
         App_ScheduledAppointment _scheduledAppointment;
+
+        App_WorkTicket _workTicket;     // dch rkl 12/04/2016 Need this for coverage checkboxes
 
         public PartsListPage(App_WorkTicket workTicket, App_ScheduledAppointment scheduledAppointment)
         {
             _vm = new PartsListPageViewModel(workTicket);
             _scheduledAppointment = scheduledAppointment;
+
+            // dch rkl 12/04/2016 Need this for coverage checkboxes
+            _workTicket = workTicket;
+
             InitializeComponent();
             SetPageDisplay();
         }
 
         protected void SetPageDisplay()
         {
-
-            // Set the page title.
-            //Title = "Parts List";
-
             SolidColorBrush asbestos = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7f8C8d"));
             gridMain.DataContext = _vm.ObservablePartsList;
 
-            //  Create a label for the technician list
-            _labelTitle = new Label();
-            _labelTitle.Content = "PARTS LIST";
-            _labelTitle.FontWeight = FontWeights.Bold;
-            _labelTitle.FontSize = 22;
-            _labelTitle.Foreground = new SolidColorBrush(Colors.White);
-            _labelTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            _labelTitle.VerticalAlignment = VerticalAlignment.Center;
+            gridParts.ItemsSource = _vm.PartsList;
+            gridParts.MouseDoubleClick += gridParts_MouseDoubleClick;
+            gridParts.PreviewKeyDown += gridParts_PreviewKeyDown;       // dch rkl 11/01/2016 Enter to select ticket
 
-            Button btnBack = new Button();
+            // dch rkl 12/04/2016 Set Coverage Checkboxes BEGIN
+            // Warranty Repair
+            if (_workTicket.DtlWarrantyRepair == "Y") { switchWarrRepair.IsChecked = true; }
 
-            StackPanel spBackButton = new StackPanel();
-            Image imBackButton = new Image();
-            imBackButton.Source = new BitmapImage(new Uri("Resources/arrow-111-64.png", UriKind.Relative));
-            imBackButton.Height = 32;
-            imBackButton.Width = 32;
-            spBackButton.Children.Add(imBackButton);
-            btnBack.Content = spBackButton;
-            btnBack.HorizontalAlignment = HorizontalAlignment.Left;
-            btnBack.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3498DB"));
-            btnBack.BorderBrush = null;
-            btnBack.Width = 32;
-
-            btnBack.Click += BtnBack_Click;
-
-            Grid titleLayout = new Grid()
+            // Parts Coverred on Warranty
+            bool bIsChkd = false;
+            if (_workTicket.StatusDate != null && _workTicket.RepairItem.MfgPartsWarrantyPeriod != null)
             {
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3498DB")),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Height = 80
-            };
-            titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            titleLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            titleLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            titleLayout.Children.Add(_labelTitle);
-            Grid.SetColumn(_labelTitle, 0);
-            Grid.SetRow(_labelTitle, 0);
-            titleLayout.Children.Add(btnBack);
-            Grid.SetColumn(btnBack, 0);
-            Grid.SetRow(btnBack, 1);
-
-            _listViewParts = new ListView()
-            {
-                ItemsSource = _vm.PartsList,
-                ItemTemplate = (DataTemplate)this.Resources["PartsListDataTemplate"]
-            };
-
-            Button buttonAddEditPart = new Button()
-            {
-                Content = "ADD NEW PART",
-                FontWeight = FontWeights.Bold,
-                Foreground = new SolidColorBrush(Colors.White),
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71")),
-                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71"))
-            };
-
-            buttonAddEditPart.Click += ButtonAddEditPart_Clicked;
-
-            //_listViewParts.ItemTapped += ListViewWorkTickets_ItemTapped;  // puke... only do if clocked in on ticket
-            _listViewParts.SelectionChanged += _listViewParts_SelectionChanged;
-
-
-            Content = new StackPanel
-            {
-                Children = {
-                    titleLayout,
-                    _listViewParts,
-                    buttonAddEditPart
+                TimeSpan tsDateDiff = _workTicket.RepairItem.MfgPartsWarrantyPeriod.Subtract(_workTicket.StatusDate);
+                if (tsDateDiff.TotalDays > 0 && _workTicket.DtlWarrantyRepair == "Y")
+                {
+                    switchPartsCovWarr.IsChecked = true;
+                    bIsChkd = true;
                 }
-            };
+            }
+            if (_workTicket.StatusDate != null && _workTicket.RepairItem.MfgPartsWarrantyPeriod != null)
+            {
+                TimeSpan tsDateDiff = _workTicket.RepairItem.MfgPartsWarrantyPeriod.Subtract(_workTicket.StatusDate);
+                if (tsDateDiff.TotalDays > 0 && _workTicket.DtlWarrantyRepair == "Y")
+                {
+                    switchPartsCovWarr.IsChecked = true;
+                    bIsChkd = true;
+                }
+            }
+
+            // Service Agreement Repair
+            if (_workTicket.DtlCoveredOnContract == "Y") { switchSvcAgrRepair.IsChecked = true; }
+
+            // Parts Covered on Service Agreement
+            if (_workTicket.IsPreventativeMaintenance && _workTicket.ServiceAgreement.ArePreventativeMaintenancePartsCovered)
+            {
+                switchPartsCovSvcAgr.IsChecked = true;
+            }
+            else if (_workTicket.IsPreventativeMaintenance == false && _workTicket.IsServiceAgreementRepair
+                && _workTicket.ServiceAgreement.ArePartsCovered)
+            {
+                switchPartsCovSvcAgr.IsChecked = true;
+            }
+            // dch rkl 12/04/2016 Set Coverage Checkboxes END
+
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -123,19 +112,82 @@ namespace TechDashboard.WPF
             contentArea.Content = new TicketDetailsPage(_scheduledAppointment);
         }
 
-        private void _listViewParts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // dch rkl 11/22/2016 selection of grid
+        private void gridParts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            App_RepairPart part = (App_RepairPart)_listViewParts.SelectedItem; //e.Item as App_RepairPart;
-            CI_Item partAsItem = App.Database.GetItemFromDB(part.PartItemCode);
+            if (gridParts.SelectedIndex > -1)
+            {
+                App_RepairPart part = (App_RepairPart)gridParts.SelectedItem;
+                ContentControl contentArea = (ContentControl)this.Parent;
+                contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Edit, _scheduledAppointment);
+            }
+        }
 
-            ContentControl contentArea = (ContentControl)this.Parent;
-            contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Edit, _scheduledAppointment);
+        private void gridParts_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (gridParts.SelectedIndex > -1 && e.Key == Key.Enter)
+            {
+                App_RepairPart part = (App_RepairPart)gridParts.SelectedItem;
+                ContentControl contentArea = (ContentControl)this.Parent;
+                contentArea.Content = new PartsEditPage(_vm.WorkTicket, part, PartsEditPage.PageMode.Edit, _scheduledAppointment);
+            }
         }
 
         private void ButtonAddEditPart_Clicked(object sender, RoutedEventArgs e)
         {
             ContentControl contentArea = (ContentControl)this.Parent;
             contentArea.Content = new PartsAddPage(_vm.WorkTicket, _scheduledAppointment);
+        }
+
+        private void btnFindF_Click(object sender, RoutedEventArgs e)
+        {
+            // Find Next
+            string findText = textFind.Text.Trim().ToLower();
+            bool bFound = false;
+
+            int j = 0;
+            if (gridParts.SelectedIndex > -1) { j = gridParts.SelectedIndex + 1; }
+
+            for (int i = j; i < gridParts.Items.Count; i++)
+            {
+                bFound = RowSearchCompare(i);
+                if (bFound) { break; }
+            }
+
+            // If search did not start at top of grid, loop around to beginning of grid and search
+            if (bFound == false && j > 0)
+            {
+                for (int i = 0; i < j; i++)
+                {
+                    bFound = RowSearchCompare(i);
+                    if (bFound) { break; }
+                }
+            }
+        }
+
+        private bool RowSearchCompare(int i)
+        {
+            bool bMatch = false;
+            string findText = textFind.Text.Trim().ToLower();
+
+            try
+            {
+                App_RepairPart part = (App_RepairPart)gridParts.Items[i];
+                if (part != null && (part.PartItemCode.ToLower().IndexOf(textFind.Text) > -1
+                    || part.PartItemCodeDescription.ToLower().IndexOf(findText) > -1))
+                {
+                    object item = gridParts.Items[i];
+                    gridParts.SelectedItem = item;
+                    gridParts.ScrollIntoView(item);
+                    bMatch = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return bMatch;
         }
     }
 }

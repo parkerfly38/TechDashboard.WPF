@@ -8,13 +8,17 @@ using SQLite;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * JT_TechnicianScheduleDetail.cs
+     * 12/02/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class JT_TechnicianScheduleDetail
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
         /// <summary>
-        /// puke
+        /// TODO
         /// </summary>
         [Ignore]
         public bool IsCurrent { get; set; }
@@ -52,7 +56,7 @@ namespace TechDashboard.Models
         /// <summary>
         /// Current Start Time - varchar(4)
         /// </summary>
-        public string StartTime { get; set; } // puke... how separate date/time?
+        public string StartTime { get; set; } // TODO... how separate date/time?
 
         /// <summary>
         /// Hours Scheduled - numeric(15, 6)

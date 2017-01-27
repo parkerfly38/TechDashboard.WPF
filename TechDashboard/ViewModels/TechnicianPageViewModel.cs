@@ -15,6 +15,10 @@ using TechDashboard.Services;
 
 namespace TechDashboard.ViewModels
 {
+    /*********************************************************************************************************
+     * TechnicianPageViewModel.cs
+     * 12/07/2016 DCH Add error handling
+     *********************************************************************************************************/
     public class TechnicianPageViewModel : INotifyPropertyChanged
     {
         protected App_Technician _technician;
@@ -31,13 +35,33 @@ namespace TechDashboard.ViewModels
 
         public TechnicianPageViewModel()
         {
-            _technician = App.Database.RetrieveCurrentTechnician();
-            _technicianStatusList = App.Database.GetTechnicianStatusesFromDB();
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                _technician = App.Database.RetrieveCurrentTechnician();
+                _technicianStatusList = App.Database.GetTechnicianStatusesFromDB();
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechnicianPageViewModel.SignIn");
+            }
         }
 
         public void UpdateTechnicianStatus(JT_TechnicianStatus newStatus)
         {
-            App.Database.UpdateTechnicianStatus(_technician, newStatus);            
+            // dch rkl 12/07/2016 catch exception
+            try
+            {
+                App.Database.UpdateTechnicianStatus(_technician, newStatus);
+            }
+            catch (Exception ex)
+            {
+                // dch rkl 12/07/2016 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.TechnicianPageViewModel.UpdateTechnicianStatus");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

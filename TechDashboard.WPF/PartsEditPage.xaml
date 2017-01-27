@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TechDashboard.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="450" d:DesignWidth="500">
     <UserControl.Resources>
         <Style x:Key="styleUOM" TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
             <Style.Resources>
@@ -49,6 +49,111 @@
         </Style>
     </UserControl.Resources>
     <Grid x:Name="gridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="titleLayout" Background="#3498db" Grid.Row="0" HorizontalAlignment="Stretch" Height="80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="_labelTitle" Content="EDIT PART" FontSize="18" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="gridPartDetails" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="_labelPartNumber" Grid.Column="0" Grid.Row="0" Width="120" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" FontWeight="Bold" Foreground="#7F8C8D" IsEnabled="false" />
+            <StackPanel x:Name="panelDesc" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBox x:Name="_labelPartDescription" Width="250" Height="22" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" FontWeight="Bold" Foreground="#7F8C8D" IsEnabled="true" />
+                <Button x:Name="_buttonExtdDesc" Background="#7F8C8D" BorderBrush="#7F8C8D" HorizontalAlignment="Stretch" Width="95" Height="25"
+                    Click="buttonExtdDesc_Click">
+                    <TextBlock x:Name="buttonExtdDescTest" Text="Extended Desc" Foreground="White" TextWrapping="Wrap" FontWeight="Bold" Width="95" TextAlignment="Center" />
+                </Button>
+            </StackPanel>
+
+            <Label x:Name="labelWarehouse" Content="Warehouse" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="1" />
+            <ComboBox x:Name="_pickerWarehouse" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" IsEnabled="True" HorizontalAlignment="Left" 
+                      DisplayMemberPath="WarehouseDesc" SelectedValuePath="WarehouseCode" Width="250" Height="22" 
+                      SelectionChanged="_pickerWarehouse_SelectionChanged" TabIndex="0" />
+
+            <Label x:Name="labelQuantity" Content="Qty" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="2" />
+            <TextBox x:Name="_entryQuantity" Grid.Column="1" Grid.Row="2" TabIndex="1" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" TextChanged="EntryQuantity_TextChanged" />
+            <ComboBox x:Name="_pickerUnitOfMeasure" Grid.Column="2" Grid.Row="2" IsEnabled="True" HorizontalAlignment="Left" 
+                      DisplayMemberPath="UnitOfMeasure" SelectedValuePath="UnitOfMeasure" Width="75" Height="22" 
+                      SelectionChanged="_pickerWarehouse_SelectionChanged" LostFocus="LostFocus" TabIndex="2" />
             
+            <Label x:Name="labelUnitCost" Content="Cost" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="3" />
+            <TextBox x:Name="_entryUnitCost" Grid.Column="2" Grid.Row="3" TabIndex="3" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" />
+
+            <Label x:Name="labelPrice" Content="Price" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="4" />
+            <TextBox x:Name="_entryUnitPrice" Grid.Column="1" Grid.Row="4" TabIndex="4" Width="75" 
+                     HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" />
+
+            <Label x:Name="labelExtPrice" Content="Ext Price" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="5" />
+            <Label x:Name="_labelExtensionPrice" Grid.Column="1" Grid.Row="5" Width="250" HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" Foreground="#7F8C8D" IsEnabled="false" />
+
+            <Label x:Name="labelComments" Content="Comments" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="6" />
+            <TextBox x:Name="_entryComments" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="6" TabIndex="5" HorizontalAlignment="Left" Width="325"
+                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" VerticalAlignment="Stretch" MinHeight="50"
+                     AcceptsReturn="True" AcceptsTab="False" />
+
+            <Label x:Name="labelCharge" Content="Charge" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="7" />
+            <CheckBox x:Name="_switchIsChargeable" Grid.Column="1" Grid.Row="7" TabIndex="6" VerticalAlignment="Center" Click="_switchIsChargeable_Click" />
+
+            <Label x:Name="labelPrint" Content="Print" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="8" />
+            <CheckBox x:Name="_switchIsPrintable" Grid.Column="1" Grid.Row="8" VerticalAlignment="Center"  TabIndex="7"  />
+
+            <Label x:Name="labelPurchase" Content="Purchase" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="9" />
+            <CheckBox x:Name="_switchIsPurchased" Grid.Column="1" Grid.Row="9" VerticalAlignment="Center" Click="_switchIsPurchased_Click"  TabIndex="8" />
+
+            <Label x:Name="labelOverhead" Content="Overhead" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="10" />
+            <CheckBox x:Name="_switchIsOverhead" Grid.Column="1" Grid.Row="10" VerticalAlignment="Bottom"  TabIndex="9" Margin="0,0,0,6"/>
+
+            <StackPanel x:Name="panelButtons" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="11" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="_buttonAddPart" Background="#2ECC71" BorderBrush="#2ECC71" HorizontalAlignment="Stretch" Height="40" Width="80"
+                    Click="ButtonAddPart_Click" TabIndex="10">
+                    <TextBlock x:Name="buttonAddPartText" Text="UPDATE" Foreground="White" FontWeight="Bold" Width="80" TextAlignment="Center"/>
+                </Button>
+                <Label x:Name="labelSpaceA" Content="" />
+                <Button x:Name="_buttonDeletePart" Background="#2ECC71" BorderBrush="#2ECC71" HorizontalAlignment="Stretch" Height="40"
+                    Click="_buttonDeletePart_Click" TabIndex="11">
+                    <TextBlock x:Name="buttonDeletePartText" Text="DELETE" Foreground="White" FontWeight="Bold" Width="80" TextAlignment="Center" />
+                </Button>
+                <Label x:Name="labelSpaceB" Content="" />
+                <Button x:Name="_buttonCancel" Background="#E74C3C" BorderBrush="#E74C3C" HorizontalAlignment="Stretch" Height="40"
+                    Click="ButtonCancel_Click" TabIndex="12">
+                    <TextBlock x:Name="buttonCancelText" Text="CANCEL" Foreground="White" FontWeight="Bold" Width="80" TextAlignment="Center" />
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

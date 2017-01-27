@@ -83,6 +83,12 @@ namespace TechDashboard.Data
 				&& x.TransactionDate == transaction.TransactionDate
 			).FirstOrDefault();
 		}
-	}
+
+        // dch rkl 11/03/2016 Return Time Tracker Options Table
+        public JT_TimeTrackerOptions GetTimeTrackerOptions()
+        {
+            return _database.Table<JT_TimeTrackerOptions>().FirstOrDefault();
+        }
+    }
 }
 

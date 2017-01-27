@@ -4,6 +4,10 @@ using System.Text;
 
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_ScheduledAppointment.cs
+     * 12/02/2016 DCH Correct misspelling of GetApplicationSettings
+     *********************************************************************************************************/
     public class App_ScheduledAppointment
     {
         private string _salesOrderNumber;
@@ -54,9 +58,21 @@ namespace TechDashboard.Models
             get { return _startTime; }
         }
 
+        // dch rkl 10/12/2016 formatted start time
+        public string StartTimeFormatted
+        {
+            get { return FormattedTime(_startTime); }
+        }
+
         public string EndTime
         {
             get { return _endTime; }
+        }
+
+        // dch rkl 10/12/2016 formatted start time
+        public string EndTimeFormatted
+        {
+            get { return FormattedTime(_endTime); }
         }
 
         public string ActualStartTime
@@ -83,16 +99,50 @@ namespace TechDashboard.Models
         {
             get
             {
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+
                 string sTime = StartTime;
                 if (sTime.Length == 4) { sTime = string.Format("{0}:{1}", sTime.Substring(0, 2), sTime.Substring(2, 2)); }
                 else if (sTime.Length == 3) { sTime = string.Format("0{0}:{1}", sTime.Substring(0, 1), sTime.Substring(1, 2)); }
-                if (int.Parse(sTime.Substring(0, 2)) >= 12) { sTime += " PM"; }
+
+                if (int.Parse(sTime.Substring(0, 2)) >= 12)
+                {
+                    sTime += " PM";
+                    // dch rkl 11/15/2016 consider 24 hour time
+                    if (appSettings.TwentyFourHourTime == false)
+                    {
+                        int iHr = int.Parse(sTime.Substring(0,2));
+                        if (iHr > 12)
+                        {
+                            iHr = iHr - 12;
+                            if (iHr < 10) { sTime =  "0" + iHr.ToString() + sTime.Substring(2,6);  }
+                            else { sTime = iHr.ToString() + sTime.Substring(2, 6); }
+                        }
+                    }
+                }
                 else { sTime += " AM"; }
+
                 string eTime = _endTime;
                 if (eTime.Length == 4) { eTime = string.Format("{0}:{1}", eTime.Substring(0, 2), eTime.Substring(2, 2)); }
                 else if (eTime.Length == 3) { eTime = string.Format("0{0}:{1}", eTime.Substring(0, 1), eTime.Substring(1, 2)); }
-                if (int.Parse(eTime.Substring(0, 2)) >= 12) { eTime += " PM"; }
+
+                if (int.Parse(eTime.Substring(0, 2)) >= 12)
+                {
+                    eTime += " PM";
+                    // dch rkl 11/15/2016 consider 24 hour time
+                    if (appSettings.TwentyFourHourTime == false)
+                    {
+                        int iHr = int.Parse(eTime.Substring(0, 2));
+                        if (iHr > 12)
+                        {
+                            iHr = iHr - 12;
+                            if (iHr < 10) { eTime = "0" + iHr.ToString() + eTime.Substring(2, 6); }
+                            else { eTime = iHr.ToString() + eTime.Substring(2, 6); }
+                        }
+                    }
+                }
                 else { eTime += " AM"; }
+
                 string schdttim = string.Format("{0} - {1} - {2}", ScheduleDate.ToString("MM-dd-yyyy"), sTime, eTime);
                 return schdttim;
             }
@@ -128,9 +178,52 @@ namespace TechDashboard.Models
             return ServiceTicketNumber;
         }
 
+        // dch rkl 10/12/2016 format the time
+        private string FormattedTime(string sTimeIn)
+        {
+            if (sTimeIn == null) { sTimeIn = ""; }
+
+            string sTimeOut = sTimeIn;
+
+            string sHour = "";
+            string sMin = "";
+            string sAMorPM = "";
+            int iHour = 0;
+
+            if (sTimeIn.Length == 4)
+            {
+                sHour = sTimeIn.Substring(0, 2);
+                sMin = sTimeIn.Substring(2, 2);
+            }
+            else if (sTimeIn.Length == 3)
+            {
+                sHour = "0" + sTimeIn.Substring(0, 1);
+                sMin = sTimeIn.Substring(1, 2);
+            }
+
+            int.TryParse(sHour, out iHour);
+            if (iHour > 0)
+            {
+                if (iHour < 12) { sAMorPM = "AM"; }
+                else { sAMorPM = "PM"; }
+
+                App_Settings appSettings = App.Database.GetApplicationSettings();
+                if (appSettings.TwentyFourHourTime == false && iHour > 12)
+                {
+                    iHour = iHour - 12;
+                    sHour = iHour.ToString();
+                    if (sHour.Length == 1) { sHour = "0" + sHour; }
+                }
+
+                sTimeOut = string.Format("{0}:{1} {2}", sHour, sMin, sAMorPM);
+            }
+
+            return sTimeOut;
+        }
+
         public App_ScheduledAppointment(JT_TechnicianScheduleDetail scheduleDetail, SO_SalesOrderHeader salesOrderHeader)
         {
-            _salesOrderNumber = salesOrderHeader.SalesOrderNo;
+            _salesOrderNumber = salesOrderHeader.SalesOrderNo; //salesOrderHeader.SalesOrderNo;
             _workTicketNumber = scheduleDetail.WTNumber;
             _workTicketStep = scheduleDetail.WTStep;
             _scheduleDate = scheduleDetail.ScheduleDate;

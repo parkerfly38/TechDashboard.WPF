@@ -34,6 +34,14 @@ namespace TechDashboard.Data
                                   (wt.WTStep == scheduledAppointment.WorkTicketStep)
                         ).FirstOrDefault();
 
+                    // dch rkl 11/30/2016 If JT_WorkTicket.HdrWTClass is null, populate it from SO_SalesOrderHeader.JT158_WTClass
+                    if (workTicket.HdrWtClass == null)
+                    {
+                        SO_SalesOrderHeader soHeader = _database.Table<SO_SalesOrderHeader>().Where(
+                            soh => (soh.SalesOrderNo == workTicket.SalesOrderNo)).FirstOrDefault();
+                        if (soHeader != null) { workTicket.HdrWtClass = soHeader.JT158_WTClass; }
+                    }
+
                     workTicketStepZero =
                         _database.Table<JT_WorkTicket>().Where(
                             wt => (wt.SalesOrderNo == scheduledAppointment.SalesOrderNumber) &&
@@ -59,6 +67,7 @@ namespace TechDashboard.Data
 					}
 
                     serviceAgreement = GetServiceAgreement(workTicketStepZero);
+                    //serviceAgreement = GetServiceAgreement(workTicket);
 
                     problemCode = _database.Table<JT_ClassificationCode>().Where(
                        pc => (pc.ClassificationCode == workTicket.DtlProblemCode)
@@ -70,10 +79,11 @@ namespace TechDashboard.Data
                 }
             }
 
-            return new App_WorkTicket(workTicket, workTicketStepZero, workTicketClass, 
+            return new App_WorkTicket(workTicket, workTicketStepZero, workTicketClass,
                                       new App_RepairItem(repairItem, equipmentAsset),
                                       serviceAgreement, problemCode, exceptionCode);
         }
+        
 
         public App_WorkTicket GetCurrentWorkTicket()
         {

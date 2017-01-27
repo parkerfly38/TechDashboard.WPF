@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 
 using SQLite;
-// puke... need this?
+// TODO... need this?
 namespace TechDashboard.Models
 {
+    /*********************************************************************************************************
+     * App_CurrentSelectionData.cs
+     * 12/01/2016 DCH Add TODO
+     *********************************************************************************************************/
     public class App_CurrentSelectionData
     {
         [PrimaryKeyAttribute, AutoIncrement]
