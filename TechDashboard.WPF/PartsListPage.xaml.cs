@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TechDashboard.ViewModels;
 using TechDashboard.Models;
+using TechDashboard.Data;
 
 /**************************************************************************************************
  * Page Name    PartsListPage
@@ -27,6 +28,7 @@ using TechDashboard.Models;
  * 11/22/2016   DCH     Move screen layout to designer/XAML.  Format grid to make it more readable.
  * 12/01/2016   DCH     Add find textbox to search parts already on the ticket.
  * 12/04/2016   DCH     Add coverage checkboxes, for display
+ * 02/03/2017   DCH     Capture additional errors with try/catch.
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -184,7 +186,9 @@ namespace TechDashboard.WPF
             }
             catch (Exception ex)
             {
-
+                // dch rkl 02/03/2017 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.PartsListPage.RowSearchCompare");
             }
 
             return bMatch;

@@ -94,7 +94,7 @@
                      HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" GotFocus="textbox_GotFocus" TextChanged="editorHoursWorked_TextChanged"/>
             <ComboBox x:Name="pickerBillable" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" IsEnabled="True" HorizontalAlignment="Left" 
                       DisplayMemberPath="BillableDesc" SelectedValuePath="BillableFlag" Width="120" 
-                      SelectionChanged="pickerBillable_SelectionChanged" />
+                      DropDownClosed="pickerBillable_SelectionChanged" />
             <Label x:Name="labelHoursBilled" Content="Billable Hours" FontWeight="Bold" Foreground="#7F8C8D" Grid.Column="0" Grid.Row="3" />
             <TextBox x:Name="editorHoursBilled" Grid.Column="1" Grid.Row="3" TabIndex="3" Width="75" 
                      HorizontalAlignment="Left" VerticalAlignment="Center" Height="22" GotFocus="textbox_GotFocus"/>

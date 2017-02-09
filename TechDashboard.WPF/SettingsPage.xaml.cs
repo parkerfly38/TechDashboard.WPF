@@ -30,8 +30,9 @@ using System.Net;
  *                      If url is valid, enable the technician number and department;
  * 10/26/2016   DCH     Allow cancel/close of window without forcing save or having error occur.
  * 11/22/2016   DCH     On focus of text field, select all text.
+ * 02/03/2017   DCH     Need more positions for version.
  **************************************************************************************************/
- 
+
 namespace TechDashboard.WPF
 {
     /// <summary>
@@ -92,8 +93,8 @@ namespace TechDashboard.WPF
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
-            decimal versionNo = Convert.ToDecimal(version.Substring(0, 3));
-            lblVersion.Content = "Version " + versionNo.ToString();
+            string versionNo = version.Substring(0, 5); // dch rkl 02/02/2017 Need more positions for version
+            lblVersion.Content = "Version " + versionNo;
 
             // dch rkl 10/12/2016 Do not enable save button until a valid url is entered
             TestIfValidURL(_vm.RestServiceUrl, _vm.IsUsingHttps);
@@ -129,8 +130,8 @@ namespace TechDashboard.WPF
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
-            decimal versionNo = Convert.ToDecimal(version.Substring(0, 3));
-            lblVersion.Content = "Version " + versionNo.ToString();
+            string versionNo = version.Substring(0, 5);  // dch rkl 02/02/3017 Need more positions for version
+            lblVersion.Content = "Version " + versionNo;
 
             // dch rkl 10/12/2016 Do not enable save button until a valid url is entered
             TestIfValidURL(_vm.RestServiceUrl, _vm.IsUsingHttps);

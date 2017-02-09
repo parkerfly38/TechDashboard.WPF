@@ -170,7 +170,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Qty Reqd" Width="60" IsReadOnly="True" Binding="{Binding QuantityReqd, StringFormat=N0}">
+                <DataGridTextColumn Header="Qty Reqd" Width="60" IsReadOnly="True" Binding="{Binding QuantityReqdFormatted}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -188,24 +188,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Unit Cost" Width="65" IsReadOnly="True" Binding="{Binding UnitCost, StringFormat=C3}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="VerticalAlignment" Value="Top" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="FontWeight"  Value="Bold" />
-                            <Setter Property="Foreground"  Value="#FFFFFF" />
-                            <Setter Property="Background"  Value="#3498db" />
-                            <Setter Property="Height" Value="25" />
-                            <Setter Property="VerticalAlignment" Value="Bottom" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Qty Used" Width="60" IsReadOnly="True" Binding="{Binding Quantity, StringFormat=N0}">
+                <DataGridTextColumn Header="Qty Used" Width="60" IsReadOnly="True" Binding="{Binding QuantityFormatted}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -223,7 +206,7 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Unit Price" Width="65" IsReadOnly="True" Binding="{Binding UnitPrice, StringFormat=C2}">
+                <DataGridTextColumn Header="Unit Cost" Width="65" IsReadOnly="True" Binding="{Binding UnitCostFormatted}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -240,7 +223,24 @@
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Extd Price" Width="70" IsReadOnly="True" Binding="{Binding ExtdPrice, StringFormat=C2}"
+                <DataGridTextColumn Header="Unit Price" Width="65" IsReadOnly="True" Binding="{Binding UnitPriceFormatted}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="Bold" />
+                            <Setter Property="Foreground"  Value="#FFFFFF" />
+                            <Setter Property="Background"  Value="#3498db" />
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Extd Price" Width="70" IsReadOnly="True" Binding="{Binding ExtdPriceFormatted}"
                                     CellStyle="{StaticResource CellRightAlign}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">

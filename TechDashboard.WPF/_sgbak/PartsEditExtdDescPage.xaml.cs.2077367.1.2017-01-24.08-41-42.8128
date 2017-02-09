@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using TechDashboard.Data;
+using TechDashboard.Models;
+using TechDashboard.ViewModels;
+
+/**************************************************************************************************
+ * Page Name    PartsEditExtdDescPage
+ * Description: Parts Edit Extended Description Page
+ *-------------------------------------------------------------------------------------------------
+ *   Date       By      Description
+ * ---------- --------- ---------------------------------------------------------------------------
+ * 01/13/2017   DCH     Created
+ **************************************************************************************************/
+
+namespace TechDashboard.WPF
+{
+    /// <summary>
+    /// Interaction logic for PartsEditExtdDescPage.xaml
+    /// </summary>
+    public partial class PartsEditExtdDescPage : UserControl
+    {
+        PartsEditExtdDescPageViewModel _vm;
+        App_WorkTicket _workTicket;
+        App_RepairPart _part;
+        PartsEditPage.PageMode _pageMode;
+        App_ScheduledAppointment _scheduledAppointment;
+
+        public PartsEditExtdDescPage(App_WorkTicket workTicket, App_RepairPart part, PartsEditPage.PageMode pageMode,
+            App_ScheduledAppointment scheduledAppointment)
+        {
+            _workTicket = workTicket;
+            _part = part;
+            _pageMode = pageMode;
+            _scheduledAppointment = scheduledAppointment;
+
+            _vm = new PartsEditExtdDescPageViewModel(part, workTicket);
+
+            InitializeComponent();
+
+            SetPageLayout();
+        }
+
+        protected void SetPageLayout()
+        {
+            labelItemCode.Content = _part.PartItemCode;
+            labelItemCodeDesc.Content = _part.PartItemCodeDescription;
+            if (_part.ItemCodeDesc != null || _part.ItemCodeDesc.Trim().Length == 0)
+            {
+                CI_Item itm = App.Database.GetItemFromDB(_part.PartItemCode);
+                if (itm.ExtendedDescriptionKey != null && itm.ExtendedDescriptionKey > 0)
+                {
+                    CI_ExtendedDescription itmExtdDsc = App.Database.GetExtendedDescription(itm.ExtendedDescriptionKey);
+                }
+            }
+            else
+            {
+                entryExtdDesc.Text = _part.PartItemCodeDescription;
+                App.Current.Properties[""]
+            }
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            // Cancel - return to parts edit page
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new PartsEditPage(_workTicket, _part, _pageMode, _scheduledAppointment);          
+        }
+
+        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        {
+            // OK - Save the Description
+            _vm.UpdateExtdDesc(entryExtdDesc.Text);
+
+            // Return to Parts Detail
+            ContentControl contentArea = (ContentControl)this.Parent;
+            contentArea.Content = new PartsEditPage(_workTicket, _part, _pageMode, _scheduledAppointment);
+        }
+    }
+}

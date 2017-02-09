@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\obj\Debug\
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\obj\Debug\
 TechDashboard.WPF
 none
 false
 DEBUG;TRACE
-C:\Users\bkresge\Documents\Visual Studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\App.xaml
+C:\Users\bkresge\documents\visual studio 2015\Projects\TechDashboard.WPF\TechDashboard.WPF\App.xaml
 26-1349736328
-2-1351870966
+2458321573
 311212112746
-81-627468588
+821227349401
 ClockInPage.xaml;ClockOutPage.xaml;CustomerDetailsPage.xaml;CustomerMapPage.xaml;ExpenseListPage.xaml;ExpensesEditPage.xaml;HistoryPage.xaml;HistoryPageDetail.xaml;MainWindow.xaml;MiscellaneousTimePage.xaml;NotesPage.xaml;PartsAddPage.xaml;PartsEditExtdDescPage.xaml;PartsEditLotSerNoPage.xaml;PartsEditPage.xaml;PartsListPage.xaml;Progress.xaml;ScheduleDetailPage.xaml;SchedulePage.xaml;SettingsPage.xaml;SmsContentPage.xaml;SyncDetails.xaml;SyncPage.xaml;TechnicianListPage.xaml;TechnicianPage.xaml;TicketDetailsPage.xaml;
 
 False

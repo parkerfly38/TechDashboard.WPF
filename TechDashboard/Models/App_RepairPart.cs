@@ -12,6 +12,7 @@ namespace TechDashboard.Models
      * 01/13/2017 DCH Add Extended Description
      * 01/13/2017 DCH Part Description should come from sales order
      * 01/23/2017 DCH Capture SO Line Key
+     * 02/03/2017 DCH Use the sales unit of measure instead of the standard unit of measure
      *********************************************************************************************************/
     public class App_RepairPart
     {
@@ -38,6 +39,13 @@ namespace TechDashboard.Models
         private double _quantityShipped;        // dch rkl 12/05/2016 add qty shipped
         private string _itemCodeDesc;       // dch rkl 01/13/2017 Add this for Extended Description
         private string _soLineKey;             // dch rkl 01/23/2017 Save SOLineKey
+
+        CI_Options _ciOptions;
+
+        string quantityFormatString;
+        string umFormatString;
+        string costFormatString;
+        string priceFormatString;
 
         #region Public Properties
 
@@ -103,6 +111,11 @@ namespace TechDashboard.Models
             set { _quantity = value; }
         }
 
+        public string QuantityFormatted
+        {
+            get { return string.Format(quantityFormatString, _quantity); }
+        }
+
         /// <summary>
         /// Unit Cost
         /// </summary>
@@ -110,6 +123,11 @@ namespace TechDashboard.Models
         {
             get { return _unitCost; }
             set { _unitCost = value; }  // dch rkl 11/21/2016 this is editable
+        }
+
+        public string UnitCostFormatted
+        {
+            get { return string.Format(costFormatString, _unitCost); }
         }
 
         /// <summary>
@@ -121,6 +139,11 @@ namespace TechDashboard.Models
             set { _unitPrice = value; }
         }
 
+        public string UnitPriceFormatted
+        {
+            get { return string.Format(priceFormatString, _unitPrice); }
+        }
+
         /// <summary>
         /// Extended Unit Price
         /// </summary>
@@ -129,6 +152,12 @@ namespace TechDashboard.Models
             get { return Math.Round(_unitPrice * _quantity, 2, MidpointRounding.AwayFromZero); }
 
         }
+
+        public string ExtdPriceFormatted
+        {
+            get { return string.Format(priceFormatString, ExtdPrice); }
+        }
+
         /// <summary>
         /// Unit Of Measure 
         /// </summary>
@@ -236,11 +265,21 @@ namespace TechDashboard.Models
             set { _quantityReqd = value; }
         }
 
+        public string QuantityReqdFormatted
+        {
+            get { return string.Format(quantityFormatString, _quantityReqd); }
+        }
+
         // dch rkl 12/05/2016 add qty shipped
         public double QuantityShipped
         {
             get { return _quantityShipped; }
             set { _quantityShipped = value; }
+        }
+
+        public string QuantityShippedFormatted
+        {
+            get { return string.Format(quantityFormatString, _quantityShipped); }
         }
 
         /// <summary>
@@ -264,10 +303,22 @@ namespace TechDashboard.Models
         public App_RepairPart(JT_ServiceEquipmentParts part, App_RepairItem TODO)
         {
             // stub to stop errors
+
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
         }
 
         public App_RepairPart(JT_ServiceEquipmentParts part, App_WorkTicket workTicket, CI_Item item)
         {
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+
             _workTicket = workTicket;
             _id = 0;
             _parentItemCode = workTicket.DtlRepairItemCode;
@@ -282,7 +333,11 @@ namespace TechDashboard.Models
             //_unitCost = (double)item.StandardUnitCost;
 
             _unitPrice = (double)item.StandardUnitPrice;
-            _unitOfMeasure = item.StandardUnitOfMeasure;
+
+            // dch rkl 02/03/2017 Use the sales unit of measure instead of the standard unit of measure
+            //_unitOfMeasure = item.StandardUnitOfMeasure;
+            _unitOfMeasure = item.SalesUnitOfMeasure;
+
             _comment = "";
             _isChargeable = part.IsChargeable;
             _isPrintable = part.IsPrintable;
@@ -311,6 +366,12 @@ namespace TechDashboard.Models
 
     public App_RepairPart(JT_EquipmentAsset part, App_WorkTicket workTicket, CI_Item item)
         {
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+
             _workTicket = workTicket;
             _id = 0;
             _parentItemCode = workTicket.DtlRepairItemCode;
@@ -325,7 +386,11 @@ namespace TechDashboard.Models
             //_unitCost = (double)item.StandardUnitCost;
 
             _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
-            _unitOfMeasure = item.StandardUnitOfMeasure;
+
+            // dch rkl 02/03/2017 Use the sales unit of measure instead of the standard unit of measure
+            //_unitOfMeasure = item.StandardUnitOfMeasure;
+            _unitOfMeasure = item.SalesUnitOfMeasure;
+
             _comment = string.Empty;
             _isChargeable = SetIsChargeable();
             _isPrintable = (_isChargeable ? true : false);
@@ -358,6 +423,13 @@ namespace TechDashboard.Models
         /// <param name="workTicket">The App_WorkTicket object associated with this part.</param>
         public App_RepairPart(JT_TransactionImportDetail importDetail, App_WorkTicket workTicket)
         {
+
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+
             _workTicket = workTicket;
 
             _id = importDetail.ID;
@@ -410,6 +482,12 @@ namespace TechDashboard.Models
 
         public App_RepairPart(App_Item item, App_WorkTicket workTicket)
         {
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+
             _workTicket = workTicket;
 
             _id = 0;
@@ -425,7 +503,11 @@ namespace TechDashboard.Models
             //_unitCost = (double)item.StandardUnitCost;
 
             _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
-            _unitOfMeasure = item.StandardUnitOfMeasure;
+
+            // dch rkl 02/03/2017 Per Jeanne, Use the Sales Unit of Measure, not the Standard Unit of Measure
+            //_unitOfMeasure = item.StandardUnitOfMeasure;
+            _unitOfMeasure = item.SalesUnitOfMeasure;
+
             _comment = string.Empty;
             _isChargeable = SetIsChargeable();
             _isPrintable = (_isChargeable ? true : false);
@@ -454,6 +536,12 @@ namespace TechDashboard.Models
 
         public App_RepairPart(CI_Item item, App_WorkTicket workTicket)
         {
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+
             _workTicket = workTicket;
 
             _id = 0;
@@ -471,7 +559,10 @@ namespace TechDashboard.Models
                 //_unitCost = (double)item.StandardUnitCost;
 
                 _unitPrice = Convert.ToDouble(item.StandardUnitPrice);
-                _unitOfMeasure = item.StandardUnitOfMeasure;
+
+                // dch rkl 02/03/2017 Per Jeanne, Use the Sales Unit of Measure, not the Standard Unit of Measure
+                //_unitOfMeasure = item.StandardUnitOfMeasure;
+                _unitOfMeasure = item.SalesUnitOfMeasure;
 
                 // dch rkl 11/23/2016 Add Item Type
                 _itemType = item.ItemType;

@@ -38,7 +38,7 @@ namespace TechDashboard.Data
         {
             lock (_locker)
             {
-                return _database.Table<JT_MiscellaneousCodes>().Where(code => (code.RecordType == "M") && (code.CodeType == codeType)).OrderBy(code => code.MiscellaneousCode).ToList();
+                return _database.Table<JT_MiscellaneousCodes>().Where(code => (code.RecordType == "M") && (code.MiscellaneousCode == codeType)).OrderBy(code => code.MiscellaneousCode).ToList();
             }
         }
 

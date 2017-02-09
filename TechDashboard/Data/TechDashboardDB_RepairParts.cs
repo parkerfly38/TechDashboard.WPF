@@ -80,6 +80,7 @@ namespace TechDashboard.Data
                             newRepairPart.UnitPrice = (double)detail.UnitPrice;
                             newRepairPart.UnitCost = (double)detail.UnitCost;
                             newRepairPart.QuantityReqd = detail.QuantityOrdered;
+                            newRepairPart.Quantity = servicePart.Quantity;
 
                             // dch rkl 01/20/2017 If Warehouse on Sales Order, use that
                             if (detail.WarehouseCode != null)

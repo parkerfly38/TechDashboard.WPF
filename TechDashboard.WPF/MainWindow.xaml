@@ -60,7 +60,7 @@
             </StackPanel>
         </DockPanel>
         <DockPanel Margin="156,0,0,0" Grid.ColumnSpan="2" LastChildFill="True">
-            <ContentControl x:Name="contentArea" Content="" Width="Auto" Background="White" Focusable="False" IsTabStop="False"/>
+            <ContentControl x:Name="contentArea" Content="" Width="Auto" Background="White" Focusable="False" IsTabStop="False" ScrollViewer.CanContentScroll="True" />
         </DockPanel>
 
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,12 @@ using TechDashboard.ViewModels;
  *                      Display the service ticket number at the top of the page;
  * 11/21/2016   DCH     Category can be blank
  * 11/22/2016   DCH     Select all text in textbox on Focus
+ * 02/01/2017   BK      Set CI_Options
+ * 02/02/2017   BK      Disable fields unchcked charge customer
+ * 02/02/2017   BK      Added ability to start new expense after successful add
+ * 02/02/2017   BK      Force markup to be decimal
+ * 02/06/2017   BK      Change unit of measure to combobox
+ * 02/06/2017   BK      Change to go back to ExpenseListPage with work ticket preselected
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -41,7 +48,8 @@ namespace TechDashboard.WPF
         ComboBox _pickerCategory;
         ComboBox _pickerChargeCode;
         TextBox _entryQuantity;
-        TextBox _entryUnitOfMeasure;
+        //change uom to combobox
+        ComboBox _entryUnitOfMeasure;
         TextBox _entryUnitCost;
         TextBox _entryTotalCost;
         TextBox _entryUnitPrice;
@@ -55,8 +63,12 @@ namespace TechDashboard.WPF
         Button _buttonDelete;         // dch rkl 10/14/2016 When updating, add option to delete expense, only if it is in the JT_TransactionImportDetail table
         Label _labelTitle;
 
+        CI_Options _ciOptions;
+
         // dch rkl 10/12/2016
         string workticket = "";
+
+        App_WorkTicket _workticket = null;
 
         public ExpensesEditPage(App_Expense expense)
         {
@@ -74,6 +86,7 @@ namespace TechDashboard.WPF
         {
             // dch rkl 10/12/2016 
             workticket = workTicket.FormattedTicketNumber;
+            _workticket = workTicket;
 
             //_expense = new App_Expense();
             _vm = new ExpensesEditPageViewModel(workTicket);
@@ -185,9 +198,13 @@ namespace TechDashboard.WPF
                 Foreground = asbestos
             };
 
-            _entryUnitOfMeasure = new TextBox();
-            _entryUnitOfMeasure.MaxLength = 4;
-            _entryUnitOfMeasure.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
+            _entryUnitOfMeasure = new ComboBox();
+            //_entryUnitOfMeasure.MaxLength = 4;
+            //_entryUnitOfMeasure.GotFocus += textbox_GotFocus;        // dch rkl 11/22/2016 select full text on focus
+            _entryUnitOfMeasure.ItemsSource = _vm.UnitOfMeasureList;
+            _entryUnitOfMeasure.DisplayMemberPath = "UnitOfMeasure";
+            _entryUnitOfMeasure.SelectedValuePath = "UnitOfMeasure";
+
 
             Label labelUnitCost = new Label()
             {
@@ -222,12 +239,23 @@ namespace TechDashboard.WPF
             //_switchIsReimbursable.IsToggled = _vm.ExpenseIsReimbursable;
 
             _switchIsChargeCustomer = new CheckBox();
-
+            _switchIsChargeCustomer.Click += _switchIsChargeCustomer_Checked;
+           
 
             _editorDescription = new TextBox();
             _editorDescription.AcceptsReturn = true;
             _editorDescription.TextWrapping = TextWrapping.WrapWithOverflow;
             //_editorDescription.Text = _vm.ExpenseBillingDescription;
+            if (_switchIsChargeCustomer.IsChecked == false)
+            {
+                _entryMarkupPercentage.IsEnabled = false;
+                _editorDescription.IsEnabled = false;
+                _entryTotalPrice.Text = "0.00";
+            } else
+            {
+                _entryMarkupPercentage.IsEnabled = true;
+                _editorDescription.IsEnabled = true;
+            }
 
             _buttonAddEditExpense = new Button();
             _buttonAddEditExpense.Click += ButtonAddEditExpense_Click;
@@ -274,6 +302,14 @@ namespace TechDashboard.WPF
             {
                 addEditExpenseText.Text = "UPDATE";
 
+                //u/m addition
+                try { _entryUnitOfMeasure.SelectedValue = _vm.ExpenseUnitOfMeasure; }
+                catch (Exception ex) { }
+                /*if (_entryUnitOfMeasure.SelectedIndex == -1 && _vm.PartToEdit.PartItemCode.Trim().Substring(0, 1) == "*" || _vm.PartToEdit.ItemType == "4" || _vm.PartToEdit.ItemType == "5")
+                {
+                    AddItemToUMList(_vm.PartToEdit.UnitOfMeasure);
+                }*/
+
                 for (int i = 0; i < _pickerCategory.Items.Count; i++)
                 {
                     // dch rkl 10/14/2016 Show Code + Description in Expense Category Dropdown BEGIN
@@ -303,11 +339,17 @@ namespace TechDashboard.WPF
                         break;
                     }
                 }
+                // get our ci_options first
+                _ciOptions = App.Database.GetCIOptions();
+                string quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+                string umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+                string costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+                string priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
 
-                _entryQuantity.Text = _vm.ExpenseQuantity.ToString();
+                _entryQuantity.Text = string.Format(quantityFormatString, _vm.ExpenseQuantity); //_vm.ExpenseQuantity.ToString();
                 _entryUnitOfMeasure.Text = _vm.ExpenseUnitOfMeasure;
-                _entryUnitCost.Text = _vm.ExpenseUnitCost.ToString();
-                _entryUnitPrice.Text = _vm.ExpenseUnitPrice.ToString();
+                _entryUnitCost.Text = string.Format(costFormatString, _vm.ExpenseUnitCost); // _vm.ExpenseUnitCost.ToString();
+                _entryUnitPrice.Text = string.Format(priceFormatString, _vm.ExpenseUnitPrice); // _vm.ExpenseUnitPrice.ToString();
                 _switchIsReimbursable.IsChecked = _vm.ExpenseIsReimbursable;
                 _editorDescription.Text = _vm.ExpenseBillingDescription;
             }
@@ -559,11 +601,27 @@ namespace TechDashboard.WPF
                 }
             });
         }
+        
+
+        private void _switchIsChargeCustomer_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_switchIsChargeCustomer.IsChecked == false)
+            {
+                _entryMarkupPercentage.IsEnabled = false;
+                _editorDescription.IsEnabled = false;
+                _entryTotalPrice.Text = "0.00";
+            } else
+            {
+                _entryMarkupPercentage.IsEnabled = true;
+                _editorDescription.IsEnabled = true;
+            }
+        }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             ContentControl contentArea = (ContentControl)this.Parent;
-            contentArea.Content = new ExpensesListPage();
+            //bk return to preselected list
+            contentArea.Content = new ExpensesListPage(_workticket);
         }
 
         // dch rkl 10/14/2016 Delete - Remove Transaction from JT_TransactionImportDetail Table
@@ -590,6 +648,16 @@ namespace TechDashboard.WPF
             //    var result = MessageBox.Show("Please entery a valid category.", "Category", MessageBoxButton.OK);
             //    return;
             //}
+
+            try
+            {
+                decimal markup = decimal.Parse(_entryMarkupPercentage.Text);
+            }
+            catch
+            {
+                var result = MessageBox.Show("Please enter a valid markup percentage", "Markup Percent", MessageBoxButton.OK);
+                return;
+            }
 
             try
             {
@@ -622,6 +690,11 @@ namespace TechDashboard.WPF
                 return;
             }
 
+            if (_pickerChargeCode.SelectedIndex == -1)
+            {
+                var result = MessageBox.Show("Please select a valid charge code.", "Charge Code", MessageBoxButton.OK);
+                return;
+            }
 
             _vm.ExpenseDate = (DateTime)_datePickerExpenseDate.SelectedDate;
 
@@ -652,6 +725,15 @@ namespace TechDashboard.WPF
             _vm.SaveExpenseItem();
 
             var endresult = MessageBox.Show("Expense saved.", "Expense", MessageBoxButton.OK);
+
+            ContentControl contentArea = (ContentControl)this.Parent;
+            if (_workticket != null)
+            {
+                contentArea.Content = new ExpensesEditPage(_workticket);
+            } else
+            {
+                contentArea.Content = new ExpensesListPage();
+            }
         }
 
         private void UpdateTotalPrice()

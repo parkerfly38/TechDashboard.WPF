@@ -172,7 +172,7 @@ namespace TechDashboard.Data
         public void ClockOut(App_Technician technician, App_WorkTicket workTicket,
                              DateTime stopDateTime, JT_TechnicianStatus technicianStatus, JT_MiscellaneousCodes serviceTicketStatusCode,
                              string activityCode, string deptWorked, JT_EarningsCode earningsCode, double hoursBilled, double meterReading,
-                             string workPerformedText, string svcAgmtContractCode)
+                             string workPerformedText, string svcAgmtContractCode, string clockoutDate)
         {
             int rows = 0;
             DateTime startDateTime;

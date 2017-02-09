@@ -10,10 +10,17 @@ namespace TechDashboard.ViewModels
     /*********************************************************************************************************
      * PartsListPageViewModel.cs
      * 12/07/2016 DCH Add error handling
+     * 02/03/2017 DCH Add try/catch on page initialization.
      *********************************************************************************************************/
     public class PartsListPageViewModel
     {
         #region properties
+
+        CI_Options _ciOptions;
+        public string quantityFormatString { get; set; }
+        public string umFormatString { get; set; }
+        public string costFormatString { get; set; }
+        public string priceFormatString { get; set; }
 
         protected App_WorkTicket _workTicket;
         public App_WorkTicket WorkTicket
@@ -37,9 +44,16 @@ namespace TechDashboard.ViewModels
 
         public PartsListPageViewModel(App_WorkTicket workTicket)
         {
-            // dch rkl 12/07/2016 catch exception
+            // dch rkl 02/06/2017 Add try/catch here
             try
             {
+                _ciOptions = App.Database.GetCIOptions();
+                quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+                umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+                costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+                priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
+               // dch rkl 12/07/2016 catch exception
+
                 _workTicket = workTicket;
                 _partsList = App.Database.RetrievePartsListFromWorkTicket(workTicket);
                 _observablePartsList = new ObservableCollection<App_RepairPart>();

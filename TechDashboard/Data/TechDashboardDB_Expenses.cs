@@ -263,7 +263,9 @@ namespace TechDashboard.Data
 
             // dch rkl 12/09/2016 per Chris, use ItemCodeDesc
             //txnImportDetail.BillingDescription = expense.BillingDescription;
-            txnImportDetail.ItemCodeDesc = expense.BillingDescription;
+            //txnImportDetail.ItemCodeDesc = expense.BillingDescription;
+            //per Jeanne, use comment
+            txnImportDetail.CommentText = expense.BillingDescription;
 
             txnImportDetail.ChargePart = (expense.IsChargeableToCustomer ? "Y" : "N");
 

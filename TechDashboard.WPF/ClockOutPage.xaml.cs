@@ -50,6 +50,9 @@ using Xceed.Wpf.Toolkit;
  * 01/23/2017   DCH     If Time Tracker Options is "Y", they enter start/end time.  If "N", they
  *                      enter hours.
  * 01/23/2017   DCH     When clocking out, make sure the service agreement gets captured.
+ * 01/27/2017   BK      Adding MinHourlyCostIncrement
+ * 02/01/2017   BK      Adding CI Options formatting
+ * 02/03/2017   DCH     Move where the hours worked is captured, so it always captures > 24 hours.
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -68,6 +71,8 @@ namespace TechDashboard.WPF
 
         // dch rkl 01/23/2017 If Time Tracker Options is "Y", they enter start / end time.If "N", they enter hours.
         string _captureTimeInTimeTracker;
+        decimal _MinHourlyCostIncrement;
+        CI_Options _ciOptions;
 
         public ClockOutPage()
         {
@@ -81,6 +86,8 @@ namespace TechDashboard.WPF
             InitializeComponent();
 
             _vm = new ClockOutPageViewModel(workTicket);
+
+            _ciOptions = App.Database.GetCIOptions();
 
             // dch rkl 10/26/2016 return to ticket details instead of scheduled ticket list on cancel
             _scheduleDetail = scheduleDetail;
@@ -166,6 +173,17 @@ namespace TechDashboard.WPF
                 textDepartTime.Text = DateTime.Now.ToString("hh:mm tt");
             }
 
+            // dch rkl 01/23/2017 If Time Tracker Options is "Y", they enter start / end time.If "N", they enter hours. BEGIN
+            // bk rkl 02/01/2017 moving north of sethoursbilled call
+            _captureTimeInTimeTracker = "N";
+            _MinHourlyCostIncrement = 0;
+            JT_TimeTrackerOptions tto = App.Database.GetTimeTrackerOptions();
+            if (tto != null && tto.CaptureTimeInTimeTracker != null)
+            {
+                _captureTimeInTimeTracker = tto.CaptureTimeInTimeTracker;
+                _MinHourlyCostIncrement = tto.MinHourlyCostIncrement;
+                if (_captureTimeInTimeTracker == "O") { _captureTimeInTimeTracker = "Y"; }
+            }
             // Set Hours Billed
             if (textStartTime.Text != null && textDepartTime.Text != null)
             {
@@ -245,14 +263,7 @@ namespace TechDashboard.WPF
             // Work Performed
             editorWorkPerformed.MaxHeight = editorWorkPerformed.MinHeight;
 
-            // dch rkl 01/23/2017 If Time Tracker Options is "Y", they enter start / end time.If "N", they enter hours. BEGIN
-            _captureTimeInTimeTracker = "N";
-            JT_TimeTrackerOptions tto = App.Database.GetTimeTrackerOptions();
-            if (tto != null && tto.CaptureTimeInTimeTracker != null)
-            {
-                _captureTimeInTimeTracker = tto.CaptureTimeInTimeTracker;
-                if (_captureTimeInTimeTracker == "O") { _captureTimeInTimeTracker = "Y"; }
-            }
+            
             if (_captureTimeInTimeTracker == "Y")
             {
                 // Enter start/end time
@@ -320,8 +331,16 @@ namespace TechDashboard.WPF
                 ts2 = new TimeSpan(dtEnd.Hour, dtEnd.Minute, 0);
                 dtEnd = dtEndDt + ts2;
 
+                // bk need to round based off _MinHourlyCostIncrement
                 editorHoursWorked.Text = Math.Round(dtEnd.Subtract(dtStart).TotalHours, 2).ToString();
-                editorHoursBilled.Text = editorHoursWorked.Text;
+                editorHoursWorked.Text = (Math.Ceiling(dtEnd.Subtract(dtStart).TotalHours / (double)_MinHourlyCostIncrement) * (double)_MinHourlyCostIncrement).ToString();
+                if (pickerBillable.SelectedValue == "N")
+                {
+                    editorHoursBilled.Text = "0"; 
+                }
+                else {
+                    editorHoursBilled.Text = editorHoursWorked.Text;
+                }
             }
         }
 
@@ -393,6 +412,10 @@ namespace TechDashboard.WPF
                     if (result == MessageBoxResult.OK)
                         return;
                 }
+
+                // dch rkl 02/03/2017 Capture hours worked, for validation
+                if (editorHoursWorked != null) { double.TryParse(editorHoursWorked.Text, out hoursWorked); }
+
             }
             else
             {
@@ -447,9 +470,13 @@ namespace TechDashboard.WPF
             // dch rkl 01/23/2017 captureTimeInTimeTracker == "Y", date and time must be entered            
             if (_captureTimeInTimeTracker == "Y")
             {
+                // dch rkl 02/03/2017 use arrive date
+                //_vm.ClockOut(dtDepart.TimeOfDay, selectedTechnicianStatus, selectedTicketStatus, selectedActivityCode,
+                //    pickerDepartment.SelectedValue.ToString(), selectedEarningsCode, hoursBilled, meterReading, editorWorkPerformed.Text,
+                //    textEndDate.Text, _captureTimeInTimeTracker, hoursWorked, _vm.WorkTicket.ServiceAgreement.ServiceAgreementNumber);
                 _vm.ClockOut(dtDepart.TimeOfDay, selectedTechnicianStatus, selectedTicketStatus, selectedActivityCode,
                     pickerDepartment.SelectedValue.ToString(), selectedEarningsCode, hoursBilled, meterReading, editorWorkPerformed.Text,
-                    textEndDate.Text, _captureTimeInTimeTracker, hoursWorked, _vm.WorkTicket.ServiceAgreement.ServiceAgreementNumber);
+                    textStartDate.Text, _captureTimeInTimeTracker, hoursWorked, _vm.WorkTicket.ServiceAgreement.ServiceAgreementNumber);
             }
             else
             {
@@ -479,7 +506,13 @@ namespace TechDashboard.WPF
                     if (DateTime.TryParse(textStartTime.Text, out dtArrive) && DateTime.TryParse(textDepartTime.Text, out dtDepart))
                     {
                         editorHoursWorked.Text = Math.Round((dtDepart.TimeOfDay - dtArrive.TimeOfDay).TotalHours, 2).ToString();
-                        editorHoursBilled.Text = editorHoursWorked.Text;
+                        if (pickerBillable.SelectedValue == "N")
+                        {
+                            editorHoursBilled.Text = "0";
+                        }
+                        else {
+                            editorHoursBilled.Text = editorHoursWorked.Text;
+                        }
                     }
                 }
                 //_editorHoursBilled.Text = Math.Round((((DateTime)_pickerDepartTime.Value).TimeOfDay - ((DateTime)_pickerStartTime.Value).TimeOfDay).TotalHours, 2).ToString();
@@ -491,7 +524,7 @@ namespace TechDashboard.WPF
         // dch rkl 01/23/2017 If hours worked manually changed... BEGIN
         private void editorHoursWorked_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_captureTimeInTimeTracker == "N")
+            if (_captureTimeInTimeTracker == "N" && pickerBillable.SelectedValue != "N")
             {
                 editorHoursBilled.Text = editorHoursWorked.Text;
             }
@@ -707,10 +740,22 @@ namespace TechDashboard.WPF
         }
 
         // dch rkl 12/02/2016 Billable Flag Changed
-        private void pickerBillable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void pickerBillable_SelectionChanged(object sender, EventArgs e)
         {
             // Re-calculate billing rates and Billing Amount
             SetRefRate();
+            var billable = (ComboBox)sender;
+
+            // if not do not bill, disable and set BillableHours to 0
+            if (billable.SelectedValue == "N")
+            {
+                editorHoursBilled.Text = "0";
+                editorHoursBilled.IsEnabled = false;
+            } else
+            {
+                editorHoursBilled.Text = editorHoursWorked.Text;
+                editorHoursBilled.IsEnabled = true;
+            }
         }
 
         // dch rkl 12/02/2016 Set Billable/Non-Billable Flag

@@ -36,7 +36,7 @@
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid x:Name="gridMain">
+    <Grid x:Name="gridMain" ScrollViewer.VerticalScrollBarVisibility="Auto">
             
     </Grid>
 </UserControl>

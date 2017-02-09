@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using TechDashboard.Data;
@@ -156,7 +157,7 @@ namespace TechDashboard.ViewModels
             List<App_ScheduledAppointment> lsAppts = new List<App_ScheduledAppointment>();
             try
             {
-                lsAppts = App.Database.GetScheduledAppointments();
+                lsAppts = App.Database.GetScheduledAppointmentsNoDupes();
             }
             catch (Exception ex)
             {

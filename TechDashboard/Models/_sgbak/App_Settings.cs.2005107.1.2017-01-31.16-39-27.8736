@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using TechDashboard.Data;
+
+using Rkl.Erp.Sage.Sage100.TableObjects;
+
+using SQLite;
+
+namespace TechDashboard.Models
+{
+    public class App_Settings
+    {
+        private string _loggedintechno = "";
+        private string _loggedintechdeptno = "";
+
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; }
+
+        public bool IsUsingHttps { get; set; }
+
+        public ConnectionType ErpConnectionType { get; set; }
+
+        public string SDataUrl { get; set; }
+
+        public string RestServiceUrl { get; set; }
+
+        public string SDataUserId { get; set; }
+
+        public string SDataPassword { get; set; }
+
+        public int ScheduleDaysBefore { get; set; }
+
+        public int ScheduleDaysAfter { get; set; }
+
+        public bool TwentyFourHourTime { get; set; }
+
+        public string DbVersion { get; set; }
+
+        public string LoggedInTechnicianNo {
+            get { return _loggedintechno; }
+            set { _loggedintechno = value; }
+        }
+
+        public string LoggedInTechnicianDeptNo {
+            get { return _loggedintechdeptno; }
+            set { _loggedintechdeptno = value; }
+        }
+
+        public string DeviceName { get; set; }
+
+        public string DeviceID { get; set; }
+
+        public string LastSyncDate { get; set; }
+        
+
+        public App_Settings()
+        {
+            
+        }
+    }
+}

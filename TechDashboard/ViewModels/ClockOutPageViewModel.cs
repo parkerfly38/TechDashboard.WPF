@@ -16,6 +16,7 @@ namespace TechDashboard.ViewModels
      * 01/23/2017 DCH If Time Tracker Options is "Y", they enter start/end time.  If "N", they
      *                enter hours.
      * 01/23/2017 DCH When clocking out, make sure the service agreement gets captured.
+     * 02/03/2017 DCH When clocking out over two days, use the start (clock-in) date as the tran date.
      *********************************************************************************************************/
     public class ClockOutPageViewModel : INotifyPropertyChanged
     {
@@ -236,8 +237,12 @@ namespace TechDashboard.ViewModels
 
                     clockOutTime = clockOutTime.Add(departTime);
 
-                    App.Database.ClockOut(App.CurrentTechnician, _workTicket, clockOutTime, technicianStatus, serviceTicketStatus, 
-                        activityCode.ActivityCode, departmentWorked, earningsCode, hoursBilled, meterReading, workPerformedText, svcAgmtContractCode);
+                    // dch rkl 02/03/2017 Include clockOutDate
+                    //App.Database.ClockOut(App.CurrentTechnician, _workTicket, clockOutTime, technicianStatus, serviceTicketStatus, 
+                    //    activityCode.ActivityCode, departmentWorked, earningsCode, hoursBilled, meterReading, workPerformedText, svcAgmtContractCode);
+                    App.Database.ClockOut(App.CurrentTechnician, _workTicket, clockOutTime, technicianStatus, serviceTicketStatus,
+                        activityCode.ActivityCode, departmentWorked, earningsCode, hoursBilled, meterReading, workPerformedText, 
+                        svcAgmtContractCode, clockOutDate);
                 }
                 else
                 {

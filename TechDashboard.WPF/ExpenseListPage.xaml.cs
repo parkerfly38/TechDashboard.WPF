@@ -24,6 +24,7 @@ using TechDashboard.ViewModels;
  * 10/12/2016   DCH     Change the description to a label instead of a textbox, since this is not
  *                      an input/edit screen
  * 10/26/2016   DCH     Standardize page font sizes, colors and buttons and alignment of data, labels
+ * 02/06/2017   BK      Making sure expense extd cost shows
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -125,19 +126,38 @@ namespace TechDashboard.WPF
                 ItemTemplate = (DataTemplate)this.Resources["ExpenseDataTemplate"]
             };
             _listViewExpenses.DataContext = _vm.ExpensesList;
-            _listViewExpenses.SelectionChanged += _listViewExpenses_SelectionChanged; ;
+            _listViewExpenses.SelectionChanged += _listViewExpenses_SelectionChanged;
 
+            _listViewExpenses.VerticalAlignment = VerticalAlignment.Stretch;
 
-            gridMain.Children.Add(new StackPanel()
+            gridMain.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(80, GridUnitType.Pixel), MaxHeight = 80});
+            gridMain.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(40, GridUnitType.Pixel), MaxHeight = 40 });
+            gridMain.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+            gridMain.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(50, GridUnitType.Pixel), MaxHeight = 50 });
+
+            gridMain.VerticalAlignment = VerticalAlignment.Top;
+
+            Grid.SetRow(titleLayout, 0);
+            gridMain.Children.Add(titleLayout);
+            Grid.SetRow(_pickerScheduledAppointment, 1);
+            gridMain.Children.Add(_pickerScheduledAppointment);
+            Grid.SetRow(_listViewExpenses,2);
+            gridMain.Children.Add(_listViewExpenses);
+            Grid.SetRow(buttonAddExpense, 3);
+            gridMain.Children.Add(buttonAddExpense);
+
+            /*gridMain.Children.Add(new StackPanel()
             {
-                //Padding = 30,
+                CanVerticallyScroll = true,
+                Margin = new Thickness(0),
+                VerticalAlignment = VerticalAlignment.Stretch,
                 Children = {
                     titleLayout,
                     _pickerScheduledAppointment,
-                    _listViewExpenses,
+                   _listViewExpenses,
                     buttonAddExpense
                 }
-            });
+            });*/
         }
 
         private void _listViewExpenses_SelectionChanged(object sender, SelectionChangedEventArgs e)

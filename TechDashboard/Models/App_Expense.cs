@@ -11,6 +11,7 @@ namespace TechDashboard.Models
     /*********************************************************************************************************
      * App_Expense.cs
      * 12/01/2016 DCH Add TODO
+     * 02/07/2017 BK  Adding ExtdPrice
      *********************************************************************************************************/
     public class App_Expense : INotifyPropertyChanged
     {
@@ -116,7 +117,10 @@ namespace TechDashboard.Models
             }
         }
 
-
+        public double ExtdPrice
+        {
+            get { return _unitCost * _quantity; }
+        }
 
 
         public App_Expense(JT_TransactionImportDetail importDetail, App_WorkTicket workTicket)

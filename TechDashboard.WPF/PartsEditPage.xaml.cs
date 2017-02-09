@@ -48,6 +48,9 @@ using TechDashboard.ViewModels;
  * 01/23/2017   DCH     If SO_SalesOrderDetail.JT158_WTBillFlag is set to "R" or "B", do not allow 
  *                      edit of the part.
  * 01/25/2017   BK      Allow ItemCodeDesc to be editable
+ * 01/27/2017   BK      Forcing CI_Options rules
+ * 02/03/2017   DCH     Do not allow existing Sales Order parts to be deleted (i.e. SOLineKey > 0)
+ *                      Set quantity required to quantity entered.
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -83,6 +86,12 @@ namespace TechDashboard.WPF
         PartsEditPageViewModel _vm;
         App_ScheduledAppointment _scheduledAppointment;
         App_RepairPart _part;           // dch rkl 12/05/2016
+
+        CI_Options _ciOptions;
+        string quantityFormatString;
+        string umFormatString;
+        string costFormatString;
+        string priceFormatString;
 
         PageMode _pageMode;
 
@@ -125,6 +134,12 @@ namespace TechDashboard.WPF
                     _labelTitle.Content = "ADD/EDIT PART";
                     break;
             }
+            // get our ci_options first
+            _ciOptions = App.Database.GetCIOptions();
+            quantityFormatString = String.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInQty, "}");
+            umFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInUM, "}");
+            costFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInCost, "}");
+            priceFormatString = string.Concat("{0:F", _ciOptions.NumberOfDecimalPlacesInPrice, "}");
 
             gridMain.DataContext = _vm.PartToEdit;
 
@@ -132,6 +147,9 @@ namespace TechDashboard.WPF
 
             // Set Bindings
             _labelPartNumber.SetBinding(ContentProperty, "PartItemCode");
+            _labelPartNumber.Text = _vm.PartToEdit.PartItemCode;
+
+            var ciOptions = App.Database.GetCIOptions();
 
             _labelPartDescription.SetBinding(ContentProperty, "PartItemCodeDescription");
             _labelPartDescription.Text = _vm.PartToEdit.PartItemCodeDescription;
@@ -191,14 +209,21 @@ namespace TechDashboard.WPF
             // dch rkl 01/18/2017 If not chargeable, set Unit Price and Ext Price to zero.
             if (_vm.PartToEdit.IsChargeable)
             {
-                _entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
-                if (_pageMode == PageMode.Edit) { _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2"); }
-                else { _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * 1).ToString("C2"); }
+                //_entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
+                _entryUnitPrice.Text = string.Format(priceFormatString, _vm.PartToEdit.UnitPrice);
+                if (_pageMode == PageMode.Edit)
+                {
+                    _labelExtensionPrice.Content = string.Format(priceFormatString, (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity));
+                    //(_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2"); }
+                } else {
+                    _labelExtensionPrice.Content = string.Format(priceFormatString, (_vm.PartToEdit.UnitPrice * 1));
+                    //(_vm.PartToEdit.UnitPrice * 1).ToString("C2"); 
+                }
             }
             else
             {
-                _labelExtensionPrice.Content = "0";
-                _entryUnitPrice.Text = "0";
+                _labelExtensionPrice.Content = string.Format(priceFormatString, 0);
+                _entryUnitPrice.Text = string.Format(priceFormatString, 0);
             }
 
             _entryComments.SetBinding(ContentProperty, "Comment");
@@ -232,7 +257,7 @@ namespace TechDashboard.WPF
             else
             {
                 _entryUnitPrice.IsEnabled = false;
-                _entryUnitPrice.Text = "0.00";
+                _entryUnitPrice.Text = string.Format(priceFormatString, 0);
             }
 
             // dch rkl 11/23/2016 if misc part, hide warehouse dropdown
@@ -282,10 +307,10 @@ namespace TechDashboard.WPF
             }
 
             // dch rkl 01/23/2017 If SO_SalesOrderDetail.JT158_WTBillFlag is set to "R" or "B", do not allow edit of the part
+            int iSOLineKey;
+            int.TryParse(_vm.PartToEdit.SoLineKey, out iSOLineKey);
             if (_vm.PartToEdit.SoLineKey != null)
             {
-                int iSOLineKey;
-                int.TryParse(_vm.PartToEdit.SoLineKey, out iSOLineKey);
                 if (iSOLineKey > 0)
                 {
                     List<SO_SalesOrderDetail> lsSODtl = App.Database.GetSalesOrderDetails(_vm.WorkTicket.SalesOrderNo);
@@ -296,6 +321,12 @@ namespace TechDashboard.WPF
                         _buttonDeletePart.Visibility = Visibility.Hidden;
                     }
                 }
+            }
+
+            // dch rkl 02/03/2017 Do not allow existing parts to be deleted
+            if (iSOLineKey > 0)
+            {
+                _buttonDeletePart.Visibility = Visibility.Hidden;
             }
         }
 
@@ -466,6 +497,15 @@ namespace TechDashboard.WPF
             //_vm.PartToEdit.UnitOfMeasure = _entryUnitOfMeasure.Text;
             _vm.PartToEdit.UnitOfMeasure = UM;
 
+            var ciOptions = App.Database.GetCIOptions();
+            if (ciOptions.AllowExpandedItemCodes == "Y")
+            {
+                _vm.PartToEdit.PartItemCode = _labelPartNumber.Text.Substring(0,_labelPartNumber.Text.Length > 30 ? 30 : _labelPartNumber.Text.Length);
+            } else
+            {
+                _vm.PartToEdit.PartItemCode = _labelPartNumber.Text.Substring(0, _labelPartNumber.Text.Length > 15 ? 15 : _labelPartNumber.Text.Length);
+            }
+
             _vm.PartToEdit.ItemCodeDesc = _labelPartDescription.Text;
 
             _vm.PartToEdit.IsChargeable = (bool)_switchIsChargeable.IsChecked;
@@ -474,6 +514,9 @@ namespace TechDashboard.WPF
             _vm.PartToEdit.IsOverhead = (bool)_switchIsOverhead.IsChecked;
             _vm.PartToEdit.Comment = _entryComments.Text;
 
+            // dch rkl 02/03/2017 Per Jeanne, Set Quantity Required to Quantity entered
+            _vm.PartToEdit.QuantityReqd = (decimal)_vm.PartToEdit.Quantity;
+            
             switch (_pageMode)
             {
                 case PageMode.Add:
@@ -520,9 +563,10 @@ namespace TechDashboard.WPF
             if (!isNumeric)
             {
                 n = 1;
-                _entryQuantity.Text = "1";
+                _entryQuantity.Text = string.Format(quantityFormatString, 1); //"1";
             }
-            _labelExtensionPrice.Content = "$" + (n * _vm.PartToEdit.UnitPrice).ToString();
+            //_labelExtensionPrice.Content = "$" + (n * _vm.PartToEdit.UnitPrice).ToString();
+            _labelExtensionPrice.Content = "$" + string.Format(priceFormatString, (n * _vm.PartToEdit.UnitPrice));
         }
 
         // dch rkl 11/21/2016 if part is purchased, do not allow editing of quantity
@@ -551,20 +595,22 @@ namespace TechDashboard.WPF
                 _switchIsPrintable.IsEnabled = false;
 
                 // dch rkl 01/18/2017 If chargeable, set Unit Price and Ext Price values
-                _entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
-                _labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2");
+                //_entryUnitPrice.Text = _vm.PartToEdit.UnitPrice.ToString("C2");
+                //_labelExtensionPrice.Content = (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity).ToString("C2");
+                _entryUnitPrice.Text = string.Format(priceFormatString, _vm.PartToEdit.UnitPrice);
+                _labelExtensionPrice.Content = string.Format(priceFormatString, (_vm.PartToEdit.UnitPrice * _vm.PartToEdit.Quantity));
             }
             else
             {
                 _entryUnitPrice.IsEnabled = false;
-                _entryUnitPrice.Text = "0.00";
+                _entryUnitPrice.Text = string.Format(priceFormatString, 0);//"0.00";
 
                 // dch rkl 01/18/2017 If Is Chargeable = false, enable printable
                 _switchIsPrintable.IsEnabled = true;
 
                 // dch rkl 01/18/2017 If not chargeable, set Unit Price and Ext Price to zero.
-                _labelExtensionPrice.Content = "0";
-                _entryUnitPrice.Text = "0";
+                _labelExtensionPrice.Content = string.Format(priceFormatString, 0);
+                _entryUnitPrice.Text = string.Format(priceFormatString, 0);
             }
         }
 
@@ -587,13 +633,16 @@ namespace TechDashboard.WPF
 
         private void AddItemToUMList(string newItem)
         {
-            CI_UnitOfMeasure um = _vm.UnitOfMeasureList.FirstOrDefault(s => s.UnitOfMeasure == newItem);
-            if (um == null)
+            if (newItem != null)
             {
-                _vm.UnitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = newItem });
-                _vm.UnitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
+                CI_UnitOfMeasure um = _vm.UnitOfMeasureList.FirstOrDefault(s => s.UnitOfMeasure == newItem);
+                if (um == null)
+                {
+                    _vm.UnitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = newItem });
+                    _vm.UnitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
+                }
+                _pickerUnitOfMeasure.SelectedValue = newItem;
             }
-            _pickerUnitOfMeasure.SelectedValue = newItem;
         }
         // dch rkl 01/23/2017 Allow entry of combo-box item for Misc Items END
 

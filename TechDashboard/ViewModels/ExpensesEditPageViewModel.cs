@@ -97,6 +97,12 @@ namespace TechDashboard.ViewModels
 
         }*/
 
+        protected List<CI_UnitOfMeasure> _unitOfMeasureList;
+        public List<CI_UnitOfMeasure> UnitOfMeasureList
+        {
+            get { return _unitOfMeasureList; }
+        }
+
         protected void UpdateExpenseCategory(string category)
         {
             // dch rkl 12/07/2016 catch exception
@@ -175,6 +181,11 @@ namespace TechDashboard.ViewModels
             {
                 _expenseItem = new App_Expense(new JT_TransactionImportDetail(), workTicket);
 
+                // dch rkl 01/23/2017 added Unit of Measure List
+                _unitOfMeasureList = App.Database.GetCI_UnitOfMeasureFromDB();
+                _unitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = "EACH" });
+                _unitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
+
                 Initialize();
             }
             catch (Exception ex)
@@ -191,6 +202,10 @@ namespace TechDashboard.ViewModels
             try
             {
                 _expenseItem = expenseItem;
+
+                _unitOfMeasureList = App.Database.GetCI_UnitOfMeasureFromDB();
+                _unitOfMeasureList.Add(new CI_UnitOfMeasure() { UnitOfMeasure = "EACH" });
+                _unitOfMeasureList.Sort((x, y) => x.UnitOfMeasure.CompareTo(y.UnitOfMeasure));
                 //_expenseItem.Category = 
                 Initialize();
             }

@@ -44,6 +44,7 @@ using Xceed.Wpf.Toolkit;
  * 01/20/2017   DCH     App was crashing when invalid date was entered.
  * 01/20/2017   DCH     Add Cancel button.
  * 01/23/2017   DCH     Do not include WT Number and WT Step for miscellaneous time.
+ * 02/03/2017   DCH     Validate date before saving, to prevent blank/null date.
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -343,6 +344,14 @@ namespace TechDashboard.WPF
                 return;
             }
 
+            // dch rkl 02/03/2017 Validate Date
+            DateTime dtTranDate;
+            if (textTransactionDate.Text.Trim().Length == 0 || DateTime.TryParse(textTransactionDate.Text, out dtTranDate) == false)
+            {
+                var result = System.Windows.MessageBox.Show("Please enter a valid transaction date.", "Invalid Transaction Date", MessageBoxButton.OK);
+                return;
+            }
+
             // dch rkl 11/1/2016 use textbox instead of datetime picker for times BEGIN
             string startTime = "";
             string endTime = "";
@@ -397,8 +406,6 @@ namespace TechDashboard.WPF
             //newTimeEntry.StartTime = ((DateTime)startTimePicker.Value).TimeOfDay.ToSage100TimeString();
             newTimeEntry.StartTime = startTime;
             // dch rkl 11/1/2016 use textbox instead of datetime picker for times END
-            DateTime dtTranDate;
-            DateTime.TryParse(textTransactionDate.Text, out dtTranDate);
             newTimeEntry.TransactionDate = dtTranDate;
             // dch rkl 01/23/2017 Do not include WT Number and WT Step for miscellaneous time.
             //newTimeEntry.WTNumber = currentTechnician.CurrentWTNumber;

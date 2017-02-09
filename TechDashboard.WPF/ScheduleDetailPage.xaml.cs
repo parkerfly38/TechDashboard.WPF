@@ -26,6 +26,7 @@ using TechDashboard.Models;
  *                      being displayed.  Make sure duration is calculated for both scheduled and actual.
  * 11/22/2016   DCH     Make sure start and end time are not null, to prevent error
  * 01/12/2017   DCH     The actual end time should default to the current date/time if it is blank.
+ * 02/03/2017   DCH     Actual Duration is not being calculated correctly.
  **************************************************************************************************/
 
 namespace TechDashboard.WPF
@@ -188,6 +189,19 @@ namespace TechDashboard.WPF
             {
                 Foreground = asbestos
             };
+
+            // dch rkl 02/03/2017 define this here
+            Label labelActualEndTime = new Label()
+            {
+                Foreground = asbestos,
+                Content = ""
+            };
+            Label labelActualStartTime = new Label()
+            {
+                Content = "",
+                Foreground = asbestos
+            };
+
             if (_vm.TimeEntryDetail != null)
                 labelActualDate.Content = _vm.TimeEntryDetail.TransactionDate.ToShortDateString();
             grid.Children.Add(labelActualDate);
@@ -198,12 +212,12 @@ namespace TechDashboard.WPF
             {
                 if (_vm.ImportDetail.StartTime != null)
                 {
-                    Label labelActualStartTime = new Label()
-                    {
-                        //Content = _vm.TimeEntryDetail.StartTime,      dch rkl 10/26/2016 show formatted time
-                        Content = FormattedTime(_vm.TimeEntryDetail.StartTime),
-                        Foreground = asbestos
-                    };
+                    labelActualStartTime.Content = FormattedTime(_vm.TimeEntryDetail.StartTime);
+                    //Label labelActualStartTime = new Label()
+                    //{
+                    //    Content = FormattedTime(_vm.TimeEntryDetail.StartTime),
+                    //    Foreground = asbestos
+                    //};
                     actStartTime = _vm.TimeEntryDetail.StartTime;      // dch rkl 10/31/2016
                     grid.Children.Add(labelActualStartTime);
                     Grid.SetColumn(labelActualStartTime, 2);
@@ -213,12 +227,12 @@ namespace TechDashboard.WPF
 
                 if (_vm.ImportDetail.EndTime != null)
                 {
-                    Label labelActualEndTime = new Label()
-                    {
-                        //  Content = _vm.TimeEntryDetail.EndTime,      dch rkl 10/26/2016 show formatted time
-                        Content = FormattedTime(_vm.TimeEntryDetail.EndTime),
-                        Foreground = asbestos
-                    };
+                    labelActualEndTime.Content = FormattedTime(_vm.TimeEntryDetail.EndTime);
+                    //Label labelActualEndTime = new Label()
+                    //{
+                    //    Content = FormattedTime(_vm.TimeEntryDetail.EndTime),
+                    //    Foreground = asbestos
+                    //};
                     grid.Children.Add(labelActualEndTime);
                     Grid.SetColumn(labelActualEndTime, 2);
                     Grid.SetRow(labelActualEndTime, 3);
@@ -229,11 +243,12 @@ namespace TechDashboard.WPF
             // dch rkl 01/12/2017 If Actual End Time is blank, use current date BEGIN
             else
             {
-                Label labelActualEndTime = new Label()
-                {
-                    Content = FormattedTime(DateTime.Now.ToString("hh:mm tt")),
-                    Foreground = asbestos
-                };
+                labelActualEndTime.Content = FormattedTime(DateTime.Now.ToString("hh:mm tt"));
+                //Label labelActualEndTime = new Label()
+                //{
+                //    Content = FormattedTime(DateTime.Now.ToString("hh:mm tt")),
+                //    Foreground = asbestos
+                //};
                 grid.Children.Add(labelActualEndTime);
                 Grid.SetColumn(labelActualEndTime, 2);
                 Grid.SetRow(labelActualEndTime, 3);
@@ -248,11 +263,12 @@ namespace TechDashboard.WPF
                 JT_Technician tech = App.Database.GetCurrentTechnicianFromDb();
                 if (tech.CurrentStartTime != null)
                 {
-                    Label labelActualStartTime = new Label()
-                    {
-                        Content = FormattedTime(tech.CurrentStartTime),
-                        Foreground = asbestos
-                    };
+                    labelActualStartTime.Content = FormattedTime(tech.CurrentStartTime);
+                    //Label labelActualStartTime = new Label()
+                    //{
+                    //    Content = FormattedTime(tech.CurrentStartTime),
+                    //    Foreground = asbestos
+                    //};
                     grid.Children.Add(labelActualStartTime);
                     Grid.SetColumn(labelActualStartTime, 2);
                     Grid.SetRow(labelActualStartTime, 2);
@@ -311,7 +327,9 @@ namespace TechDashboard.WPF
                     actEndTime = DateTime.Now.ToString("hh:mm tt");
                 }
             }
-            if (DateTime.TryParse(actStartTime, out dtAST) && DateTime.TryParse(actEndTime, out dtAET))
+            // dch rkl 02/03/2017 Actual duration is not being calculated correctly      
+            //if (DateTime.TryParse(actStartTime, out dtAST) && DateTime.TryParse(actEndTime, out dtAET))
+            if (DateTime.TryParse(labelActualStartTime.Content.ToString(), out dtAST) && DateTime.TryParse(labelActualEndTime.Content.ToString(), out dtAET))
             {
                 TimeSpan tsActDur = dtAET.Subtract(dtAST);
                 Label labelActDur = new Label()

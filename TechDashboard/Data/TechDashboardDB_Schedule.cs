@@ -263,6 +263,28 @@ namespace TechDashboard.Data
             return returnData;
         }
 
+        public List<App_ScheduledAppointment> GetScheduledAppointmentsNoDupes()
+        {
+            List<App_ScheduledAppointment> returnData;
+            SO_SalesOrderHeader soHeader;
+
+            lock (_locker)
+            {
+                returnData = new List<App_ScheduledAppointment>();
+                if (returnData != null)
+                {
+                    foreach (JT_TechnicianScheduleDetail scheduledDetail in GetTechnicianScheduleDetailFromDB())
+                    {
+                        soHeader = GetSalesOrderHeader(scheduledDetail);
+                        if (returnData.Where(x => x.ServiceTicketNumber == scheduledDetail.ServiceTicketNumber).Count() == 0)
+                            returnData.Add(new App_ScheduledAppointment(scheduledDetail, soHeader));
+                    }
+                }
+            }
+
+            return returnData;
+        }
+
         #endregion
     }
 }

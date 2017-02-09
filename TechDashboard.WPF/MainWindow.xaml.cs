@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TechDashboard.Data;
 using TechDashboard.Models;
 using TechDashboard.ViewModels;
 
@@ -28,6 +29,7 @@ using TechDashboard.ViewModels;
  * 01/16/2017   DCH     Make sure the main window isn't a tab stop, and doesn't get selected.
  * 01/20/2017   DCH     Do not allow logoff if there is no data connection.
  * 01/20/2017   DCH     If logging off, and Transactions are Pending to Sync, force them to sync first
+ * 02/03/2017   DCH     Need more positions for version.
  **************************************************************************************************/
 namespace TechDashboard.WPF
 {
@@ -56,7 +58,7 @@ namespace TechDashboard.WPF
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string Buildversion = fvi.FileVersion;
-            string dbVersion = appSettings.DbVersion.Substring(0, 3);
+            string dbVersion = appSettings.DbVersion.Substring(0, 5);  // dch rkl 02/03/2017 Need more positions for version
             if (Buildversion != dbVersion)
             {
                 bool bHasDataConnection = App.Database.HasDataConnection();
@@ -183,7 +185,9 @@ namespace TechDashboard.WPF
             }
             catch (Exception ex)
             {
-
+                // dch rkl 02/03/2017 Log Error
+                ErrorReporting errorReporting = new ErrorReporting();
+                errorReporting.sendException(ex, "TechDashboard.MainWindow.TransactionSync");
             }
             finally
             {

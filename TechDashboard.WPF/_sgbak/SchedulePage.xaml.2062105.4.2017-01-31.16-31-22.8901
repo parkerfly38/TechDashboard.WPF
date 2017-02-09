@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+        <!-- textbox placeholder text -->
         <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -90,11 +91,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Rectangle Height="160" VerticalAlignment="Top" Fill="#3498DB" Stroke="#FF3498DB" HorizontalAlignment="Stretch" />
-        <Label x:Name="labelTitle" Content="SELECT SERVICE TICKET" IsTabStop="false" Height="34" Foreground="White" Margin="83,1,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
-        <DatePicker x:Name="filterStartDate" Margin="10,35,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultStartDate}" SelectedDate="{Binding DefaultStartDate}"/>
-        <DatePicker x:Name="filterEndDate" Margin="10,64,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultEndDate}" SelectedDate="{Binding DefaultEndDate}"/>
-        <Button x:Name="buttonFilter" Margin="10,88,10,0" IsTabStop="false" VerticalAlignment="Top" Background="#FF2ECC71" Foreground="White" BorderBrush="#FF2ECC71" Content="FILTER SERVICE TICKETS BY DATE" FontWeight="Bold" Click="buttonFilter_Click" Height="33" FontSize="16"/>
-        <TextBox x:Name="txtSTFilter" Style="{StaticResource placeHolder}" Tag="Filter on Ticket Number" Height="24" Margin="10,128,10,0" TextChanged="txtSTFilter_TextChanged" VerticalAlignment="Top"/>
+        <Rectangle Height="165" VerticalAlignment="Top" Fill="#3498DB" Stroke="#FF3498DB" HorizontalAlignment="Stretch" />
+        <Label x:Name="labelTitle" Content="SELECT SERVICE TICKET" IsTabStop="false" Height="34" Foreground="White" Margin="83,3,78,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <DatePicker x:Name="filterStartDate" Margin="10,39,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultStartDate}" SelectedDate="{Binding DefaultStartDate}"/>
+        <DatePicker x:Name="filterEndDate" Margin="10,68,10,0" VerticalAlignment="Top" DisplayDate="{Binding DefaultEndDate}" SelectedDate="{Binding DefaultEndDate}"/>
+        <Button x:Name="buttonFilter" Margin="10,98,10,0" IsTabStop="false" VerticalAlignment="Top" Background="#FF2ECC71" Foreground="White" BorderBrush="#FF2ECC71" Content="FILTER SERVICE TICKETS BY DATE" FontWeight="Bold" Click="buttonFilter_Click" Height="33" FontSize="16"/>
+        <TextBox x:Name="txtSTFilter" Style="{StaticResource placeHolder}" Margin="10,136,10,0" Height="25" VerticalAlignment="Top" Tag="Filter by ticket number" TextChanged="txtSTFilter_TextChanged" />
     </Grid>
 </UserControl>
